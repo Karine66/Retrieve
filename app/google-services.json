@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "719921843770",
+    "firebase_url": "https://retrieve-aa96b.firebaseio.com",
+    "project_id": "retrieve-aa96b",
+    "storage_bucket": "retrieve-aa96b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719921843770:android:07c237f219cafae2472f03",
+        "android_client_info": {
+          "package_name": "com.karine.retrieve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719921843770-uv0pdspon01t18qf9a368plcnmr7o401.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYtP5XQ1FH5F-lgIJah9htC6osmUe-8OE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719921843770-uv0pdspon01t18qf9a368plcnmr7o401.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
