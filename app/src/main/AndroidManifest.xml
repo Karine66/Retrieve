@@ -9,11 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Retrieve">
-        <activity android:name=".ui.Search.SearchActivity"></activity>
-        <activity android:name=".ui.DescriptionPage.DescriptionActivity" />
-        <activity android:name=".ui.FindLostPage.FindLostActivity" />
-        <activity android:name=".ui.MainPage.MainPageActivity" />
-        <activity android:name=".ui.LoginPage.LoginActivity">
+        <activity android:name=".ui.search.SearchActivity"></activity>
+        <activity android:name=".ui.descriptionPage.DescriptionActivity" />
+        <activity android:name=".ui.findLostPage.FindLostActivity" />
+        <activity android:name=".ui.mainPage.MainPageActivity" />
+        <activity android:name=".ui.loginPage.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

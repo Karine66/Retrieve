@@ -1,4 +1,4 @@
-package com.karine.retrieve.ui.MainPage
+package com.karine.retrieve.ui.mainPage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

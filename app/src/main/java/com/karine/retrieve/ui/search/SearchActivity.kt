@@ -1,4 +1,4 @@
-package com.karine.retrieve.ui.Search
+package com.karine.retrieve.ui.search
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

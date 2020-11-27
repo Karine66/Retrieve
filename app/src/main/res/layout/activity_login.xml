@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/retrieve2"
-    tools:context=".ui.LoginPage.LoginActivity">
+    tools:context=".ui.loginPage.LoginActivity">
 
 
     <androidx.appcompat.widget.AppCompatButton
@@ -20,6 +20,7 @@
         android:layout_marginTop="380dp" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/googleBtn"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:hint="Connexion par Google"

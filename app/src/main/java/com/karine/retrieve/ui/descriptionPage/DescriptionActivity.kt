@@ -1,9 +1,8 @@
-package com.karine.retrieve.ui.DescriptionPage
+package com.karine.retrieve.ui.descriptionPage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.karine.retrieve.databinding.ActivityDescriptionBinding
-import com.karine.retrieve.databinding.ActivityLoginBinding
 
 class DescriptionActivity : AppCompatActivity() {
 

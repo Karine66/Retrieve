@@ -1,4 +1,4 @@
-package com.karine.retrieve.ui.FindLostPage
+package com.karine.retrieve.ui.findLostPage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
