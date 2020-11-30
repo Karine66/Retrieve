@@ -1,18 +1,17 @@
 package com.karine.retrieve.ui.mainPage
 
+
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager2.widget.ViewPager2
-
-
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
+import com.karine.retrieve.ui.listPage.FindLostFragment
 
 
 class MainPageActivity : AppCompatActivity() {
@@ -28,8 +27,15 @@ class MainPageActivity : AppCompatActivity() {
 
         configureToolbar()
         configureViewPagerAndTabs()
+        onClickFab()
 
+    }
 
+    fun onClickFab() {
+        mainPageBinding.fabBtn.setOnClickListener(View.OnClickListener {
+            val fabIntent = Intent(applicationContext, FindLostFragment::class.java)
+            startActivity(fabIntent)
+        })
     }
 
 
@@ -57,6 +63,16 @@ class MainPageActivity : AppCompatActivity() {
                 1 -> tab.text = "Objets perdus"
             }
         }.attach()
+
+//        if (tabs.selectedTabPosition == 0) {
+//            mainPageBinding.fabBtn.show()
+//            if (tabs.selectedTabPosition == 1)
+//                mainPageBinding.fabBtn.show()
+//        } else {
+//            mainPageBinding.fabBtn.hide()
+//
+//
+//        }
 
     }
 }

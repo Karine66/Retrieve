@@ -3,6 +3,7 @@ package com.karine.retrieve.ui.mainPage
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.karine.retrieve.ui.listPage.FindLostFragment
 
 
 class PageAdapter(fa: FragmentActivity) : FragmentStateAdapter(

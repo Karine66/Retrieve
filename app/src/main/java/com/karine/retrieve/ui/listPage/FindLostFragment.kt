@@ -1,4 +1,4 @@
-package com.karine.retrieve.ui.mainPage
+package com.karine.retrieve.ui.listPage
 
 import android.os.Bundle
 import android.view.LayoutInflater
