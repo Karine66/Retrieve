@@ -13,16 +13,14 @@
         android:layout_height="wrap_content"
         />
 
-
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         app:tabIndicatorColor="@color/colorSecondaryVariant"
-        app:tabTextColor="@color/black"
-        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="#008837"
+        app:tabSelectedTextColor="@color/colorSecondaryVariant"
         android:layout_marginTop="?attr/actionBarSize"
         />
     
@@ -31,5 +29,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tabLayout"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:elevation="15dp"
+        android:focusable="true"
+        android:src="@drawable/outline_add_white_24dp"
+        app:fabSize="normal"
+        app:rippleColor="@color/colorSecondaryVariant"
+        android:contentDescription="fabButton" />
 
 </RelativeLayout>

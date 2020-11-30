@@ -9,7 +9,7 @@ class PageAdapter(fa: FragmentActivity) : FragmentStateAdapter(
     fa
 
 ){
-    
+
     override fun getItemCount(): Int {
         return 2
     }
