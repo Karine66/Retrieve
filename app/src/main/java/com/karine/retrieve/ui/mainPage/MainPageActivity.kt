@@ -45,15 +45,9 @@ class MainPageActivity : AppCompatActivity() {
 //        Get TabLayout from layout
         val tabs = findViewById<View>(R.id.tabLayout) as TabLayout
         // Glue TabLayout and ViewPager together
-//        tabs.setupWithViewPager(pager)
         pager.adapter = PageAdapter(this);
 //        // Design purpose. Tabs have the same width
         tabs.tabMode = TabLayout.MODE_FIXED
-//
-//        //Set Adapter PageAdapter and glue it together
-//       pager.adapter = PageAdapter(supportFragmentManager)
-        pager.adapter = PageAdapter(fa = FragmentActivity())
-
 
         TabLayoutMediator(
             tabs, pager
