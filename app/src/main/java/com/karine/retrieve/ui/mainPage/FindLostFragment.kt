@@ -31,10 +31,14 @@ class FindLostFragment : Fragment() {
         // For view binding
         findLostBinding = FragmentFindLostBinding.inflate(inflater, container, false)
         return binding.root
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         findLostBinding = null
     }
+
+
 }
