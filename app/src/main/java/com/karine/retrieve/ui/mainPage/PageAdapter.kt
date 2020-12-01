@@ -3,7 +3,7 @@ package com.karine.retrieve.ui.mainPage
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.karine.retrieve.ui.listPage.FindLostFragment
+import com.karine.retrieve.ui.listPage.ListFragment
 
 
 class PageAdapter(fa: FragmentActivity) : FragmentStateAdapter(
@@ -18,11 +18,11 @@ class PageAdapter(fa: FragmentActivity) : FragmentStateAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {
-                FindLostFragment()
+                ListFragment()
             }
 
             1 -> {
-                FindLostFragment()
+               ListFragment()
             }
             else ->  {throw IllegalStateException("$position is illegal") }
         }

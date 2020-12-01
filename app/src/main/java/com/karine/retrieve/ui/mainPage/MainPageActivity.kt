@@ -2,16 +2,19 @@ package com.karine.retrieve.ui.mainPage
 
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.viewpager2.widget.ViewPager2
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
-import com.karine.retrieve.ui.listPage.FindLostFragment
+import com.karine.retrieve.ui.findLostPage.FindLostActivity
+import com.karine.retrieve.ui.search.SearchActivity
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 
 
 class MainPageActivity : AppCompatActivity() {
@@ -27,17 +30,28 @@ class MainPageActivity : AppCompatActivity() {
 
         configureToolbar()
         configureViewPagerAndTabs()
-        onClickFab()
+        clickAddBtn()
 
+        //for fab btn add
+        mainPageBinding.fabBtn.inflate(R.menu.fab_speed_dial);
     }
 
-    fun onClickFab() {
-        mainPageBinding.fabBtn.setOnClickListener(View.OnClickListener {
-            val fabIntent = Intent(applicationContext, FindLostFragment::class.java)
-            startActivity(fabIntent)
+    private fun clickAddBtn () {
+        mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
+            when (actionItem.id) {
+                R.id.find-> {
+
+                    val findLostIntent = Intent(this, FindLostActivity::class.java)
+                    startActivity(findLostIntent)
+                }
+                R.id.lost -> {
+                    val findLostIntent = Intent(this, FindLostActivity::class.java)
+                    startActivity(findLostIntent)
+                }
+            }
+            true
         })
     }
-
 
     //for toolbar
     private fun configureToolbar() {
@@ -47,9 +61,9 @@ class MainPageActivity : AppCompatActivity() {
 
     private fun configureViewPagerAndTabs() {
         //Get ViewPager from layout
-        val pager = findViewById<View>(R.id.viewPager) as ViewPager2
+        val pager = mainPageBinding.viewPager
 //        Get TabLayout from layout
-        val tabs = findViewById<View>(R.id.tabLayout) as TabLayout
+        val tabs = mainPageBinding.tabLayout
         // Glue TabLayout and ViewPager together
         pager.adapter = PageAdapter(this);
 //        // Design purpose. Tabs have the same width
@@ -64,15 +78,19 @@ class MainPageActivity : AppCompatActivity() {
             }
         }.attach()
 
-//        if (tabs.selectedTabPosition == 0) {
+        if (tabs.selectedTabPosition == 0) {
 //            mainPageBinding.fabBtn.show()
-//            if (tabs.selectedTabPosition == 1)
+        }
+        if (tabs.selectedTabPosition == 1) {
 //                mainPageBinding.fabBtn.show()
 //        } else {
 //            mainPageBinding.fabBtn.hide()
-//
-//
-//        }
-
+        }
     }
+
+
+
+
+
 }
+
