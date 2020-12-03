@@ -6,7 +6,10 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karine.retrieve.R
@@ -14,6 +17,7 @@ import com.karine.retrieve.databinding.ActivityMainPageBinding
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
 import com.karine.retrieve.ui.search.SearchActivity
 import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 
 
@@ -31,25 +35,54 @@ class MainPageActivity : AppCompatActivity() {
         configureToolbar()
         configureViewPagerAndTabs()
         clickAddBtn()
+        btnSpeedDial()
+        showHideFabTabs()
+    }
+    //for create personalize btn Speed Dial
+    private fun btnSpeedDial() {
 
-        //for fab btn add
-        mainPageBinding.fabBtn.inflate(R.menu.fab_speed_dial);
+        mainPageBinding.fabBtn.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_find, R.drawable.outline_add_white_24dp)
+                .setLabel(R.string.trouve)
+                .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
+                .create())
+
+        mainPageBinding.fabBtn.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
+                .setLabel(R.string.perdu)
+                .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
+                .create()
+        )
     }
 
+    //For click on fab button spedd dial
     private fun clickAddBtn () {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
-                R.id.find-> {
+                R.id.fab_find-> {
 
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
                     startActivity(findLostIntent)
                 }
-                R.id.lost -> {
+                R.id.fab_lost -> {
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
                     startActivity(findLostIntent)
                 }
             }
             true
+        })
+    }
+
+    //for hide or show fab button between tabs
+    private fun showHideFabTabs() {
+        mainPageBinding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+
+            override fun onPageScrollStateChanged(state: Int) {
+                when (state) {
+                    ViewPager2.SCROLL_STATE_IDLE -> mainPageBinding.fabBtn.show()
+                    ViewPager2.SCROLL_STATE_DRAGGING, ViewPager2.SCROLL_STATE_SETTLING -> mainPageBinding.fabBtn.hide()
+                }
+            }
         })
     }
 
@@ -77,20 +110,10 @@ class MainPageActivity : AppCompatActivity() {
                 1 -> tab.text = "Objets perdus"
             }
         }.attach()
-
-        if (tabs.selectedTabPosition == 0) {
-//            mainPageBinding.fabBtn.show()
-        }
-        if (tabs.selectedTabPosition == 1) {
-//                mainPageBinding.fabBtn.show()
-//        } else {
-//            mainPageBinding.fabBtn.hide()
+        //for display fab button
+        if(tabs.selectedTabPosition == 0 ) {
+            mainPageBinding.fabBtn.show()
         }
     }
-
-
-
-
-
 }
 

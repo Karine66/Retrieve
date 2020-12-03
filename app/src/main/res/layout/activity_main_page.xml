@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,11 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.mainPage.MainPageActivity">
 
+   
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -23,27 +29,30 @@
         app:tabSelectedTextColor="@color/colorSecondaryVariant"
         android:layout_marginTop="?attr/actionBarSize"
         />
-    
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tabLayout"/>
 
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
-    <com.leinardi.android.speeddial.SpeedDialView
-        android:id="@+id/fab_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:sdMainFabClosedSrc="@drawable/outline_add_white_24dp"
-        android:contentDescription="fabButton" >
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/fab_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:contentDescription="fabButton"
+            app:sdMainFabClosedSrc="@drawable/outline_add_white_24dp">
 
-    </com.leinardi.android.speeddial.SpeedDialView>
+        </com.leinardi.android.speeddial.SpeedDialView>
 
 </FrameLayout>
 </RelativeLayout>
+    
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
