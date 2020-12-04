@@ -62,10 +62,9 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         findLostBinding.date.text =  currentDateString
     }
 
-
     }
 
 
-}
+
 
 
