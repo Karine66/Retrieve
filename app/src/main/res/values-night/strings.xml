@@ -2,4 +2,9 @@
 <resources>
     <string name="trouves">Objets trouvés</string>
     <string name="trouve">Trouvé</string>
+    <string name="requis">Requis</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="couleur">Couleur</string>
+    <string name="facultatif">Facultatif</string>
+    <string name="dateObjet">Date</string>
 </resources>

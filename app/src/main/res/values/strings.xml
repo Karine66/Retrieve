@@ -5,4 +5,23 @@
     <string name="trouves">Objets trouvés</string>
     <string name="trouve">Trouvé</string>
     <string name="perdu">Perdu</string>
+    <string name="requis">Requis</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="couleur">Couleur</string>
+    <string name="facultatif">Facultatif</string>
+    <string name="dateObjet">Date</string>
+
+    <string-array name="Type">
+        <item>Clé(s)</item>
+        <item>Sac</item>
+        <item>Bijou</item>
+        <item>Montre</item>
+        <item>Portefeuille</item>
+        <item>Lunettes</item>
+        <item>Vêtement</item>
+        <item>Peluche/Doudou</item>
+        <item>Téléphone</item>
+        <item>Accessoire téléphone</item>
+        <item>Autre</item>
+    </string-array>
 </resources>

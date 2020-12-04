@@ -1,11 +1,23 @@
 package com.karine.retrieve.ui.findLostPage
 
+
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityFindLostBinding
+import java.text.DateFormat
+
+import java.util.*
 
 
-class FindLostActivity : AppCompatActivity() {
+class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
+
+
 
     private lateinit var findLostBinding: ActivityFindLostBinding
 
@@ -15,8 +27,45 @@ class FindLostActivity : AppCompatActivity() {
         val view = findLostBinding.root
         setContentView(view)
 
+        dropDownAdapter()
+
+//For date picker
+
+        findLostBinding.date.setOnClickListener(View.OnClickListener {
+            val datePicker: DialogFragment = DatePickerFragment()
+            datePicker.show(supportFragmentManager, "date picker")
+        })
+    }
+
+    //for dropdown
+    private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
+        return ArrayAdapter(
+            this,
+            R.layout.dropdown_menu_popup_item,
+            resources.getStringArray(resId)
+        )
+    }
+
+    //for dropdown
+    private fun dropDownAdapter() {
+        findLostBinding.etType.setAdapter(factoryAdapter(R.array.Type))
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val c = Calendar.getInstance()
+        c[Calendar.YEAR] = year
+        c[Calendar.MONTH] = month
+        c[Calendar.DAY_OF_MONTH] = dayOfMonth
+
+        val currentDateString: String = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
+
+        findLostBinding.date.text =  currentDateString
+    }
+
 
     }
 
 
 }
+
+

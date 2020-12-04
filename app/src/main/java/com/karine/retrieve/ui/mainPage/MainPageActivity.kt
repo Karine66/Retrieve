@@ -2,28 +2,25 @@ package com.karine.retrieve.ui.mainPage
 
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
-import com.karine.retrieve.ui.search.SearchActivity
 import com.leinardi.android.speeddial.SpeedDialActionItem
-import com.leinardi.android.speeddial.SpeedDialView
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 
 
 class MainPageActivity : AppCompatActivity() {
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
+//    private val tabs:TabLayout = mainPageBinding.tabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +34,8 @@ class MainPageActivity : AppCompatActivity() {
         clickAddBtn()
         btnSpeedDial()
         showHideFabTabs()
+
+
     }
     //for create personalize btn Speed Dial
     private fun btnSpeedDial() {
@@ -45,7 +44,8 @@ class MainPageActivity : AppCompatActivity() {
             SpeedDialActionItem.Builder(R.id.fab_find, R.drawable.outline_add_white_24dp)
                 .setLabel(R.string.trouve)
                 .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
-                .create())
+                .create()
+        )
 
         mainPageBinding.fabBtn.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
@@ -59,8 +59,7 @@ class MainPageActivity : AppCompatActivity() {
     private fun clickAddBtn () {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
-                R.id.fab_find-> {
-
+                R.id.fab_find -> {
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
                     startActivity(findLostIntent)
                 }
@@ -75,7 +74,8 @@ class MainPageActivity : AppCompatActivity() {
 
     //for hide or show fab button between tabs
     private fun showHideFabTabs() {
-        mainPageBinding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        mainPageBinding.viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
 
             override fun onPageScrollStateChanged(state: Int) {
                 when (state) {
@@ -100,7 +100,7 @@ class MainPageActivity : AppCompatActivity() {
         // Glue TabLayout and ViewPager together
         pager.adapter = PageAdapter(this);
 //        // Design purpose. Tabs have the same width
-        tabs.tabMode = TabLayout.MODE_FIXED
+//        tabs.tabMode = TabLayout.MODE_FIXED
 
         TabLayoutMediator(
             tabs, pager
@@ -115,5 +115,6 @@ class MainPageActivity : AppCompatActivity() {
             mainPageBinding.fabBtn.show()
         }
     }
+
 }
 
