@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.karine.retrieve.R
@@ -28,13 +29,9 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         setContentView(view)
 
         dropDownAdapter()
+        clickDate()
 
-//For date picker
 
-        findLostBinding.date.setOnClickListener(View.OnClickListener {
-            val datePicker: DialogFragment = DatePickerFragment()
-            datePicker.show(supportFragmentManager, "date picker")
-        })
     }
 
     //for dropdown
@@ -50,7 +47,7 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private fun dropDownAdapter() {
         findLostBinding.etType.setAdapter(factoryAdapter(R.array.Type))
     }
-
+    //For date picker
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val c = Calendar.getInstance()
         c[Calendar.YEAR] = year
@@ -59,7 +56,15 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         val currentDateString: String = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
 
-        findLostBinding.date.text =  currentDateString
+         findLostBinding.date.setText(currentDateString)
+    }
+    //for click on date
+    private fun clickDate() {
+
+        findLostBinding.date.setOnClickListener(View.OnClickListener {
+            val datePicker: DialogFragment = DatePickerFragment()
+            datePicker.show(supportFragmentManager, "date picker")
+        })
     }
 
     }
