@@ -3,24 +3,38 @@ package com.karine.retrieve.ui.findLostPage
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import android.widget.TextView
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityFindLostBinding
+import com.karine.retrieve.models.UserObject
+import com.karine.retrieve.ui.UserObjectViewModel
+import java.lang.reflect.Array.set
 import java.text.DateFormat
-
 import java.util.*
 
 
 class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
 
 
-
+    private lateinit  var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
+    var firestoreDB = FirebaseFirestore.getInstance()
+//    private val objectRef: DocumentReference = firestoreDB.document("save_UserObject")
+
+    private val KEY_PSEUDO = "pseudo"
+    private val KEY_EMAIL = "email"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +44,8 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         dropDownAdapter()
         clickDate()
+        clickValidate()
+        configureViewModel()
 
 
     }
@@ -67,7 +83,40 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         })
     }
 
+    fun configureViewModel() {
+        val userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
+//        userObjectViewModel.saveUserObjectToFirebase(userObject)
     }
+
+    //for click validate button
+    fun clickValidate() {
+        saveUserObject()
+
+    }
+
+
+    private fun saveUserObject() {
+
+
+        val pseudo: String = findLostBinding.etName.text.toString()
+        val email: String = findLostBinding.etMail.text.toString()
+
+        var saveObject: MutableMap<String, Any> = HashMap()
+
+        saveObject[KEY_PSEUDO] = pseudo
+        saveObject[KEY_EMAIL] = email
+
+        firestoreDB.collection("users").document("save_UserObject")
+            .set(saveObject)
+            .addOnSuccessListener {
+
+                Log.d("addObject", "DocumentSnapshot successfully written!") }
+            .addOnFailureListener { e -> Log.w("failureAddObject", "Error writing document", e) }
+    }
+        }
+
+
+
 
 
 

@@ -20,7 +20,7 @@ import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 class MainPageActivity : AppCompatActivity() {
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
-//    private val tabs:TabLayout = mainPageBinding.tabLayout
+    private lateinit var tabs:TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +35,10 @@ class MainPageActivity : AppCompatActivity() {
         btnSpeedDial()
         showHideFabTabs()
 
+        //for display fab button
+        if(tabs.selectedTabPosition == 0 ) {
+            mainPageBinding.fabBtn.show()
+        }
 
     }
     //for create personalize btn Speed Dial
@@ -55,13 +59,14 @@ class MainPageActivity : AppCompatActivity() {
         )
     }
 
-    //For click on fab button spedd dial
+    //For click on fab button speed dial
     private fun clickAddBtn () {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_find -> {
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
                     startActivity(findLostIntent)
+
                 }
                 R.id.fab_lost -> {
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
@@ -96,11 +101,11 @@ class MainPageActivity : AppCompatActivity() {
         //Get ViewPager from layout
         val pager = mainPageBinding.viewPager
 //        Get TabLayout from layout
-        val tabs = mainPageBinding.tabLayout
+        tabs = mainPageBinding.tabLayout
         // Glue TabLayout and ViewPager together
         pager.adapter = PageAdapter(this);
 //        // Design purpose. Tabs have the same width
-//        tabs.tabMode = TabLayout.MODE_FIXED
+        tabs.tabMode = TabLayout.MODE_FIXED
 
         TabLayoutMediator(
             tabs, pager
@@ -110,10 +115,7 @@ class MainPageActivity : AppCompatActivity() {
                 1 -> tab.text = "Objets perdus"
             }
         }.attach()
-        //for display fab button
-        if(tabs.selectedTabPosition == 0 ) {
-            mainPageBinding.fabBtn.show()
-        }
+
     }
 
 }
