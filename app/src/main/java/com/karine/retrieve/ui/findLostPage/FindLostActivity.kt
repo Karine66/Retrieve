@@ -7,31 +7,30 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.UserObjectViewModel
-import java.lang.reflect.Array.set
 import java.text.DateFormat
 import java.util.*
 
 
-class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
+class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
 
-    private lateinit  var userObject: UserObject
+    private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
+    private lateinit var userObjectViewModel: UserObjectViewModel
     var firestoreDB = FirebaseFirestore.getInstance()
-//    private val objectRef: DocumentReference = firestoreDB.document("save_UserObject")
+    private val user = FirebaseAuth.getInstance().uid
+
+
 
     private val KEY_PSEUDO = "pseudo"
     private val KEY_EMAIL = "email"
@@ -44,9 +43,8 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         dropDownAdapter()
         clickDate()
-        clickValidate()
         configureViewModel()
-
+        clickValidate()
 
     }
 
@@ -63,6 +61,7 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private fun dropDownAdapter() {
         findLostBinding.etType.setAdapter(factoryAdapter(R.array.Type))
     }
+
     //For date picker
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val c = Calendar.getInstance()
@@ -70,10 +69,12 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         c[Calendar.MONTH] = month
         c[Calendar.DAY_OF_MONTH] = dayOfMonth
 
-        val currentDateString: String = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
+        val currentDateString: String =
+            DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
 
-         findLostBinding.date.setText(currentDateString)
+        findLostBinding.date.setText(currentDateString)
     }
+
     //for click on date
     private fun clickDate() {
 
@@ -83,37 +84,53 @@ class FindLostActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         })
     }
 
-    fun configureViewModel() {
-        val userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
-//        userObjectViewModel.saveUserObjectToFirebase(userObject)
+    private fun configureViewModel() {
+        userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
+
     }
 
     //for click validate button
-    fun clickValidate() {
-        saveUserObject()
+    private fun clickValidate() {
 
+        findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
+
+            saveUserObject()
+            Snackbar.make(findLostBinding.root, "Ajout réussi", Snackbar.LENGTH_SHORT).show()
+        })
     }
-
 
     private fun saveUserObject() {
 
+        userObject = UserObject(
 
-        val pseudo: String = findLostBinding.etName.text.toString()
-        val email: String = findLostBinding.etMail.text.toString()
+            user.toString(),
+            findLostBinding.etName.text.toString(),
+            findLostBinding.etMail.text.toString(),
+            findLostBinding.etPhone.text.toString().toIntOrNull(),
+            findLostBinding.date.text.toString().toLongOrNull(),
+            findLostBinding.etType.text.toString(),
+            findLostBinding.etAddress.text.toString(),
+            findLostBinding.etPostalCode.text.toString().toIntOrNull(),
+            findLostBinding.etCity.text.toString(),
+            findLostBinding.etDescription.text.toString()
+        )
+        userObjectViewModel.saveUserObjectToFirebase(userObject)
+        Log.d("userObject", "UserObject$userObject")
 
-        var saveObject: MutableMap<String, Any> = HashMap()
+            val userId = FirebaseAuth.getInstance().currentUser
 
-        saveObject[KEY_PSEUDO] = pseudo
-        saveObject[KEY_EMAIL] = email
+            firestoreDB.collection("users").document(userId!!.email.toString())
+                .set(userObject)
+                .addOnSuccessListener {
 
-        firestoreDB.collection("users").document("save_UserObject")
-            .set(saveObject)
-            .addOnSuccessListener {
-
-                Log.d("addObject", "DocumentSnapshot successfully written!") }
-            .addOnFailureListener { e -> Log.w("failureAddObject", "Error writing document", e) }
-    }
+                    Log.d("addObject", "DocumentSnapshot successfully written!")
+                }
+                .addOnFailureListener { e -> Log.w("failureAddObject", "Error writing document", e) }
         }
+        }
+
+
+
 
 
 

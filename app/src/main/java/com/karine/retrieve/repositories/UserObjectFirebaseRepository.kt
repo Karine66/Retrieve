@@ -15,18 +15,19 @@ class UserObjectFirebaseRepository {
     //save user object to firebase
    fun saveUserObject(userObject: UserObject) : Task<Void> {
        var documentReference = firestoreDB.collection("users").document(user!!.email.toString())
-           .collection("saved_UserObject").document(userObject.uid)
+//           .collection("saved_UserObject").document(userObject.uid)
         return documentReference.set(userObject)
    }
     //get saved user object from firebase
     fun getSavedUserObject() : CollectionReference {
-        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
+//        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
+        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}")
         return collectionReference
     }
     //delete user object from firebase
     fun deleteUserObject(userObject: UserObject) : Task<Void> {
-        var documentReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
-            .document(userObject.uid)
+        var documentReference = firestoreDB.collection("users/${user!!.email.toString()}")
+           .document(userObject.uid)
         return documentReference.delete()
     }
 
