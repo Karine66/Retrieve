@@ -54,10 +54,14 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-
     //for fab speed dial
     implementation "com.leinardi.android:speed-dial:3.1.1"
-
+    //for permissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    //for image picker gallery or camera
+    implementation 'com.github.dhaval2404:imagepicker:1.7.5'
+    //for carousel view
+    implementation 'com.github.jama5262:CarouselView:1.1.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

@@ -12,12 +12,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
+import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 
 
-class MainPageActivity : AppCompatActivity() {
+class MainPageActivity : BaseActivity() {
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
     private lateinit var tabs:TabLayout
@@ -31,6 +32,7 @@ class MainPageActivity : AppCompatActivity() {
 
         configureToolbar()
         configureViewPagerAndTabs()
+        methodRequiresTwoPermission()
         clickAddBtn()
         btnSpeedDial()
         showHideFabTabs()
@@ -89,12 +91,6 @@ class MainPageActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    //for toolbar
-    private fun configureToolbar() {
-        val toolbar: Toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
     }
 
     private fun configureViewPagerAndTabs() {

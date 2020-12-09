@@ -146,7 +146,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/input_type"
-        android:text="Adresse où l'objet a été trouvé ou perdu"
+        android:text="@string/adresse_o_l_objet_a_t_trouv_ou_perdu"
         android:textColor="@color/colorSecondary"
         android:textSize="12sp"
         android:textStyle="bold"/>
@@ -214,14 +214,14 @@
         app:boxStrokeColor="@color/colorSecondary"
         app:errorEnabled="true"
         app:boxStrokeErrorColor="#F30505"
-        app:helperText="Requis"
+        app:helperText="@string/requis"
         app:helperTextEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_city"
             android:layout_width="160dp"
             android:layout_height="50dp"
-            android:hint="Ville"
+            android:hint="@string/ville"
             android:inputType="textAutoComplete"
             android:singleLine="true"
             android:textAllCaps="true"
@@ -264,6 +264,39 @@
             android:layout_below="@+id/input_description"
             android:layout_marginTop="50dp"
             android:background="@drawable/baseline_add_a_photo_black_48dp" />
+
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/photo"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_toEndOf="@+id/photo_btn"-->
+<!--            android:layout_marginStart="40dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_below="@+id/input_description">-->
+
+<!--        </androidx.appcompat.widget.AppCompatImageView>-->
+
+        <com.jama.carouselview.CarouselView
+            android:id="@+id/carousel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/photo_btn"
+            android:layout_below="@+id/input_description"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            app:enableSnapping="true"
+            app:scaleOnScroll="false"
+            app:setAutoPlay="true"
+            app:setAutoPlayDelay="3000"
+            app:carouselOffset="center"
+            app:indicatorAnimationType="drop"
+            app:indicatorRadius="5"
+            app:indicatorPadding="5"
+            app:indicatorSelectedColor="@color/colorAccent"
+            app:indicatorUnselectedColor="@color/colorPrimary"
+            app:size="10"
+            app:spacing="10"
+            app:resource="@layout/centered_carousel"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/validate_fab_btn"

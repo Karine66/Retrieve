@@ -1,15 +1,18 @@
 package com.karine.retrieve.models
 
+import android.net.Uri
+
 class UserObject (val uid : String,
                   var pseudo : String?,
                   var email : String?,
                   var phone : Int?,
-                  var date : Long?,
+                  var date : String?,
                   var type : String?,
                   var address : String?,
                   var postalCode : Int?,
                   var city : String?,
                   var description : String?,
+//                  var photo :Uri?
 
 
                   ){
