@@ -18,4 +18,5 @@
     <string name="ajoutObjet">Ajout objet</string>
     <string name="adresse_o_l_objet_a_t_trouv_ou_perdu">Adresse où l\'objet a été trouvé ou perdu</string>
     <string name="ville">Ville</string>
+    <string name="ajoutreussi">Ajout réussi</string>
 </resources>

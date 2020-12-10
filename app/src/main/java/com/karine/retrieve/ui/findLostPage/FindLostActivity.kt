@@ -6,17 +6,12 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
-import androidx.core.content.FileProvider
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -31,8 +26,6 @@ import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.UserObjectViewModel
-import com.karine.retrieve.utils.Utils
-import java.io.File
 import java.text.DateFormat
 import java.util.*
 
@@ -42,10 +35,12 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 //    private val images = arrayListOf(R.color.black,
 //        R.color.purple_500, R.color.teal_700)
 
-    private val photoList: MutableList<Uri>? = null
+
+    private val photoList: MutableList<Uri> = mutableListOf()
 
     private var photo: Uri? = null
-
+    private var lostClick: Int = 1
+    private var findClick: Int = 0
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
     private lateinit var userObjectViewModel: UserObjectViewModel
@@ -74,27 +69,46 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         clickValidate()
         clickPhoto()
 
+
+        //for retrieve click on speed dial
+
+        findClick = intent.getIntExtra("findClick", 0)
+        Log.d("findClick", "findClick$findClick")
+        lostClick = intent.getIntExtra("lostClick", 1)
+
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.ajoutObjet)
 
-        findLostBinding.carousel.apply {
-            size = photoList?.size ?: 3
-            resource = R.layout.centered_carousel
-            autoPlay = true
-            indicatorAnimationType = IndicatorAnimationType.THIN_WORM
-            carouselOffset = OffsetType.CENTER
-            setCarouselViewListener { view, position ->
-                // Example here is setting up a full image carousel
-                val imageView = view.findViewById<ImageView>(R.id.imageView)
-                imageView.setImageURI(photoList?.get(position))
+        findLostBinding.carousel.visibility = View.GONE
+
+
+    }
+
+    //for carousel
+    private fun updateCarousel() {
+        if (photoList.size >= 1) {
+            findLostBinding.carousel.visibility = View.VISIBLE
+
+            findLostBinding.carousel.apply {
+                size = photoList.size
+                resource = R.layout.centered_carousel
+                autoPlay = true
+                indicatorAnimationType = IndicatorAnimationType.DROP
+                carouselOffset = OffsetType.CENTER
+                setCarouselViewListener { view, position ->
+                    // Example here is setting up a full image carousel
+                    val imageView = view.findViewById<ImageView>(R.id.imageView)
+                    imageView.setImageURI(photoList[position])
+                }
+                // After you finish setting up, show the CarouselView
+                show()
             }
-            // After you finish setting up, show the CarouselView
-            show()
         }
     }
 
-    //for dropdown
+
+        //for dropdown
     private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
         return ArrayAdapter(
             this,
@@ -141,7 +155,19 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
 
             saveUserObject()
-            Snackbar.make(findLostBinding.root, "Ajout réussi", Snackbar.LENGTH_SHORT).show()
+
+            Snackbar.make(
+                findLostBinding.root,
+                getString(R.string.ajoutreussi),
+                Snackbar.LENGTH_SHORT
+            )
+                .addCallback(object : Snackbar.Callback() {
+                    override fun onDismissed(snackbar: Snackbar, event: Int) {
+                        super.onDismissed(snackbar, event)
+                        finish()
+                    }
+                })
+                .show()
         })
     }
     //for click on photo button
@@ -171,10 +197,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         userObjectViewModel.saveUserObjectToFirebase(userObject)
         Log.d("userObject", "UserObject$userObject")
 
-        val userId = FirebaseAuth.getInstance().currentUser
-
-        firestoreDB.collection("users").document(userId!!.email.toString())
-            .set(userObject)
+        firestoreDB.collection("users")
+            .add(userObject)
             .addOnSuccessListener {
                 Log.d("addObject", "DocumentSnapshot successfully written!")
             }
@@ -225,7 +249,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
 
                         if (fileUriCamera != null) {
-                            photoList?.add(fileUriCamera)
+                            photoList.add(fileUriCamera)
+                            updateCarousel()
                         }
 
                         Log.d("photolist", "photolist$photoList")
@@ -238,7 +263,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                         Log.d("file path gallery", "filePathGallery$filePathGallery")
 
                         if (fileUriGallery != null) {
-                            photoList?.add(fileUriGallery)
+                            photoList.add(fileUriGallery)
+                            updateCarousel()
                         }
 
                     }

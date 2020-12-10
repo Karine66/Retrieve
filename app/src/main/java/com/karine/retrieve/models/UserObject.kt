@@ -16,7 +16,7 @@ class UserObject (val uid : String,
 
 
                   ){
-    constructor() : this("","","",null,null,"","",null,"","")
+    constructor() : this("","","",null,"","","",null,"","")
 
 
 }

@@ -3,6 +3,7 @@ package com.karine.retrieve.ui.mainPage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -37,7 +38,7 @@ class MainPageActivity : BaseActivity() {
         btnSpeedDial()
         showHideFabTabs()
 
-        //for display fab button
+//        for display fab button
         if(tabs.selectedTabPosition == 0 ) {
             mainPageBinding.fabBtn.show()
         }
@@ -46,33 +47,41 @@ class MainPageActivity : BaseActivity() {
     //for create personalize btn Speed Dial
     private fun btnSpeedDial() {
 
-        mainPageBinding.fabBtn.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_find, R.drawable.outline_add_white_24dp)
-                .setLabel(R.string.trouve)
-                .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
-                .create()
-        )
+            mainPageBinding.fabBtn.addActionItem(
+                SpeedDialActionItem.Builder(R.id.fab_find, R.drawable.outline_add_white_24dp)
+                    .setLabel(R.string.trouve)
+                    .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
+                    .create()
+            )
 
-        mainPageBinding.fabBtn.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
-                .setLabel(R.string.perdu)
-                .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
-                .create()
-        )
+
+            mainPageBinding.fabBtn.addActionItem(
+                SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
+                    .setLabel(R.string.perdu)
+                    .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
+                    .create()
+            )
+
     }
-
     //For click on fab button speed dial
     private fun clickAddBtn () {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_find -> {
+                     mainPageBinding.viewPager.currentItem = 0
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
+                    intent.putExtra("findClick", 0)
                     startActivity(findLostIntent)
+
+
 
                 }
                 R.id.fab_lost -> {
+                    mainPageBinding.viewPager.currentItem = 1
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
+                    intent.putExtra("lostClick",1)
                     startActivity(findLostIntent)
+
                 }
             }
             true
