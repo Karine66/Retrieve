@@ -262,19 +262,8 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_below="@+id/input_description"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="90dp"
             android:background="@drawable/baseline_add_a_photo_black_48dp" />
-
-<!--        <androidx.appcompat.widget.AppCompatImageView-->
-<!--            android:id="@+id/photo"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:layout_toEndOf="@+id/photo_btn"-->
-<!--            android:layout_marginStart="40dp"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_below="@+id/input_description">-->
-
-<!--        </androidx.appcompat.widget.AppCompatImageView>-->
 
         <com.jama.carouselview.CarouselView
             android:id="@+id/carousel"

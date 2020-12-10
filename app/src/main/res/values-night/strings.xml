@@ -10,7 +10,6 @@
 
     <string name="code_postal">Code Postal</string>
     <string name="t_l_phone">Téléphone</string>
-    <string name="type_d_objet">Type d\'objet</string>
     <string name="description">Description</string>
     <string name="unknown_error">Erreur inconnue</string>
     <string name="erreurInconnue">Erreur inconnue</string>
@@ -19,4 +18,5 @@
     <string name="adresse_o_l_objet_a_t_trouv_ou_perdu">Adresse où l\'objet a été trouvé ou perdu</string>
     <string name="ville">Ville</string>
     <string name="ajoutreussi">Ajout réussi</string>
+    <string name="type_d_objet">Type d\'objet</string>
 </resources>

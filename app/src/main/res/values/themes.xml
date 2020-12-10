@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">#66ffa6</item>
         <item name="colorPrimaryVariant">#00B147</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSurface">#025925</item>
+        <item name="colorOnSurface">#008335</item>
         <item name="colorError">#F30505</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#ff1744</item>

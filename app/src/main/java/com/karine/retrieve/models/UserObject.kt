@@ -12,11 +12,11 @@ class UserObject (val uid : String,
                   var postalCode : Int?,
                   var city : String?,
                   var description : String?,
-//                  var photo :Uri?
+                  var photo :MutableList<String>
 
 
                   ){
-    constructor() : this("","","",null,"","","",null,"","")
+    constructor() : this("","","",null,"","","",null,"","", mutableListOf())
 
 
 }
