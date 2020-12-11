@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.karine.retrieve.databinding.FragmentListBinding
 import com.karine.retrieve.models.UserObject
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(){
 
     //For view binding
     private var listBinding : FragmentListBinding? = null
@@ -19,6 +22,10 @@ class ListFragment : Fragment() {
 
     private lateinit var listObject: MutableList<UserObject>
     private lateinit var listAdapter : ListAdapter
+
+    var firestoreDB = FirebaseFirestore.getInstance()
+    val objectRef = firestoreDB.collection("users")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,25 +39,38 @@ class ListFragment : Fragment() {
         //for View Binding
         listBinding = FragmentListBinding.inflate(inflater, container, false)
 
-        this.configureRecyclerView()
+        this.setUpRecyclerView()
         return binding.root
 
 
     }
 
-    private fun configureRecyclerView() {
-        this.listObject = mutableListOf()
-        //Create adapter
-        this.listAdapter = ListAdapter(this.listObject)
-        //Set Layout manager
-        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        listBinding?.fragmentListRV?.layoutManager = layoutManager
-        listBinding?.fragmentListRV?.adapter = listAdapter
+    private fun setUpRecyclerView() {
+        val query: Query = objectRef.orderBy("created", Query.Direction.DESCENDING)
+        val options = FirestoreRecyclerOptions.Builder<UserObject>()
+            .setQuery(query, UserObject::class.java)
+            .build()
+        listAdapter = ListAdapter(options)
+        val recyclerView: RecyclerView = listBinding!!.fragmentListRV
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = listAdapter
+    }
+    override fun onStart() {
+        super.onStart()
+        listAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        listAdapter.stopListening()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         listBinding = null
     }
+
+
 
 }

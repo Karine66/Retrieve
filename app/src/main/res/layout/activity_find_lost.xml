@@ -274,17 +274,17 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="40dp"
             app:enableSnapping="false"
-            app:scaleOnScroll="false"
-            app:setAutoPlay="true"
-            app:setAutoPlayDelay="3000"
+            app:scaleOnScroll="true"
+            app:setAutoPlay="false"
+            app:setAutoPlayDelay="6000"
             app:carouselOffset="center"
             app:indicatorAnimationType="drop"
             app:indicatorRadius="5"
             app:indicatorPadding="5"
             app:indicatorSelectedColor="@color/colorAccent"
             app:indicatorUnselectedColor="@color/colorPrimary"
-            app:size="2"
-            app:spacing="10"
+            app:size="3"
+            app:spacing="5"
             app:resource="@layout/centered_carousel"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

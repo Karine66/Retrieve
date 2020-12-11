@@ -2,35 +2,33 @@ package com.karine.retrieve.ui.listPage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.karine.retrieve.databinding.FragmentListItemBinding
 import com.karine.retrieve.models.UserObject
 
 
-class ListAdapter(listObject: MutableList<UserObject>) : RecyclerView.Adapter<ListViewHolder>() {
 
-    private val listObject : MutableList<UserObject> = mutableListOf()
+class ListAdapter(options: FirestoreRecyclerOptions<UserObject>) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
+    options
+) {
+
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        return ListViewHolder(
-            FragmentListItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        );
-
+        val fragmentListItemBinding = FragmentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(fragmentListItemBinding)
     }
 
 
-
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.updateWithObject(this.listObject[position])
+    override fun onBindViewHolder(
+        listViewHolder: ListViewHolder,
+        position: Int,
+        userObject: UserObject
+    ) {
+        listViewHolder.updateWithObject(userObject)
     }
 
-    override fun getItemCount(): Int {
-        return this.listObject.size
-    }
+
 }

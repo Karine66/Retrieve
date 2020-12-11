@@ -6,23 +6,19 @@
     android:layout_margin="5dp"
     android:elevation="7dp"
     android:orientation="horizontal"
-   android:padding="20dp"
-    android:layout_marginEnd="40dp"
-    app:cardBackgroundColor="#E2E3DD"
+    app:cardBackgroundColor="#e2e3dd"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:id="@+id/fragment_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:scaleType="centerCrop">
+       >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/list_photo"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -30,41 +26,52 @@
             android:scaleType="center" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/list_photo"
+            android:textColor="@color/colorPrimaryVariant"
+            android:textSize="20sp"
+            android:textStyle="italic|bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/typeObject"
             android:layout_width="170dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/list_photo"
+            android:layout_below="@+id/name"
             android:textAllCaps="true"
-            android:textColor="@color/colorSecondaryVariant"
-            android:textSize="22sp"
+            android:textColor="#304FFE"
+            android:textSize="20sp"
             android:textStyle="bold|italic" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/City"
             android:layout_width="170dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_below="@+id/typeObject"
             android:layout_marginStart="30dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/list_photo"
             android:textAllCaps="true"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="italic" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/name"
-            android:layout_width="170dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/City"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/list_photo"
-            android:textColor="#DA13D7"
-            android:textSize="22sp"
-            android:textStyle="italic|bold" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/arrow"
+            android:layout_width="65dp"
+            android:layout_height="50dp"
+            android:layout_toEndOf="@+id/typeObject"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:drawableStart="@drawable/arrow4"
+            />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -1,7 +1,6 @@
 package com.karine.retrieve.ui.findLostPage
 
 
-import android.R.id.message
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -19,6 +18,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -36,10 +36,6 @@ import java.util.*
 
 open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
-//    private val images = arrayListOf(R.color.black,
-//        R.color.purple_500, R.color.teal_700)
-
-
 
     private val photoList: MutableList<Uri> = mutableListOf()
 
@@ -51,9 +47,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var ab: ActionBar
     private lateinit var builder: MaterialAlertDialogBuilder
     private lateinit var pathImageSavedInFirebase: Uri
-//    private lateinit var photo : MutableList<String>
+    private lateinit var fileUri : Uri
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
+    private val createdDate = Timestamp.now()
+
 
     companion object {
         const val RC_CAMERA = 100
@@ -95,24 +93,17 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun updateCarousel() {
         if (photoList.size >= 1) {
             findLostBinding.carousel.visibility = View.VISIBLE
-
+        }
             findLostBinding.carousel.apply {
-                size = photoList.size
+               size = photoList.size
                 resource = R.layout.centered_carousel
-                autoPlay = true
-                indicatorAnimationType = IndicatorAnimationType.DROP
-                carouselOffset = OffsetType.CENTER
                 setCarouselViewListener { view, position ->
-                    // Example here is setting up a full image carousel
                     val imageView = view.findViewById<ImageView>(R.id.imageView)
                     imageView.setImageURI(photoList[position])
                 }
-                // After you finish setting up, show the CarouselView
                 show()
             }
         }
-    }
-
 
     //for dropdown
     private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
@@ -175,8 +166,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 })
                 .show()
         })
-
-
     }
 
     //for click on photo button
@@ -184,7 +173,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         findLostBinding.photoBtn.setOnClickListener(View.OnClickListener {
             selectImage()
         })
-
     }
 
     //for save form in firebase
@@ -193,6 +181,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         userObject = UserObject(
 
             user.toString(),
+            createdDate,
             findLostBinding.etName.text.toString(),
             findLostBinding.etMail.text.toString(),
             findLostBinding.etPhone.text.toString().toIntOrNull(),
@@ -204,19 +193,19 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             findLostBinding.etDescription.text.toString(),
             photo = mutableListOf(pathImageSavedInFirebase.toString())
         )
+
         userObjectViewModel.saveUserObjectToFirebase(userObject)
         Log.d("userObject", "UserObject$userObject")
 
-
-
+        //for store in Firebase
         firestoreDB.collection("users")
             .add(userObject)
             .addOnSuccessListener {
+
                 Log.d("addObject", "DocumentSnapshot successfully written!")
             }
             .addOnFailureListener { e -> Log.w("failureAddObject", "Error writing document", e) }
     }
-
 
     //for alert dialog photo
     private fun selectImage() {
@@ -229,13 +218,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
                     ImagePicker.with(this).cameraOnly()
                         .start(RC_CAMERA)
-
                 }
                 options[item] == "Choose from Gallery" -> {
                     ImagePicker.with(this)
                         .galleryOnly()
                         .start(RC_GALLERY)
-
                 }
                 options[item] == "Cancel" -> {
                     dialog.dismiss()
@@ -254,79 +241,58 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
                     RC_CAMERA -> {
 
-                        val fileUriCamera = data?.data
+                       fileUri = data?.data!!
+                        photoList.add(fileUri)
+                        updateCarousel()
 
-                        if (fileUriCamera != null) {
-                            photoList.add(fileUriCamera)
-                            updateCarousel()
-                        }
-                        //For store photos in firebase
-                        val uuid = UUID.randomUUID().toString() // GENERATE UNIQUE STRING
+                            storeImageInFirestore()
 
-                        val mImageRef = FirebaseStorage.getInstance().getReference(uuid)
-                        val uploadTask = mImageRef.putFile(fileUriCamera!!)
-
-                        val urlTask =
-                            uploadTask.continueWithTask { task: Task<UploadTask.TaskSnapshot?> ->
-                                if (!task.isSuccessful) {
-                                    Log.e(
-                                        "UploadPhoto",
-                                        "Error TASK_URI : " + task.exception
-                                    )
-                                    throw Objects.requireNonNull(task.exception)!!
-                                }
-                                mImageRef.downloadUrl
-                            }.addOnCompleteListener { task: Task<Uri?> ->
-                                if (task.isSuccessful) {
-                                    pathImageSavedInFirebase = task.result!!
-                                } else {
-                                    Log.e(
-                                        "UploadPhoto",
-                                        "Error ON_COMPLETE : " + task.exception
-                                    )
-                                }
-                                Log.d("photolist", "photolist$photoList")
-                            }
                     }
-                    RC_GALLERY -> {
-                        val fileUriGallery = data?.data
-
-                        if (fileUriGallery != null) {
-                            photoList.add(fileUriGallery)
+                        RC_GALLERY -> {
+                            fileUri = data?.data!!
+                            photoList.add(fileUri)
                             updateCarousel()
+
+                                storeImageInFirestore()
+
                         }
-                        //For store photos in firebase
-                        val uuid = UUID.randomUUID().toString() // GENERATE UNIQUE STRING
-
-                        val mImageRef = FirebaseStorage.getInstance().getReference(uuid)
-                        val uploadTask = mImageRef.putFile(fileUriGallery!!)
-
-                        val urlTask =
-                            uploadTask.continueWithTask { task: Task<UploadTask.TaskSnapshot?> ->
-                                if (!task.isSuccessful) {
-                                    Log.e(
-                                        "UploadPhoto",
-                                        "Error TASK_URI : " + task.exception
-                                    )
-                                    throw Objects.requireNonNull(task.exception)!!
-                                }
-                            mImageRef.downloadUrl
-                            }.addOnCompleteListener { task: Task<Uri?> ->
-                                if (task.isSuccessful) {
-                                    pathImageSavedInFirebase = task.result!!
-                                } else {
-                                    Log.e(
-                                        "UploadPhoto",
-                                        "Error ON_COMPLETE : " + task.exception
-                                    )
-                                }
-                            }
                     }
                 }
             }
         }
+
+    private fun storeImageInFirestore() {
+        //For store photos in firebase
+        val uuid = UUID.randomUUID().toString() // GENERATE UNIQUE STRING
+
+        val mImageRef = FirebaseStorage.getInstance().getReference(uuid)
+        val uploadTask = mImageRef.putFile(fileUri)
+
+        val urlTask =
+            uploadTask.continueWithTask { task: Task<UploadTask.TaskSnapshot?> ->
+                if (!task.isSuccessful) {
+                    Log.e(
+                        "UploadPhoto",
+                        "Error TASK_URI : " + task.exception
+                    )
+                    throw Objects.requireNonNull(task.exception)!!
+                }
+                mImageRef.downloadUrl
+            }.addOnCompleteListener { task: Task<Uri?> ->
+                if (task.isSuccessful) {
+
+                        pathImageSavedInFirebase = task.result!!
+
+                } else {
+                    Log.e(
+                        "UploadPhoto",
+                        "Error ON_COMPLETE : " + task.exception
+                    )
+                }
+            }
     }
 }
+
 
 
 
