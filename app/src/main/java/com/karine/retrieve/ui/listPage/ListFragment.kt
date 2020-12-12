@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -50,10 +53,10 @@ class ListFragment : Fragment(){
         val options = FirestoreRecyclerOptions.Builder<UserObject>()
             .setQuery(query, UserObject::class.java)
             .build()
-        listAdapter = ListAdapter(options)
+        listAdapter = ListAdapter(options, Glide.with(this))
         val recyclerView: RecyclerView = listBinding!!.fragmentListRV
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = GridLayoutManager(context,2)
         recyclerView.adapter = listAdapter
     }
     override fun onStart() {

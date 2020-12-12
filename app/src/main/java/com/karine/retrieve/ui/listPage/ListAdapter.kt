@@ -2,6 +2,7 @@ package com.karine.retrieve.ui.listPage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bumptech.glide.RequestManager
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.karine.retrieve.databinding.FragmentListItemBinding
@@ -9,11 +10,11 @@ import com.karine.retrieve.models.UserObject
 
 
 
-class ListAdapter(options: FirestoreRecyclerOptions<UserObject>) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
+class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : RequestManager) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
     options
 ) {
 
-
+//  private val glide : RequestManager? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -27,7 +28,10 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>) : FirestoreRecy
         position: Int,
         userObject: UserObject
     ) {
-        listViewHolder.updateWithObject(userObject)
+
+
+            listViewHolder.updateWithObject(userObject)
+
     }
 
 

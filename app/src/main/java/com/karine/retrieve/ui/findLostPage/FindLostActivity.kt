@@ -220,8 +220,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                         .start(RC_CAMERA)
                 }
                 options[item] == "Choose from Gallery" -> {
-                    ImagePicker.with(this)
-                        .galleryOnly()
+                    ImagePicker.with(this).galleryOnly()
                         .start(RC_GALLERY)
                 }
                 options[item] == "Cancel" -> {
@@ -244,16 +243,14 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                        fileUri = data?.data!!
                         photoList.add(fileUri)
                         updateCarousel()
-
-                            storeImageInFirestore()
+                        storeImageInFirestore()
 
                     }
                         RC_GALLERY -> {
                             fileUri = data?.data!!
                             photoList.add(fileUri)
                             updateCarousel()
-
-                                storeImageInFirestore()
+                            storeImageInFirestore()
 
                         }
                     }
@@ -275,13 +272,14 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                         "UploadPhoto",
                         "Error TASK_URI : " + task.exception
                     )
-                    throw Objects.requireNonNull(task.exception)!!
+                    throw (task.exception)!!
                 }
                 mImageRef.downloadUrl
             }.addOnCompleteListener { task: Task<Uri?> ->
                 if (task.isSuccessful) {
 
                         pathImageSavedInFirebase = task.result!!
+                    Log.d("pathImageFirebase", "pathiImageFirebase$pathImageSavedInFirebase")
 
                 } else {
                     Log.e(
