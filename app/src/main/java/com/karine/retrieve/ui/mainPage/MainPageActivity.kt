@@ -72,16 +72,12 @@ class MainPageActivity : BaseActivity() {
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
                     intent.putExtra("findClick", 0)
                     startActivity(findLostIntent)
-
-
-
                 }
                 R.id.fab_lost -> {
                     mainPageBinding.viewPager.currentItem = 1
                     val findLostIntent = Intent(this, FindLostActivity::class.java)
                     intent.putExtra("lostClick",1)
                     startActivity(findLostIntent)
-
                 }
             }
             true

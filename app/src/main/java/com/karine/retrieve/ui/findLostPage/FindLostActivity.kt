@@ -53,6 +53,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private val createdDate = Timestamp.now()
 
 
+
+
     companion object {
         const val RC_CAMERA = 100
         const val RC_GALLERY = 200
@@ -151,8 +153,13 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
 
+//            if (findClick.equals(true)) {
+//                saveUserObject()
+//            }
+//            if (lostClick.equals(true)){
+//                saveUserObject()
+//        }
             saveUserObject()
-
             Snackbar.make(
                 findLostBinding.root,
                 getString(R.string.ajoutreussi),

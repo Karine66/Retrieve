@@ -1,5 +1,6 @@
 package com.karine.retrieve.ui.listPage
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
@@ -14,7 +15,7 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : Request
     options
 ) {
 
-//  private val glide : RequestManager? = null
+  private val glide : RequestManager? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -30,7 +31,9 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : Request
     ) {
 
 
-            listViewHolder.updateWithObject(userObject)
+        if (glide != null) {
+            listViewHolder.updateWithObject(userObject, glide)
+        }
 
     }
 
