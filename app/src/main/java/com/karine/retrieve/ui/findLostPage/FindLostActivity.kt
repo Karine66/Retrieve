@@ -152,11 +152,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun clickValidate() {
 
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
-
-//            if (findClick.equals(true)) {
+//
+//            if (findClick == 0) {
 //                saveUserObject()
 //            }
-//            if (lostClick.equals(true)){
+//            if (lostClick == 1){
 //                saveUserObject()
 //        }
             saveUserObject()
@@ -285,7 +285,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             }.addOnCompleteListener { task: Task<Uri?> ->
                 if (task.isSuccessful) {
 
-                        pathImageSavedInFirebase = task.result!!
+                      pathImageSavedInFirebase = task.result!!
                     Log.d("pathImageFirebase", "pathiImageFirebase$pathImageSavedInFirebase")
 
                 } else {

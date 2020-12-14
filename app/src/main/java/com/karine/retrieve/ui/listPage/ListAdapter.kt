@@ -11,11 +11,9 @@ import com.karine.retrieve.models.UserObject
 
 
 
-class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : RequestManager) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
+class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val glide: RequestManager) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
     options
 ) {
-
-//  private val glide : RequestManager? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -29,12 +27,7 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : Request
         position: Int,
         userObject: UserObject
     ) {
-
-
-//        if (glide != null) {
-//            listViewHolder.updateWithObject(userObject, glide)
-//        }
-            listViewHolder.updateWithObject(userObject)
+            listViewHolder.updateWithObject(userObject, glide)
     }
 
 
