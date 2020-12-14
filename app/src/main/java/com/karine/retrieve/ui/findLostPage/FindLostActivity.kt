@@ -23,8 +23,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import com.jama.carouselview.enums.IndicatorAnimationType
-import com.jama.carouselview.enums.OffsetType
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
@@ -37,8 +35,9 @@ import java.util.*
 open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
 
-    private val photoList: MutableList<Uri> = mutableListOf()
-
+    private var photoList: MutableList<Uri> = mutableListOf()
+    private var pathListPhoto : MutableList<String> = mutableListOf()
+    private var photo = pathListPhoto
     private var lostClick: Int = 1
     private var findClick: Int = 0
     private lateinit var userObject: UserObject
@@ -47,12 +46,10 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var ab: ActionBar
     private lateinit var builder: MaterialAlertDialogBuilder
     private lateinit var pathImageSavedInFirebase: Uri
-    private lateinit var fileUri : Uri
+    private lateinit var fileUri: Uri
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
-
-
 
 
     companion object {
@@ -96,16 +93,16 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         if (photoList.size >= 1) {
             findLostBinding.carousel.visibility = View.VISIBLE
         }
-            findLostBinding.carousel.apply {
-               size = photoList.size
-                resource = R.layout.centered_carousel
-                setCarouselViewListener { view, position ->
-                    val imageView = view.findViewById<ImageView>(R.id.imageView)
-                    imageView.setImageURI(photoList[position])
-                }
-                show()
+        findLostBinding.carousel.apply {
+            size = photoList.size
+            resource = R.layout.centered_carousel
+            setCarouselViewListener { view, position ->
+                val imageView = view.findViewById<ImageView>(R.id.imageView)
+                imageView.setImageURI(photoList[position])
             }
+            show()
         }
+    }
 
     //for dropdown
     private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
@@ -178,9 +175,24 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     //for click on photo button
     private fun clickPhoto() {
         findLostBinding.photoBtn.setOnClickListener(View.OnClickListener {
-            selectImage()
+
+        limitedPhotos()
+
         })
     }
+
+    private fun limitedPhotos(): Boolean {
+
+        if (photoList.size <= 3) {
+            selectImage()
+        return true
+    }
+    Snackbar.make(findLostBinding.root, "3 photos maximum", Snackbar.LENGTH_SHORT).show()
+    return false
+    }
+
+
+
 
     //for save form in firebase
     private fun saveUserObject() {
@@ -198,20 +210,12 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             findLostBinding.etPostalCode.text.toString().toIntOrNull(),
             findLostBinding.etCity.text.toString(),
             findLostBinding.etDescription.text.toString(),
-            photo = mutableListOf(pathImageSavedInFirebase.toString())
+            photo
         )
 
         userObjectViewModel.saveUserObjectToFirebase(userObject)
+
         Log.d("userObject", "UserObject$userObject")
-
-        //for store in Firebase
-        firestoreDB.collection("users")
-            .add(userObject)
-            .addOnSuccessListener {
-
-                Log.d("addObject", "DocumentSnapshot successfully written!")
-            }
-            .addOnFailureListener { e -> Log.w("failureAddObject", "Error writing document", e) }
     }
 
     //for alert dialog photo
@@ -286,6 +290,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 if (task.isSuccessful) {
 
                       pathImageSavedInFirebase = task.result!!
+                    pathListPhoto.add(pathImageSavedInFirebase.toString())
                     Log.d("pathImageFirebase", "pathiImageFirebase$pathImageSavedInFirebase")
 
                 } else {

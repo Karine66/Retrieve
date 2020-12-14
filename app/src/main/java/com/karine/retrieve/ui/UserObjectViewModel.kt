@@ -18,7 +18,9 @@ class UserObjectViewModel : ViewModel() {
 
     //save user object to firebase
     fun saveUserObjectToFirebase(userObject: UserObject) {
-        firebaseRepository.saveUserObject(userObject).addOnFailureListener {
+        firebaseRepository.saveUserObject(userObject).addOnSuccessListener {
+            Log.d("addObject", "DocumentSnapshot successfully written!")
+        }.addOnFailureListener {
             Log.e(TAG, "Failed to save UserObject")
         }
     }

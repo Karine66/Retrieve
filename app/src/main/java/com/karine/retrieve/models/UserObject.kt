@@ -1,6 +1,8 @@
 package com.karine.retrieve.models
 
+import android.net.Uri
 import com.google.firebase.Timestamp
+import java.io.Serializable
 
 class UserObject(
     val uid: String,
@@ -14,10 +16,10 @@ class UserObject(
     var postalCode: Int?,
     var city: String?,
     var description: String?,
-    var photo:MutableList<String>
+    var photo: MutableList<String>
 
 
-                  ){
+                  ) : Serializable {
     constructor() : this("",null,"","",null,"","","",null,"","", mutableListOf())
 
 

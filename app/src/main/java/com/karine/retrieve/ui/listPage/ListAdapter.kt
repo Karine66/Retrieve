@@ -1,6 +1,5 @@
 package com.karine.retrieve.ui.listPage
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
@@ -15,12 +14,10 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val gli
     options
 ) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val fragmentListItemBinding = FragmentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(fragmentListItemBinding)
     }
-
 
     override fun onBindViewHolder(
         listViewHolder: ListViewHolder,

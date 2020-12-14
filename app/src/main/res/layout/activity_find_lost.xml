@@ -277,7 +277,7 @@
             app:scaleOnScroll="true"
             app:setAutoPlay="false"
             app:setAutoPlayDelay="6000"
-            app:carouselOffset="center"
+            app:carouselOffset="start"
             app:indicatorAnimationType="drop"
             app:indicatorRadius="5"
             app:indicatorPadding="5"

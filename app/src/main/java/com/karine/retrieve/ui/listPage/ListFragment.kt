@@ -45,8 +45,6 @@ class ListFragment : Fragment(){
 
         this.setUpRecyclerView()
         return binding.root
-
-
     }
 
     private fun setUpRecyclerView() {
