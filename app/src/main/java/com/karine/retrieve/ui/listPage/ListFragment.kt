@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.karine.retrieve.databinding.FragmentListBinding
 import com.karine.retrieve.models.UserObject
+import com.karine.retrieve.utils.GlideApp
 
 
 class ListFragment : Fragment(){
@@ -53,7 +54,7 @@ class ListFragment : Fragment(){
         val options = FirestoreRecyclerOptions.Builder<UserObject>()
             .setQuery(query, UserObject::class.java)
             .build()
-        listAdapter = ListAdapter(options, Glide.with(this))
+        listAdapter = ListAdapter(options, GlideApp.with(this))
         val recyclerView: RecyclerView = listBinding!!.fragmentListRV
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(context,2)

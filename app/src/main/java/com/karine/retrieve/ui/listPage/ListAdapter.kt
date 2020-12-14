@@ -15,7 +15,7 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : Request
     options
 ) {
 
-  private val glide : RequestManager? = null
+//  private val glide : RequestManager? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -31,10 +31,10 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, glide : Request
     ) {
 
 
-        if (glide != null) {
-            listViewHolder.updateWithObject(userObject, glide)
-        }
-
+//        if (glide != null) {
+//            listViewHolder.updateWithObject(userObject, glide)
+//        }
+            listViewHolder.updateWithObject(userObject)
     }
 
 
