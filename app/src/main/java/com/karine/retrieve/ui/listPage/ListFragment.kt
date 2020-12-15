@@ -31,6 +31,7 @@ class ListFragment : Fragment(){
 
     var firestoreDB = FirebaseFirestore.getInstance()
     val objectRef = firestoreDB.collection("usersObjectFind")
+    
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
