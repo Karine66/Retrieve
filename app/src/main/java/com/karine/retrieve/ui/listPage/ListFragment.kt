@@ -6,19 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.karine.retrieve.databinding.FragmentListBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.utils.GlideApp
 
 
 class ListFragment : Fragment(){
+
+
 
     //For view binding
     private var listBinding : FragmentListBinding? = null
@@ -28,7 +30,7 @@ class ListFragment : Fragment(){
     private lateinit var listAdapter : ListAdapter
 
     var firestoreDB = FirebaseFirestore.getInstance()
-    val objectRef = firestoreDB.collection("users")
+    val objectRef = firestoreDB.collection("usersObjectFind")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +50,7 @@ class ListFragment : Fragment(){
     }
 
     private fun setUpRecyclerView() {
-        val query: Query = objectRef.orderBy("created", Query.Direction.DESCENDING)
+        val query: Query = objectRef
         val options = FirestoreRecyclerOptions.Builder<UserObject>()
             .setQuery(query, UserObject::class.java)
             .build()

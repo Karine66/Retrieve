@@ -68,16 +68,18 @@ class MainPageActivity : BaseActivity() {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_find -> {
-                     mainPageBinding.viewPager.currentItem = 0
-                    val findLostIntent = Intent(this, FindLostActivity::class.java)
-                    intent.putExtra("findClick", 0)
-                    startActivity(findLostIntent)
+
+                    val findIntent = Intent(this, FindLostActivity::class.java)
+                    mainPageBinding.viewPager.currentItem = 0
+                    intent.putExtra("findClick",0)
+                    startActivity(findIntent)
                 }
                 R.id.fab_lost -> {
+
+                    val lostIntent = Intent(this, FindLostActivity::class.java)
                     mainPageBinding.viewPager.currentItem = 1
-                    val findLostIntent = Intent(this, FindLostActivity::class.java)
                     intent.putExtra("lostClick",1)
-                    startActivity(findLostIntent)
+                    startActivity(lostIntent)
                 }
             }
             true

@@ -13,22 +13,42 @@ class UserObjectFirebaseRepository {
     var firestoreDB = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
 
-    //save user object to firebase
-   fun saveUserObject(userObject: UserObject) : Task<DocumentReference> {
-       var documentReference = firestoreDB.collection("users").add(userObject)
+    //save user object find to firebase
+   fun saveUserObjectFind(userObject: UserObject) : Task<DocumentReference> {
+       var documentReference = firestoreDB.collection("usersObjectFind").add(userObject)
 //           .collection("saved_UserObject").document(userObject.uid)
         return documentReference
    }
-    //get saved user object from firebase
-    fun getSavedUserObject() : CollectionReference {
+
+    //save user object lost to firebase
+    fun saveUserObjectLost(userObject: UserObject) : Task<DocumentReference> {
+        var documentReference = firestoreDB.collection("usersObjectLost").add(userObject)
+//           .collection("saved_UserObject").document(userObject.uid)
+        return documentReference
+    }
+    //get saved user object find from firebase
+    fun getSavedUserObjectFind() : CollectionReference {
 //        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
-        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}")
+        var collectionReference = firestoreDB.collection("usersObjectFind/${user!!.email.toString()}")
         return collectionReference
     }
-    //delete user object from firebase
-    fun deleteUserObject(userObject: UserObject) : Task<Void> {
-        var documentReference = firestoreDB.collection("users/${user!!.email.toString()}")
+
+    //get saved user object lost from firebase
+    fun getSavedUserObjectLost() : CollectionReference {
+//        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
+        var collectionReference = firestoreDB.collection("usersObjectLost/${user!!.email.toString()}")
+        return collectionReference
+    }
+    //delete user object find  from firebase
+    fun deleteUserObjectFind(userObject: UserObject) : Task<Void> {
+        var documentReference = firestoreDB.collection("usersObjectFind/${user!!.email.toString()}")
            .document(userObject.uid)
+        return documentReference.delete()
+    }
+    //delete user object Lost from firebase
+    fun deleteUserObjectLost(userObject: UserObject) : Task<Void> {
+        var documentReference = firestoreDB.collection("usersObjectLost/${user!!.email.toString()}")
+            .document(userObject.uid)
         return documentReference.delete()
     }
 

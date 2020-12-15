@@ -38,7 +38,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private var photoList: MutableList<Uri> = mutableListOf()
     private var pathListPhoto : MutableList<String> = mutableListOf()
     private var photo = pathListPhoto
-    private var lostClick: Int = 1
+//    private var lostClick: Int = 1
     private var findClick: Int = 0
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
@@ -77,7 +77,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
         findClick = intent.getIntExtra("findClick", 0)
         Log.d("findClick", "findClick$findClick")
-        lostClick = intent.getIntExtra("lostClick", 1)
+//        lostClick = intent.getIntExtra("lostClick", 1)
 
         //For toolbar
         ab = supportActionBar!!
@@ -149,14 +149,9 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun clickValidate() {
 
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
-//
-//            if (findClick == 0) {
-//                saveUserObject()
-//            }
-//            if (lostClick == 1){
-//                saveUserObject()
-//        }
+
             saveUserObject()
+
             Snackbar.make(
                 findLostBinding.root,
                 getString(R.string.ajoutreussi),
@@ -212,12 +207,14 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             findLostBinding.etDescription.text.toString(),
             photo
         )
+            if(findClick ==0) {
+                this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
+            }
+           this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
 
-        userObjectViewModel.saveUserObjectToFirebase(userObject)
+            Log.d("userObject", "UserObject$userObject")
 
-        Log.d("userObject", "UserObject$userObject")
     }
-
     //for alert dialog photo
     private fun selectImage() {
         val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
