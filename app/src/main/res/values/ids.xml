@@ -3,7 +3,5 @@
 
         <item name="fab_find" type="id" />
         <item name="fab_lost" type="id" />
-
-
-
+        <item name="item_click_support" type="id"/>
 </resources>

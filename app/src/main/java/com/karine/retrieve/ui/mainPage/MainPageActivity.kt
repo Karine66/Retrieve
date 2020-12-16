@@ -15,6 +15,7 @@ import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
+import com.karine.retrieve.ui.listPage.ListFragment
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 
@@ -23,7 +24,7 @@ class MainPageActivity : BaseActivity() {
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
     private lateinit var tabs:TabLayout
-
+    private lateinit var findTab : Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainPageBinding = ActivityMainPageBinding.inflate(layoutInflater)

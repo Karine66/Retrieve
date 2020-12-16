@@ -1,8 +1,10 @@
 package com.karine.retrieve.ui.mainPage
 
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.karine.retrieve.ui.findLostPage.FindLostActivity
 import com.karine.retrieve.ui.listPage.ListFragment
 
 
@@ -22,11 +24,13 @@ class PageAdapter(fa: FragmentActivity) : FragmentStateAdapter(
             }
 
             1 -> {
-               ListFragment()
+                ListFragment()
             }
             else ->  {throw IllegalStateException("$position is illegal") }
         }
     }
+
+
 }
 
 

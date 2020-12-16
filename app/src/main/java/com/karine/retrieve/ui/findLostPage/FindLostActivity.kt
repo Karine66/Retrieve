@@ -13,6 +13,7 @@ import android.widget.DatePicker
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
@@ -28,6 +29,7 @@ import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.UserObjectViewModel
+import com.karine.retrieve.ui.descriptionPage.DescriptionActivity
 import java.text.DateFormat
 import java.util.*
 
@@ -78,6 +80,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         findClick = intent.getIntExtra("findClick", 0)
         Log.d("findClick", "findClick$findClick")
 //        lostClick = intent.getIntExtra("lostClick", 1)
+
+
 
         //For toolbar
         ab = supportActionBar!!
@@ -171,7 +175,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun clickPhoto() {
         findLostBinding.photoBtn.setOnClickListener(View.OnClickListener {
 
-        limitedPhotos()
+            limitedPhotos()
 
         })
     }
@@ -248,19 +252,19 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
                     RC_CAMERA -> {
 
-                       fileUri = data?.data!!
+                        fileUri = data?.data!!
                         photoList.add(fileUri)
                         updateCarousel()
                         storeImageInFirestore()
 
                     }
-                        RC_GALLERY -> {
-                            fileUri = data?.data!!
-                            photoList.add(fileUri)
-                            updateCarousel()
-                            storeImageInFirestore()
+                    RC_GALLERY -> {
+                        fileUri = data?.data!!
+                        photoList.add(fileUri)
+                        updateCarousel()
+                        storeImageInFirestore()
 
-                        }
+                    }
                     }
                 }
             }

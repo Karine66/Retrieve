@@ -7,10 +7,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.karine.retrieve.databinding.FragmentListItemBinding
 import com.karine.retrieve.models.UserObject
+import com.karine.retrieve.ui.descriptionPage.DescriptionActivity
+import com.karine.retrieve.utils.CellClickListener
 
 
-
-class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val glide: RequestManager) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
+class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val glide: RequestManager,
+                  private val cellClickListener: CellClickListener
+) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
     options
 ) {
 
@@ -25,7 +28,9 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val gli
         userObject: UserObject
     ) {
             listViewHolder.updateWithObject(userObject, glide)
+        //for click on item recycler view
+        listViewHolder.itemView.setOnClickListener{cellClickListener.onCellClickListener()
     }
-
+    }
 
 }

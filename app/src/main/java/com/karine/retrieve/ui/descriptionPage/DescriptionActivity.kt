@@ -1,10 +1,10 @@
 package com.karine.retrieve.ui.descriptionPage
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.karine.retrieve.databinding.ActivityDescriptionBinding
+import com.karine.retrieve.ui.BaseActivity
 
-class DescriptionActivity : AppCompatActivity() {
+class DescriptionActivity : BaseActivity() {
 
     private lateinit var descriptionBinding: ActivityDescriptionBinding
 
@@ -14,4 +14,5 @@ class DescriptionActivity : AppCompatActivity() {
         val view = descriptionBinding.root
         setContentView(view)
     }
+
 }
