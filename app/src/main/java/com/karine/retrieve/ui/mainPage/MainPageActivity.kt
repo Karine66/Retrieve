@@ -1,35 +1,29 @@
 package com.karine.retrieve.ui.mainPage
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
-import com.karine.retrieve.ui.listPage.ListFragment
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
-
+import com.mapbox.mapboxsdk.Mapbox
 
 class MainPageActivity : BaseActivity() {
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
     private lateinit var tabs:TabLayout
-    private lateinit var findTab : Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainPageBinding = ActivityMainPageBinding.inflate(layoutInflater)
         val view = mainPageBinding.root
-
+        Mapbox.getInstance(this, getString(R.string.access_token))
         setContentView(view)
 
         configureToolbar()
@@ -54,37 +48,38 @@ class MainPageActivity : BaseActivity() {
                     .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
                     .create()
             )
-
-
             mainPageBinding.fabBtn.addActionItem(
                 SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
                     .setLabel(R.string.perdu)
                     .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
                     .create()
             )
-
     }
     //For click on fab button speed dial
     private fun clickAddBtn () {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_find -> {
-
-                    val findIntent = Intent(this, FindLostActivity::class.java)
                     mainPageBinding.viewPager.currentItem = 0
-                    intent.putExtra("findClick",0)
+                    val findIntent = Intent(this, FindLostActivity::class.java)
+                   findIntent.putExtra("findClick", 0)
                     startActivity(findIntent)
+                   mainPageBinding.fabBtn.close()
+                    return@OnActionSelectedListener true
+
                 }
                 R.id.fab_lost -> {
-
-                    val lostIntent = Intent(this, FindLostActivity::class.java)
                     mainPageBinding.viewPager.currentItem = 1
-                    intent.putExtra("lostClick",1)
+                    val lostIntent = Intent(this, FindLostActivity::class.java)
+                   lostIntent.putExtra("lostClick", 1)
                     startActivity(lostIntent)
+                    mainPageBinding.fabBtn.close()
+                    return@OnActionSelectedListener true
                 }
             }
-            true
+            false
         })
+
     }
 
     //for hide or show fab button between tabs
@@ -119,8 +114,6 @@ class MainPageActivity : BaseActivity() {
                 1 -> tab.text = "Objets perdus"
             }
         }.attach()
-
     }
-
 }
 

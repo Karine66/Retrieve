@@ -21,10 +21,17 @@ android {
         viewBinding true
     }
     buildTypes {
+//        debug {
+//            buildConfigField 'String', 'MapboxAccessToken', MAPBOX_DOWNLOADS_TOKEN
+//        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            buildConfigField 'String', 'MapboxAccessToken', MAPBOX_DOWNLOADS_TOKEN
         }
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -66,7 +73,14 @@ dependencies {
     //for Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
-
+    //for Mapbox
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0'){
+        exclude group: 'group_name', module: 'module_name'
+    }
+    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0@aar') {
+        transitive = true
+    }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

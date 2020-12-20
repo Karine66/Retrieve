@@ -13,7 +13,6 @@ import android.widget.DatePicker
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
@@ -24,12 +23,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
+import com.karine.retrieve.ui.Carousel
 import com.karine.retrieve.ui.UserObjectViewModel
-import com.karine.retrieve.ui.descriptionPage.DescriptionActivity
+import com.karine.retrieve.utils.Utils
+import java.sql.Types.TIMESTAMP
 import java.text.DateFormat
 import java.util.*
 
@@ -40,8 +42,9 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private var photoList: MutableList<Uri> = mutableListOf()
     private var pathListPhoto : MutableList<String> = mutableListOf()
     private var photo = pathListPhoto
-//    private var lostClick: Int = 1
+    private var lostClick: Int = 1
     private var findClick: Int = 0
+
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
     private lateinit var userObjectViewModel: UserObjectViewModel
@@ -52,7 +55,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
-
+    private lateinit var carouselView : CarouselView
 
     companion object {
         const val RC_CAMERA = 100
@@ -79,14 +82,14 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
         findClick = intent.getIntExtra("findClick", 0)
         Log.d("findClick", "findClick$findClick")
-//        lostClick = intent.getIntExtra("lostClick", 1)
-
+        lostClick = intent.getIntExtra("lostClick", 1)
+        Log.d("lostClick", "lostClick$lostClick")
 
 
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.ajoutObjet)
-
+        //For carousel
         findLostBinding.carousel.visibility = View.GONE
 
 
@@ -97,16 +100,30 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         if (photoList.size >= 1) {
             findLostBinding.carousel.visibility = View.VISIBLE
         }
-        findLostBinding.carousel.apply {
-            size = photoList.size
-            resource = R.layout.centered_carousel
-            setCarouselViewListener { view, position ->
-                val imageView = view.findViewById<ImageView>(R.id.imageView)
-                imageView.setImageURI(photoList[position])
-            }
-            show()
-        }
+        carouselView= findLostBinding.carousel
+        Carousel.carousel(carouselView, photoList)
+//        findLostBinding.carousel.apply {
+//            size = photoList.size
+//            resource = R.layout.centered_carousel
+//            setCarouselViewListener { view, position ->
+//                val imageView = view.findViewById<ImageView>(R.id.imageView)
+//                imageView.setImageURI(photoList[position])
+//            }
+//            show()
+//        }
     }
+
+//    private fun carousel(carouselView: CarouselView, photoList: MutableList<Uri>) {
+//        carouselView.apply {
+//            size = photoList.size
+//            resource = R.layout.centered_carousel
+//            setCarouselViewListener { view, position ->
+//                val imageView = view.findViewById<ImageView>(R.id.imageView)
+//                imageView.setImageURI(photoList[position])
+//            }
+//            show()
+//        }
+//    }
 
     //for dropdown
     private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
@@ -190,9 +207,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     return false
     }
 
-
-
-
     //for save form in firebase
     private fun saveUserObject() {
 
@@ -211,10 +225,10 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             findLostBinding.etDescription.text.toString(),
             photo
         )
-            if(findClick ==0) {
-                this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
-            }
-           this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
+        if (findClick == 0) {
+            this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
+        }
+        this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
 
             Log.d("userObject", "UserObject$userObject")
 

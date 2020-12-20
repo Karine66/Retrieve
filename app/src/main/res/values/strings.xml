@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Retrieve</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="trouves">Objets trouvés</string>
     <string name="trouve">Trouvé</string>
@@ -14,8 +13,6 @@
     <string name="code_postal">Code Postal</string>
     <string name="email">Email</string>
     <string name="t_l_phone">Téléphone</string>
-
-    <string name="description">Description</string>
     <string name="unknown_error">Erreur inconnue</string>
     <string name="erreurInconnue">Erreur inconnue</string>
     <string name="authreussie">Authentification réussie</string>
@@ -24,7 +21,9 @@
     <string name="ville">Ville</string>
     <string name="ajoutreussi">Ajout réussi</string>
     <string name="type_d_objet">Type d\'objet</string>
+    <string name="description">Description</string>
 
+<!--    <string name="MapboxAccessToken">MAPBOX_DOWNLOADS_TOKEN</string>-->
     <string-array name="Type">
         <item>Clé(s)</item>
         <item>Sac</item>
@@ -38,4 +37,6 @@
         <item>Accessoire téléphone</item>
         <item>Autre</item>
     </string-array>
+
+
 </resources>

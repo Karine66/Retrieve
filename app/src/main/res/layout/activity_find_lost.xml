@@ -287,6 +287,13 @@
             app:spacing="5"
             app:resource="@layout/centered_carousel"/>
 
+<!--        <include-->
+<!--            layout="@layout/carousel"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_toEndOf="@+id/photo_btn"-->
+<!--            android:layout_below="@+id/input_description" />-->
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/validate_fab_btn"
             android:layout_width="match_parent"
