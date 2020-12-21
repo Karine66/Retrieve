@@ -27,27 +27,23 @@ class ListFragment : Fragment(), CellClickListener {
     private var listBinding : FragmentListBinding? = null
     private val binding get() = listBinding!!
 
-    private lateinit var listObject: MutableList<UserObject>
     private lateinit var listAdapter : ListAdapter
     private lateinit var userObjectViewModel: UserObjectViewModel
     private var objectFind:Boolean = true
 
-    var firestoreDB = FirebaseFirestore.getInstance()
-    val objectRef = firestoreDB.collection("usersObjectFind")
-    val objectRefLost = firestoreDB.collection("userObjectLost")
+    private var firestoreDB = FirebaseFirestore.getInstance()
+    private val objectRef = firestoreDB.collection("usersObjectFind")
+    private val objectRefLost = firestoreDB.collection("usersObjectLost")
 
     companion object {
         fun newInstance(objectFind:Boolean) : ListFragment {
             val bundle = Bundle()
             bundle.putBoolean("key", objectFind)
-
             val fragment = ListFragment()
             fragment.arguments = bundle
             return fragment
         }
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +103,7 @@ class ListFragment : Fragment(), CellClickListener {
 
     //for click on item recycler view
     override fun onCellClickListener(userObject: UserObject, position: Int) {
-        
+
         val intent = Intent(context, DescriptionActivity::class.java)
 //        intent.putExtra("userObject",userObject)
 //        Log.d("userObjectList", "userObjectList$userObject")

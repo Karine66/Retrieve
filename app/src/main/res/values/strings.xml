@@ -22,8 +22,9 @@
     <string name="ajoutreussi">Ajout réussi</string>
     <string name="type_d_objet">Type d\'objet</string>
     <string name="description">Description</string>
+    <string name="photosmax">3 photos maximum</string>
 
-<!--    <string name="MapboxAccessToken">MAPBOX_DOWNLOADS_TOKEN</string>-->
+    <!--    <string name="MapboxAccessToken">MAPBOX_DOWNLOADS_TOKEN</string>-->
     <string-array name="Type">
         <item>Clé(s)</item>
         <item>Sac</item>

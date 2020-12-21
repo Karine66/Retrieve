@@ -43,7 +43,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         configureToolbar()
         configureUpButton()
         configureViewModel()
-        updateUi(userObject)
+//        updateUi(userObject)
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.description)
@@ -68,18 +68,18 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun updateUi(userObject: UserObject) {
 
-        val userObject = userObject
-        descriptionBinding.etType.setText(userObject.type)
-        descriptionBinding.etDate.setText(userObject.date)
-        descriptionBinding.etDescription.setText(userObject.description)
-        descriptionBinding.etAddress.setText(userObject.address)
-        descriptionBinding.etDate.setText(userObject.date)
-        descriptionBinding.etCity.setText(userObject.city)
-        descriptionBinding.contactPseudo.text = userObject.pseudo
+//        val userObject = UserObject {
+            descriptionBinding.etType.setText(userObject.type)
+            descriptionBinding.etDate.setText(userObject.date)
+            descriptionBinding.etDescription.setText(userObject.description)
+            descriptionBinding.etAddress.setText(userObject.address)
+            descriptionBinding.etDate.setText(userObject.date)
+            descriptionBinding.etCity.setText(userObject.city)
+            descriptionBinding.contactPseudo.text = userObject.pseudo
 
+        }
 
-
-    }
+//    }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
 

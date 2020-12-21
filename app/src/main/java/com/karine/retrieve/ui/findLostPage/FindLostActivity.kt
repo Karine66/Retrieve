@@ -34,6 +34,7 @@ import com.karine.retrieve.utils.Utils
 import java.sql.Types.TIMESTAMP
 import java.text.DateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 
 open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
@@ -42,8 +43,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private var photoList: MutableList<Uri> = mutableListOf()
     private var pathListPhoto : MutableList<String> = mutableListOf()
     private var photo = pathListPhoto
-    private var lostClick: Int = 1
-    private var findClick: Int = 0
+    private var lostClick by Delegates.notNull<Int>()
+    private var findClick by Delegates.notNull<Int>()
 
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
@@ -52,10 +53,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var builder: MaterialAlertDialogBuilder
     private lateinit var pathImageSavedInFirebase: Uri
     private lateinit var fileUri: Uri
+    private lateinit var carouselView : CarouselView
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
-    private lateinit var carouselView : CarouselView
+
 
     companion object {
         const val RC_CAMERA = 100
@@ -80,11 +82,10 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
         //for retrieve click on speed dial
 
-        findClick = intent.getIntExtra("findClick", 0)
+        findClick = intent.getIntExtra("findClick", 1)
         Log.d("findClick", "findClick$findClick")
-        lostClick = intent.getIntExtra("lostClick", 1)
-        Log.d("lostClick", "lostClick$lostClick")
-
+        lostClick = intent.getIntExtra("lostClick", 0)
+//        Log.d("lostClick", "lostClick$lostClick")
 
         //For toolbar
         ab = supportActionBar!!
@@ -100,30 +101,9 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         if (photoList.size >= 1) {
             findLostBinding.carousel.visibility = View.VISIBLE
         }
-        carouselView= findLostBinding.carousel
+        carouselView = findLostBinding.carousel
         Carousel.carousel(carouselView, photoList)
-//        findLostBinding.carousel.apply {
-//            size = photoList.size
-//            resource = R.layout.centered_carousel
-//            setCarouselViewListener { view, position ->
-//                val imageView = view.findViewById<ImageView>(R.id.imageView)
-//                imageView.setImageURI(photoList[position])
-//            }
-//            show()
-//        }
     }
-
-//    private fun carousel(carouselView: CarouselView, photoList: MutableList<Uri>) {
-//        carouselView.apply {
-//            size = photoList.size
-//            resource = R.layout.centered_carousel
-//            setCarouselViewListener { view, position ->
-//                val imageView = view.findViewById<ImageView>(R.id.imageView)
-//                imageView.setImageURI(photoList[position])
-//            }
-//            show()
-//        }
-//    }
 
     //for dropdown
     private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
@@ -191,19 +171,17 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     //for click on photo button
     private fun clickPhoto() {
         findLostBinding.photoBtn.setOnClickListener(View.OnClickListener {
-
             limitedPhotos()
-
         })
     }
 
     private fun limitedPhotos(): Boolean {
 
-        if (photoList.size <= 3) {
+        if (photoList.size < 3) {
             selectImage()
         return true
     }
-    Snackbar.make(findLostBinding.root, "3 photos maximum", Snackbar.LENGTH_SHORT).show()
+    Snackbar.make(findLostBinding.root, getString(R.string.photosmax), Snackbar.LENGTH_SHORT).show()
     return false
     }
 
@@ -225,13 +203,12 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             findLostBinding.etDescription.text.toString(),
             photo
         )
-        if (findClick == 0) {
+        if (findClick==0) {
             this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
-        }
-        this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
-
+        }else if(lostClick==1) {
+            this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
             Log.d("userObject", "UserObject$userObject")
-
+        }
     }
     //for alert dialog photo
     private fun selectImage() {
