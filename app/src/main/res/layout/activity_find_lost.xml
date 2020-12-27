@@ -36,7 +36,7 @@
                 android:layout_width="160dp"
                 android:layout_height="50dp"
                 android:hint="@string/pseudo"
-                android:inputType="textAutoComplete"
+                android:inputType="textCapWords"
                 android:singleLine="true"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -172,7 +172,7 @@
             android:layout_height="50dp"
             android:gravity="top"
             android:hint="@string/numero_et_rue"
-            android:inputType="textPostalAddress"
+            android:inputType="textPostalAddress||textCapSentences"
             android:singleLine="true"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -222,9 +222,8 @@
             android:layout_width="160dp"
             android:layout_height="50dp"
             android:hint="@string/ville"
-            android:inputType="textAutoComplete"
+            android:inputType="textAutoComplete||textCapCharacters"
             android:singleLine="true"
-            android:textAllCaps="true"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 

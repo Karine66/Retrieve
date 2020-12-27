@@ -62,27 +62,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
         }
 
-    //for carousel
-    private fun updateCarousel() {
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-        Log.d("userObjectDescription", "userObjectDescription$userObject")
-//        if (photoList.size >= 1) {
-//            descriptionBinding.carousel.visibility = View.VISIBLE
-//        }
-        photoList.clear()
-        if (userObject!!.photo.isNotEmpty() && userObject.photo.size>0) {
-            for(photoStr : String in userObject.photo) {
-                photoList.add(photoStr.toUri())
-            }
-        }
-
-
-        carouselView = descriptionBinding.carousel
-
-        Carousel.carousel(carouselView, photoList)
-
-    }
-
     private fun updateUi() {
 
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
