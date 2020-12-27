@@ -93,7 +93,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         //For carousel
         findLostBinding.carousel.visibility = View.GONE
 
-
     }
 
     //for carousel

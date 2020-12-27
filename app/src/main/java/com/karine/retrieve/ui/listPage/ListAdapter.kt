@@ -28,7 +28,7 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val gli
     ) {
             listViewHolder.updateWithObject(userObject, glide)
         //for click on item recycler view
-        listViewHolder.itemView.setOnClickListener{cellClickListener.onCellClickListener(userObject, position)
+        listViewHolder.itemView.setOnClickListener{cellClickListener.onCellClickListener(userObject)
     }
     }
 

@@ -1,6 +1,6 @@
-package com.karine.retrieve.models.Geocoding
+package com.karine.retrieve.models.geocoding
 
-data class FeaturesItem(
+data class Response(
 	val placeName: String? = null,
 	val textFr: String? = null,
 	val address: String? = null,

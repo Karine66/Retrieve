@@ -1,4 +1,4 @@
-package com.karine.retrieve.models.Geocoding
+package com.karine.retrieve.models.geocoding
 
 data class ContextItem(
 	val textFr: String? = null,

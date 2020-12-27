@@ -53,6 +53,7 @@
             android:layout_height="50dp"
             android:clickable="false"
             android:hint="@string/type_d_objet"
+            android:textColor="@color/colorPrimary"
             android:inputType="none"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -76,6 +77,7 @@
             android:clickable="false"
             android:hint="@string/dateObjet"
             android:inputType="none"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,6 +100,7 @@
             android:gravity="top"
             android:hint="@string/description"
             android:inputType="none"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +112,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/input_description"
         android:text="@string/adresse_o_l_objet_a_t_trouv_ou_perdu"
-        android:textColor="@color/colorSecondary"
+        android:textColor="@color/colorPrimaryVariant"
         android:textSize="12sp"
         android:textStyle="bold"/>
 
@@ -131,6 +134,7 @@
             android:hint="@string/numero_et_rue"
             android:inputType="textPostalAddress"
             android:singleLine="true"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -151,6 +155,7 @@
                 android:hint="@string/code_postal"
                 android:inputType="none"
                 android:singleLine="true"
+                android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,6 +177,7 @@
                 android:inputType="none"
                 android:singleLine="true"
                 android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,8 +190,6 @@
             android:layout_marginEnd="10dp"
             android:layout_toEndOf="@+id/input_address"
             android:layout_below="@+id/adressText"
-            mapbox:mapbox_cameraTargetLat="-32.557013"
-            mapbox:mapbox_cameraTargetLng="-56.149056"
             mapbox:mapbox_cameraZoom="5"
             />
 
@@ -197,7 +201,7 @@
             android:layout_marginTop="15dp"
             android:layout_below="@+id/input_city"
             android:text="Contacter :"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorPrimaryVariant"
             android:textSize="12sp"
             android:textStyle="bold"/>
 
@@ -209,7 +213,8 @@
             android:layout_marginTop="15dp"
             android:layout_below="@+id/input_city"
             android:layout_toEndOf="@+id/contact"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorPrimaryVariant"
+            android:inputType="textCapWords"
             android:textSize="12sp"
             android:textStyle="bold"/>
 
@@ -221,6 +226,7 @@
             android:layout_below="@+id/input_city"
             android:layout_marginStart="15dp"
             android:drawableTop="@drawable/twotone_email_white_48dp"
+            android:textAllCaps="true"
             android:text="Email"
             android:textSize="10sp"
             android:textColor="@color/white"

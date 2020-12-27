@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         app:tabIndicatorColor="@color/colorSecondaryVariant"
-        app:tabTextColor="#008837"
+        app:tabTextColor="@color/white"
         app:tabSelectedTextColor="@color/colorSecondaryVariant"
         android:layout_marginTop="?attr/actionBarSize"
         />

@@ -4,5 +4,5 @@ import com.karine.retrieve.models.UserObject
 
 interface CellClickListener {
     //for item click recycler view
-    fun onCellClickListener(userObject: UserObject, position: Int)
+    fun onCellClickListener(userObject: UserObject)
 }

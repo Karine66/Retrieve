@@ -307,7 +307,7 @@
             android:focusable="true"
             android:src="@drawable/baseline_done_black_24dp"
             app:fabSize="normal"
-            app:rippleColor="@color/colorSecondaryVariant"
+            app:rippleColor="@color/colorSecondary"
             android:contentDescription="validateFAB" />
 
     </RelativeLayout>

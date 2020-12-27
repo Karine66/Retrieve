@@ -102,14 +102,11 @@ class ListFragment : Fragment(), CellClickListener {
     }
 
     //for click on item recycler view
-    override fun onCellClickListener(userObject: UserObject, position: Int) {
+    override fun onCellClickListener(userObject: UserObject) {
 
         val intent = Intent(context, DescriptionActivity::class.java)
-//        intent.putExtra("userObject",userObject)
-//        Log.d("userObjectList", "userObjectList$userObject")
+        intent.putExtra("userObject",userObject)
         startActivity(intent)
-
     }
-
 }
 
