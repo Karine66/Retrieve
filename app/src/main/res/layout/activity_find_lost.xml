@@ -172,7 +172,7 @@
             android:layout_height="50dp"
             android:gravity="top"
             android:hint="@string/numero_et_rue"
-            android:inputType="textPostalAddress||textCapSentences"
+            android:inputType="textCapSentences"
             android:singleLine="true"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -222,7 +222,7 @@
             android:layout_width="160dp"
             android:layout_height="50dp"
             android:hint="@string/ville"
-            android:inputType="textAutoComplete||textCapCharacters"
+            android:inputType="textCapCharacters"
             android:singleLine="true"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>

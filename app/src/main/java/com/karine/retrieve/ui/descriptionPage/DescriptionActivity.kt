@@ -1,12 +1,12 @@
 package com.karine.retrieve.ui.descriptionPage
 
 
+import android.R.id.message
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBar
 import androidx.core.net.toUri
 import com.jama.carouselview.CarouselView
@@ -22,7 +22,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
 
 
@@ -50,6 +49,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         configureToolbar()
         configureUpButton()
         updateUi()
+        clickEmail()
 //        updateCarousel()
         //For toolbar
         ab = supportActionBar!!
@@ -95,6 +95,28 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
+    //for click email button
+    private fun clickEmail() {
+        descriptionBinding.emailSend.setOnClickListener(View.OnClickListener {
+         sendMail()
+        })
+    }
+
+    private fun sendMail() {
+        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+
+        val mail = userObject?.email
+        Log.d("mail", "mail$mail")
+        val subject = userObject?.type
+
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_EMAIL,mail)
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        intent.type = "message/rfc822"
+        startActivity(Intent.createChooser(intent, "Choose an email client"))
+
+
+    }
 
 
     override fun onMapReady(mapboxMap: MapboxMap) {
