@@ -1,7 +1,6 @@
 package com.karine.retrieve.ui.descriptionPage
 
 
-import android.R.id.message
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -98,7 +97,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     //for click email button
     private fun clickEmail() {
         descriptionBinding.emailSend.setOnClickListener(View.OnClickListener {
-         sendMail()
+            sendMail()
         })
     }
 
@@ -106,15 +105,15 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
         val mail = userObject?.email
+        val mails: Array<String> = mail!!.split(",").toTypedArray()
         Log.d("mail", "mail$mail")
-        val subject = userObject?.type
+        val subject = userObject.type
 
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL,mail)
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-        intent.type = "message/rfc822"
-        startActivity(Intent.createChooser(intent, "Choose an email client"))
-
+        val mailIntent = Intent(Intent.ACTION_SEND)
+        mailIntent.putExtra(Intent.EXTRA_EMAIL, mails)
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        mailIntent.type = "message/rfc822"
+        startActivity(Intent.createChooser(mailIntent, "Choose an email client"))
 
     }
 
@@ -135,7 +134,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             val position = CameraPosition.Builder()
                 .target(LatLng(51.50550, -0.07520))
                 .zoom(10.0)
-                .tilt(20.0)
+//                .tilt(20.0)
                 .build()
 
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000)
