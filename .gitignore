@@ -13,5 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-retrieve/src/main/res/values/developer-config.xmldeveloper-config.xml
-developer-config.xml
+
