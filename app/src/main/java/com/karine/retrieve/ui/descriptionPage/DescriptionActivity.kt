@@ -4,6 +4,7 @@ package com.karine.retrieve.ui.descriptionPage
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +31,9 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
+import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +51,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var uriImageSelected: Uri
     private lateinit var firstResultPoint: Point
     private lateinit var completeAddress : String
+    private lateinit var marker:MarkerView
     //   private lateinit var downloadUri :Uri
     private var photoList: MutableList<Uri> = mutableListOf()
 
@@ -69,7 +74,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         clickCall()
         createStringForAddress()
         geocodeSearch()
-
 //        updateCarousel()
         //For toolbar
         ab = supportActionBar!!
@@ -202,33 +206,40 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
 
     override fun onMapReady(mapboxMap: MapboxMap) {
-        val markerViewManager = MarkerViewManager(descriptionBinding.mapView, mapboxMap)
+
         mapboxMap.setStyle(
             Style.MAPBOX_STREETS
 
         )
-        {
+        {style->
 //             Map is set up and the style has loaded. Now you can add additional data or make other map adjustment
-
+            geocodeSearch()
 
             val position = CameraPosition.Builder()
                 .target(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
                 .zoom(15.0)
                 .tilt(20.0)
                 .build()
-
-
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000)
-//                    val marker = MarkerView(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()),R.drawable.mapbox_marker_icon_default)
-//            markerViewManager.addMarker(marker)
-            mapboxMap.addMarker(
-                MarkerOptions()
-                    .position(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
+            //for marker
+            val symbolManager = SymbolManager(descriptionBinding.mapView, mapboxMap, style)
+            symbolManager.iconAllowOverlap = true
+            style.addImage("myMarker", BitmapFactory.decodeResource(resources,R.drawable.mapbox_marker_icon_default))
+            symbolManager.create(
+                SymbolOptions()
+                    .withLatLng(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
+                    .withIconImage("myMarker")
             )
+
+//            mapboxMap.addMarker(
+//                MarkerOptions()
+//                    .position(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
+//            )
 
         }
 
     }
+
     private fun createStringForAddress() {
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
@@ -242,8 +253,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun geocodeSearch() {
-
-
 
         val mapBoxGeocoding = MapboxGeocoding.builder()
             .accessToken(getString(R.string.access_token))
