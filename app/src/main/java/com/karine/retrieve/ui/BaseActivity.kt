@@ -17,10 +17,11 @@ open class BaseActivity : AppCompatActivity() {
     private lateinit var ab: ActionBar
 
     companion object {
-        const val  RC_CAMERA_AND_STORAGE_COARSELOCATION_FINELOCATION = 100
-        val CAM_AND_READ_EXTERNAL_STORAGE_LOCATION = arrayOf<String>(
+        const val  RC_CAMERA_AND_STORAGE_COARSELOCATION_FINELOCATION_CALL = 100
+        val CAM_AND_READ_EXTERNAL_STORAGE_LOCATION_CALL = arrayOf<String>(
             Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.CALL_PHONE
         )
     }
 
@@ -45,16 +46,16 @@ open class BaseActivity : AppCompatActivity() {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
-    @AfterPermissionGranted(RC_CAMERA_AND_STORAGE_COARSELOCATION_FINELOCATION)
-    open fun methodRequiresTwoPermission() {
+    @AfterPermissionGranted(RC_CAMERA_AND_STORAGE_COARSELOCATION_FINELOCATION_CALL)
+    open fun methodRequiresFourPermission() {
 
-        if (EasyPermissions.hasPermissions(this, *CAM_AND_READ_EXTERNAL_STORAGE_LOCATION)) {
+        if (EasyPermissions.hasPermissions(this, *CAM_AND_READ_EXTERNAL_STORAGE_LOCATION_CALL)) {
             Log.d("Permissions", "Permissions granted")
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
                 this, "This application need permissions to access",
-                RC_CAMERA_AND_STORAGE_COARSELOCATION_FINELOCATION, *CAM_AND_READ_EXTERNAL_STORAGE_LOCATION
+                RC_CAMERA_AND_STORAGE_COARSELOCATION_FINELOCATION_CALL, *CAM_AND_READ_EXTERNAL_STORAGE_LOCATION_CALL
             )
         }
     }

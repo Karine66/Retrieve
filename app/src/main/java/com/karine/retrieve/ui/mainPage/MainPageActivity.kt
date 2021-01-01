@@ -28,7 +28,7 @@ class MainPageActivity : BaseActivity() {
 
         configureToolbar()
         configureViewPagerAndTabs()
-        methodRequiresTwoPermission()
+        methodRequiresFourPermission()
         clickAddBtn()
         btnSpeedDial()
         showHideFabTabs()
