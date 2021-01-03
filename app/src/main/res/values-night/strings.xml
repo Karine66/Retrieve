@@ -20,5 +20,6 @@
     <string name="ajoutreussi">Ajout réussi</string>
     <string name="type_d_objet">Type d\'objet</string>
     <string name="photosmax">3 photos maximum</string>
+    <string name="recherche">Recherche..</string>
 
 </resources>

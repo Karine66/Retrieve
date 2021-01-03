@@ -1,24 +1,26 @@
 package com.karine.retrieve.ui.listPage
 
+
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.karine.retrieve.R
 import com.karine.retrieve.databinding.FragmentListBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.UserObjectViewModel
 import com.karine.retrieve.ui.descriptionPage.DescriptionActivity
 import com.karine.retrieve.utils.CellClickListener
-import com.karine.retrieve.utils.GlideApp
+
 
 
 class ListFragment : Fragment(), CellClickListener {
@@ -36,7 +38,7 @@ class ListFragment : Fragment(), CellClickListener {
     private val objectRefLost = firestoreDB.collection("usersObjectLost")
 
     companion object {
-        fun newInstance(objectFind:Boolean) : ListFragment {
+        fun newInstance(objectFind: Boolean) : ListFragment {
             val bundle = Bundle()
             bundle.putBoolean("key", objectFind)
             val fragment = ListFragment()
@@ -75,7 +77,7 @@ class ListFragment : Fragment(), CellClickListener {
         val options = FirestoreRecyclerOptions.Builder<UserObject>()
             .setQuery(query, UserObject::class.java)
             .build()
-        listAdapter = ListAdapter(options, GlideApp.with(this), this)
+        listAdapter = ListAdapter(options, Glide.with(this), this)
         val recyclerView: RecyclerView = listBinding!!.fragmentListRV
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -105,8 +107,27 @@ class ListFragment : Fragment(), CellClickListener {
     override fun onCellClickListener(userObject: UserObject) {
 
         val intent = Intent(context, DescriptionActivity::class.java)
-        intent.putExtra("userObject",userObject)
+        intent.putExtra("userObject", userObject)
         startActivity(intent)
+    }
+
+    override fun onCreateOptionsMenu( menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.menu_search, menu)
+        val item = menu.findItem(R.id.actionSearch)
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        val searchView = item.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+
+                return true
+            }
+        })
     }
 }
 

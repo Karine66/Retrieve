@@ -23,6 +23,7 @@
     <string name="type_d_objet">Type d\'objet</string>
     <string name="description">Description</string>
     <string name="photosmax">3 photos maximum</string>
+    <string name="recherche">Recherche..</string>
 
     <!--    <string name="MapboxAccessToken">MAPBOX_DOWNLOADS_TOKEN</string>-->
     <string-array name="Type">
