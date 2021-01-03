@@ -4,13 +4,13 @@ package com.karine.retrieve.ui.listPage
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -20,7 +20,6 @@ import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.UserObjectViewModel
 import com.karine.retrieve.ui.descriptionPage.DescriptionActivity
 import com.karine.retrieve.utils.CellClickListener
-
 
 
 class ListFragment : Fragment(), CellClickListener {
@@ -63,6 +62,9 @@ class ListFragment : Fragment(), CellClickListener {
 
         this.setUpRecyclerView()
         this.configureViewModel()
+
+        //for SearchView
+        setHasOptionsMenu(true);
         return binding.root
     }
 
@@ -111,7 +113,7 @@ class ListFragment : Fragment(), CellClickListener {
         startActivity(intent)
     }
 
-    override fun onCreateOptionsMenu( menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater.inflate(R.menu.menu_search, menu)
@@ -125,9 +127,12 @@ class ListFragment : Fragment(), CellClickListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
 
-                return true
+                return false
             }
         })
+
     }
+
+
 }
 
