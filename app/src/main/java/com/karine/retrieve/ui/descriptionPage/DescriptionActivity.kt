@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
@@ -53,9 +54,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
     private val REQUEST_CALL = 1
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         descriptionBinding = ActivityDescriptionBinding.inflate(layoutInflater)
@@ -78,8 +76,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
         descriptionBinding.mapView.onCreate(savedInstanceState)
         descriptionBinding.mapView.getMapAsync(this)
-
-
     }
 
     private fun updateUi() {
@@ -191,12 +187,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                     .withLatLng(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
                     .withIconImage("myMarker")
             )
-
-//            mapboxMap.addMarker(
-//                MarkerOptions()
-//                    .position(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
-//            )
-
         }
 
     }
@@ -237,7 +227,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
                 } else {
 
-                    // No result for your request were found.
+                    Snackbar.make(descriptionBinding.root, "No result found",Snackbar.LENGTH_SHORT).show()
                     Log.d("OnNoResponse", "onResponse: No result found")
 
                 }
