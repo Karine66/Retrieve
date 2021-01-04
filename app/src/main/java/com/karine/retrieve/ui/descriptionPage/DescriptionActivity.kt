@@ -114,6 +114,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         })
     }
 
+    
     private fun sendMail() {
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
