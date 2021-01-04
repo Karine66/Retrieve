@@ -280,7 +280,7 @@
             app:indicatorAnimationType="drop"
             app:indicatorRadius="5"
             app:indicatorPadding="5"
-            app:indicatorSelectedColor="@color/colorAccent"
+            app:indicatorSelectedColor="@color/colorSecondary"
             app:indicatorUnselectedColor="@color/colorPrimary"
             app:size="3"
             app:spacing="5"

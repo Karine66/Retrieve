@@ -47,17 +47,13 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var descriptionBinding: ActivityDescriptionBinding
     private lateinit var ab: ActionBar
     private lateinit var carouselView: CarouselView
-    private lateinit var urlPhoto: String
-    private lateinit var uriImageSelected: Uri
     private lateinit var firstResultPoint: Point
     private lateinit var completeAddress : String
-    private lateinit var marker:MarkerView
-    //   private lateinit var downloadUri :Uri
     private var photoList: MutableList<Uri> = mutableListOf()
 
     private val REQUEST_CALL = 1
-    var storage = FirebaseStorage.getInstance()
-    val storageRef = storage.reference
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,48 +103,13 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             descriptionBinding.contactPseudo.text = userObject.pseudo
             descriptionBinding.contactPseudo.isEnabled = false
 
-//            storageRef.downloadUrl.addOnSuccessListener(OnSuccessListener<Uri> { uri ->
-//                urlPhoto = uri.toString()
-//
-//            }).addOnFailureListener(OnFailureListener { })
-
-//            uploadPhotoInFirebase()
             photoList.clear()
-            if (userObject.photo.isNotEmpty() && userObject.photo.size > 0) {
-                for (photoStr: String in userObject.photo) {
-                    photoList.add(photoStr.toUri())
-                    carouselView = descriptionBinding.carousel
-                    Carousel.carousel(carouselView, photoList)
-                    Log.d("photolistDescription", "photolistDescription$photoList")
-                }
-            }
+           if(userObject.photo.isNotEmpty()) {
+               carouselView = descriptionBinding.carousel
+               Carousel.carouselFromUrl(carouselView, userObject.photo)
+           }
         }
     }
-//    private fun uploadPhotoInFirebase() {
-//        val uuid = UUID.randomUUID().toString() // GENERATE UNIQUE STRING
-//
-//        //  Upload
-//        val mImageRef = FirebaseStorage.getInstance().getReferenceFromUrl("")
-//
-//        val uploadTask = mImageRef.putFile(uriImageSelected)
-//        val urlTask = uploadTask.continueWithTask { task: Task<UploadTask.TaskSnapshot?> ->
-//            if (!task.isSuccessful) {
-//                Log.e("UploadPhoto", "Error TASK_URI : " + task.exception)
-//                throw (task.exception!!)
-//            }
-//            mImageRef.downloadUrl
-//        }.addOnCompleteListener { task: Task<Uri?> ->
-//            if (task.isSuccessful) {
-//                downloadUri = task.result!!
-//
-//                Log.d("UploadPhoto", "UploadPhoto$downloadUri")
-//
-//            } else {
-//                Log.e("UploadPhoto", "Error ON_COMPLETE : " + task.exception)
-//            }
-//        }
-//    }
-
 
     //for click email button
     private fun clickEmail() {
