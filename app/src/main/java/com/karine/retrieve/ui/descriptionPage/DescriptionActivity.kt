@@ -13,9 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.storage.FirebaseStorage
 import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityDescriptionBinding
@@ -25,7 +23,6 @@ import com.karine.retrieve.ui.Carousel
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
 import com.mapbox.api.geocoding.v5.models.GeocodingResponse
 import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -34,16 +31,11 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
-
 
 class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
-
 
     private lateinit var descriptionBinding: ActivityDescriptionBinding
     private lateinit var ab: ActionBar
@@ -68,7 +60,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         clickCall()
         createStringForAddress()
         geocodeSearch()
-//        updateCarousel()
+
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.description)
@@ -114,7 +106,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         })
     }
 
-    
+
     private fun sendMail() {
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
@@ -170,7 +162,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
         )
         {style->
-//             Map is set up and the style has loaded. Now you can add additional data or make other map adjustment
+
             geocodeSearch()
 
             val position = CameraPosition.Builder()
