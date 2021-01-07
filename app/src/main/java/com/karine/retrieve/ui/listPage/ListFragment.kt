@@ -3,14 +3,17 @@ package com.karine.retrieve.ui.listPage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.view.inputmethod.EditorInfo
-import androidx.appcompat.widget.SearchView
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -25,19 +28,21 @@ import com.karine.retrieve.utils.CellClickListener
 class ListFragment : Fragment(), CellClickListener {
 
     //For view binding
-    private var listBinding : FragmentListBinding? = null
+    private var listBinding: FragmentListBinding? = null
     private val binding get() = listBinding!!
 
-    private lateinit var listAdapter : ListAdapter
+//    private lateinit var listAdapter: FirestoreRecyclerAdapter<UserObject, ListViewHolder>
+   private lateinit var listAdapter:ListAdapter
     private lateinit var userObjectViewModel: UserObjectViewModel
-    private var objectFind:Boolean = true
+    private lateinit var type:String
+    private var objectFind: Boolean = true
 
     private var firestoreDB = FirebaseFirestore.getInstance()
     private val objectRef = firestoreDB.collection("usersObjectFind")
     private val objectRefLost = firestoreDB.collection("usersObjectLost")
 
     companion object {
-        fun newInstance(objectFind: Boolean) : ListFragment {
+        fun newInstance(objectFind: Boolean): ListFragment {
             val bundle = Bundle()
             bundle.putBoolean("key", objectFind)
             val fragment = ListFragment()
@@ -62,7 +67,8 @@ class ListFragment : Fragment(), CellClickListener {
 
         this.setUpRecyclerView()
         this.configureViewModel()
-
+        this.dropDownAdapter()
+        this.listSearch()
         //for SearchView
         setHasOptionsMenu(true);
         return binding.root
@@ -71,7 +77,7 @@ class ListFragment : Fragment(), CellClickListener {
 
     private fun setUpRecyclerView() {
 
-        val query: Query = if(objectFind) {
+        val query: Query = if (objectFind) {
             objectRef.orderBy("created", Query.Direction.DESCENDING)
         } else {
             objectRefLost.orderBy("created", Query.Direction.DESCENDING)
@@ -85,6 +91,7 @@ class ListFragment : Fragment(), CellClickListener {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = listAdapter
     }
+
     override fun onStart() {
         super.onStart()
         listAdapter.startListening()
@@ -113,26 +120,53 @@ class ListFragment : Fragment(), CellClickListener {
         startActivity(intent)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
-        val item = menu.findItem(R.id.actionSearch)
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        val searchView = item.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
+    //for dropdown
+    private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
+        return ArrayAdapter(
+            context!!,
+            R.layout.dropdown_menu_popup_item,
+            resources.getStringArray(resId)
+        )
+    }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-
-                return false
-            }
-        })
-
+    //for dropdown
+    private fun dropDownAdapter() {
+        binding.etType.setAdapter(factoryAdapter(R.array.Type))
     }
 
 
+
+    private fun listSearch() {
+
+
+        binding.etType.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                var firebaseSearchQuery: Query = if (objectFind) {
+                    objectRef.whereEqualTo("type", false)
+
+                } else {
+                    objectRefLost.whereEqualTo("type", false)
+                }
+
+                //set Options
+                var options = FirestoreRecyclerOptions.Builder<UserObject>()
+                    .setQuery(firebaseSearchQuery, UserObject::class.java)
+                    .build()
+
+
+                listAdapter.updateOptions(options)
+
+
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+
+            }
+        }
+    }
 }
 
