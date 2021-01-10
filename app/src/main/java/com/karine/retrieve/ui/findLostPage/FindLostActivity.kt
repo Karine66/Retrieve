@@ -6,11 +6,12 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,8 +31,6 @@ import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.Carousel
 import com.karine.retrieve.ui.UserObjectViewModel
-import com.karine.retrieve.utils.Utils
-import java.sql.Types.TIMESTAMP
 import java.text.DateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -54,6 +53,14 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var pathImageSavedInFirebase: Uri
     private lateinit var fileUri: Uri
     private lateinit var carouselView : CarouselView
+    private lateinit var pseudo : String
+    private lateinit var email : String
+    private lateinit var typeObject: String
+    private lateinit var address : String
+    private lateinit var postalCode : String
+    private lateinit var city : String
+    private lateinit var description : String
+
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
@@ -79,19 +86,22 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         clickValidate()
         clickPhoto()
 
-
         //for retrieve click on speed dial
-
         findClick = intent.getIntExtra("findClick", 1)
-        Log.d("findClick", "findClick$findClick")
         lostClick = intent.getIntExtra("lostClick", 0)
-//        Log.d("lostClick", "lostClick$lostClick")
-
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.ajoutObjet)
         //For carousel
         findLostBinding.carousel.visibility = View.GONE
+        //for textWatcher
+        findLostBinding.etName.addTextChangedListener(textWatcher)
+        findLostBinding.etMail.addTextChangedListener(textWatcher)
+        findLostBinding.etType.addTextChangedListener(textWatcher)
+        findLostBinding.etAddress.addTextChangedListener(textWatcher)
+        findLostBinding.etPostalCode.addTextChangedListener(textWatcher)
+        findLostBinding.etCity.addTextChangedListener(textWatcher)
+        findLostBinding.etDescription.addTextChangedListener(textWatcher)
 
     }
 
@@ -126,7 +136,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         c[Calendar.DAY_OF_MONTH] = dayOfMonth
 
         val currentDateString: String =
-            DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
+            DateFormat.getDateInstance(DateFormat.MEDIUM).format(c.time)
 
         findLostBinding.date.setText(currentDateString)
     }
@@ -150,13 +160,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
 
+//            if(!fieldsRequired()) {
+//                return@OnClickListener
+//            }
             saveUserObject()
-
-            Snackbar.make(
-                findLostBinding.root,
-                getString(R.string.ajoutreussi),
-                Snackbar.LENGTH_SHORT
-            )
+            Snackbar.make(findLostBinding.root,getString(R.string.ajoutreussi),Snackbar.LENGTH_SHORT)
                 .addCallback(object : Snackbar.Callback() {
                     override fun onDismissed(snackbar: Snackbar, event: Int) {
                         super.onDismissed(snackbar, event)
@@ -177,7 +185,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun limitedPhotos(): Boolean {
 
         if (photoList.size < 3) {
-            selectImage()
+         selectImage()
         return true
     }
     Snackbar.make(findLostBinding.root, getString(R.string.photosmax), Snackbar.LENGTH_SHORT).show()
@@ -211,21 +219,22 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     }
     //for alert dialog photo
     private fun selectImage() {
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+        val options = arrayOf<CharSequence>(getString(R.string.prendrePhoto), getString(R.string.gallery), getString(
+                    R.string.annuler))
         builder = MaterialAlertDialogBuilder(this)
-        builder.setTitle("Add pictures")
+        builder.setTitle(getString(R.string.ajouter))
         builder.setItems(options) { dialog, item ->
             when {
-                options[item] == "Take Photo" -> {
+                options[item] == getString(R.string.prendrePhoto) -> {
 
                     ImagePicker.with(this).cameraOnly()
                         .start(RC_CAMERA)
                 }
-                options[item] == "Choose from Gallery" -> {
+                options[item] == getString(R.string.gallery) -> {
                     ImagePicker.with(this).galleryOnly()
                         .start(RC_GALLERY)
                 }
-                options[item] == "Cancel" -> {
+                options[item] == getString(R.string.annuler) -> {
                     dialog.dismiss()
                 }
             }
@@ -291,6 +300,46 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                     )
                 }
             }
+    }
+//    For invalidate submit button if no all fields required are fill up
+    private var textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            var pseudo = findLostBinding.inputName.editText!!.text.toString().trim()
+            var email = findLostBinding.inputMail.editText!!.text.toString().trim()
+            var typeObject = findLostBinding.inputType.editText!!.text.toString().trim()
+            var address = findLostBinding.inputAddress.editText!!.text.toString()
+            var postalCode = findLostBinding.inputPostalCode.editText!!.text.toString().trim()
+            var city = findLostBinding.inputCity.editText!!.text.toString().trim()
+            var description = findLostBinding.inputDescription.editText!!.text.toString()
+
+            findLostBinding.validateFabBtn.isEnabled = (pseudo.isNotEmpty() && email.isNotEmpty() && typeObject.isNotEmpty()
+                    &&  address.isNotEmpty() && postalCode.isNotEmpty() && city.isNotEmpty() && description.isNotEmpty())
+        }
+        override fun afterTextChanged(s: Editable) {
+            if(pseudo.isEmpty()){
+                findLostBinding.etName.error = getString(R.string.requis)
+            }
+            if(email.isEmpty()){
+                findLostBinding.etMail.error = getString(R.string.requis)
+            }
+            if(typeObject.isEmpty()){
+                findLostBinding.etType.error = getString(R.string.requis)
+            }
+            if(address.isEmpty()){
+                findLostBinding.etAddress.error = getString(R.string.requis)
+            }
+            if(postalCode.isEmpty()){
+                findLostBinding.etPostalCode.error = getString(R.string.requis)
+            }
+            if(city.isEmpty()) {
+                findLostBinding.etCity.error = getString(R.string.requis)
+            }
+            if(description.isEmpty()){
+                findLostBinding.etDescription.error = getString(R.string.requis)
+            }
+        }
     }
 }
 

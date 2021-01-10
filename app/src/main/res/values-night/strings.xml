@@ -21,5 +21,9 @@
     <string name="type_d_objet">Type d\'objet</string>
     <string name="photosmax">3 photos maximum</string>
     <string name="recherche">Recherche..</string>
+    <string name="prendrePhoto">Prendre Photo</string>
+    <string name="gallery">Choisir dans Gallery</string>
+    <string name="annuler">Annuler</string>
+    <string name="ajouter">Ajouter photos</string>
 
 </resources>

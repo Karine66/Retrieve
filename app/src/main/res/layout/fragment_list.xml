@@ -10,7 +10,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_type"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         app:startIconDrawable="@drawable/baseline_search_white_48dp"
         app:startIconTint="@color/colorPrimary"
@@ -30,6 +30,16 @@
             android:inputType="none"
             android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_cancel"
+        android:layout_width="40dp"
+        android:layout_height="38dp"
+        android:layout_toEndOf="@+id/input_type"
+       android:layout_marginStart="10dp"
+       android:layout_marginTop="6dp"
+       android:paddingBottom="10dp"
+        android:drawableTop="@drawable/baseline_clear_black_48dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_list_RV"

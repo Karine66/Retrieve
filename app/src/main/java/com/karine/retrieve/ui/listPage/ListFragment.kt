@@ -3,17 +3,15 @@ package com.karine.retrieve.ui.listPage
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.widget.Adapter
 import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -31,10 +29,9 @@ class ListFragment : Fragment(), CellClickListener {
     private var listBinding: FragmentListBinding? = null
     private val binding get() = listBinding!!
 
-//    private lateinit var listAdapter: FirestoreRecyclerAdapter<UserObject, ListViewHolder>
-   private lateinit var listAdapter:ListAdapter
+    private lateinit var listAdapter: ListAdapter
     private lateinit var userObjectViewModel: UserObjectViewModel
-    private lateinit var type:String
+    private lateinit var type: String
     private var objectFind: Boolean = true
 
     private var firestoreDB = FirebaseFirestore.getInstance()
@@ -69,6 +66,7 @@ class ListFragment : Fragment(), CellClickListener {
         this.configureViewModel()
         this.dropDownAdapter()
         this.listSearch()
+//        this.clickCancelSearch()
         //for SearchView
         setHasOptionsMenu(true);
         return binding.root
@@ -134,39 +132,35 @@ class ListFragment : Fragment(), CellClickListener {
         binding.etType.setAdapter(factoryAdapter(R.array.Type))
     }
 
-
-
+    //for search with dropdown
     private fun listSearch() {
+        binding.etType.onItemClickListener = object : AdapterView.OnItemClickListener {
+            override fun onItemClick(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
 
-
-        binding.etType.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>?,
-                selectedItemView: View?,
-                position: Int,
-                id: Long
-            ) {
+                val value = binding.etType.text.toString()
                 var firebaseSearchQuery: Query = if (objectFind) {
-                    objectRef.whereEqualTo("type", false)
-
+                    objectRef.whereEqualTo("type", value)
                 } else {
-                    objectRefLost.whereEqualTo("type", false)
+                    objectRefLost.whereEqualTo("type", value)
                 }
-
                 //set Options
                 var options = FirestoreRecyclerOptions.Builder<UserObject>()
                     .setQuery(firebaseSearchQuery, UserObject::class.java)
                     .build()
 
-
                 listAdapter.updateOptions(options)
-
-
-            }
-            override fun onNothingSelected(parentView: AdapterView<*>?) {
-
             }
         }
+    }
+
+    private fun clickCancelSearch() {
+        binding.buttonCancel.setOnClickListener(View.OnClickListener {
+            factoryAdapter(R.array.Type).clear()
+            binding.etType.setAdapter(factoryAdapter(R.array.Type))
+            factoryAdapter(R.array.Type).notifyDataSetChanged()
+
+
+        })
     }
 }
 
