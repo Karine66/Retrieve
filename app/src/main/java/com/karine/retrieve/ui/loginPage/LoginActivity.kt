@@ -24,6 +24,7 @@ open class LoginActivity : AppCompatActivity() {
         //for ViewBinding
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         val view = loginBinding.root
+
         setContentView(view)
 
         clickMailBtn()

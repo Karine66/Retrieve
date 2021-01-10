@@ -245,7 +245,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         app:boxStrokeColor="@color/colorSecondary"
-        android:nextFocusDown="@id/photo_btn"
         app:counterEnabled="true"
         app:counterMaxLength="400"
         app:errorEnabled="true"

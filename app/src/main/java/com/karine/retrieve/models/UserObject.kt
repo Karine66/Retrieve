@@ -9,7 +9,7 @@ class UserObject(
     var created: Timestamp?,
     var pseudo: String?,
     var email: String?,
-    var phone: Int?,
+    var phone: String?,
     var date: String?,
     var type: String?,
     var address: String?,
@@ -25,7 +25,7 @@ class UserObject(
         parcel.readParcelable(Timestamp::class.java.classLoader),
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -36,7 +36,7 @@ class UserObject(
    )
 
 
-    constructor() : this("",null,"","",null,"","","",null,"","", mutableListOf())
+    constructor() : this("",null,"","","","","","",null,"","", mutableListOf())
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -44,7 +44,7 @@ class UserObject(
         parcel.writeParcelable(created, flags)
         parcel.writeString(pseudo)
         parcel.writeString(email)
-        parcel.writeValue(phone)
+        parcel.writeString(phone)
         parcel.writeString(date)
         parcel.writeString(type)
         parcel.writeString(address)

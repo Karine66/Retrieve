@@ -64,13 +64,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
-
-
+    
     companion object {
         const val RC_CAMERA = 100
         const val RC_GALLERY = 200
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +83,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         configureViewModel()
         clickValidate()
         clickPhoto()
-
+        initTexWatcher()
         //for retrieve click on speed dial
         findClick = intent.getIntExtra("findClick", 1)
         lostClick = intent.getIntExtra("lostClick", 0)
@@ -201,7 +199,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             createdDate,
             findLostBinding.etName.text.toString(),
             findLostBinding.etMail.text.toString(),
-            findLostBinding.etPhone.text.toString().toIntOrNull(),
+            findLostBinding.etPhone.text.toString(),
             findLostBinding.date.text.toString(),
             findLostBinding.etType.text.toString(),
             findLostBinding.etAddress.text.toString(),
@@ -241,7 +239,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
         builder.show()
     }
-
     //for photo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -250,19 +247,16 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 when (requestCode) {
 
                     RC_CAMERA -> {
-
                         fileUri = data?.data!!
                         photoList.add(fileUri)
                         updateCarousel()
                         storeImageInFirestore()
-
                     }
                     RC_GALLERY -> {
                         fileUri = data?.data!!
                         photoList.add(fileUri)
                         updateCarousel()
                         storeImageInFirestore()
-
                     }
                     }
                 }
@@ -301,19 +295,20 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 }
             }
     }
+    private fun initTexWatcher() {
+        pseudo = findLostBinding.inputName.editText!!.text.toString().trim()
+        email = findLostBinding.inputMail.editText!!.text.toString().trim()
+        typeObject = findLostBinding.inputType.editText!!.text.toString().trim()
+        address = findLostBinding.inputAddress.editText!!.text.toString().trim()
+        postalCode = findLostBinding.inputPostalCode.editText!!.text.toString().trim()
+        city = findLostBinding.inputCity.editText!!.text.toString().trim()
+        description = findLostBinding.inputDescription.editText!!.text.toString().trim()
+    }
 //    For invalidate submit button if no all fields required are fill up
     private var textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-            var pseudo = findLostBinding.inputName.editText!!.text.toString().trim()
-            var email = findLostBinding.inputMail.editText!!.text.toString().trim()
-            var typeObject = findLostBinding.inputType.editText!!.text.toString().trim()
-            var address = findLostBinding.inputAddress.editText!!.text.toString()
-            var postalCode = findLostBinding.inputPostalCode.editText!!.text.toString().trim()
-            var city = findLostBinding.inputCity.editText!!.text.toString().trim()
-            var description = findLostBinding.inputDescription.editText!!.text.toString()
-
+            initTexWatcher()
             findLostBinding.validateFabBtn.isEnabled = (pseudo.isNotEmpty() && email.isNotEmpty() && typeObject.isNotEmpty()
                     &&  address.isNotEmpty() && postalCode.isNotEmpty() && city.isNotEmpty() && description.isNotEmpty())
         }
