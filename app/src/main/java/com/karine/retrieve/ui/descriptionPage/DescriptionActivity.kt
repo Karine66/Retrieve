@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
@@ -20,6 +23,8 @@ import com.karine.retrieve.databinding.ActivityDescriptionBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.Carousel
+import com.karine.retrieve.ui.MapBoxViewModel
+import com.karine.retrieve.ui.UserObjectViewModel
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
 import com.mapbox.api.geocoding.v5.models.GeocodingResponse
 import com.mapbox.geojson.Point
@@ -42,6 +47,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var carouselView: CarouselView
     private lateinit var firstResultPoint: Point
     private lateinit var completeAddress : String
+    private lateinit var mapBoxViewModel: MapBoxViewModel
     private var photoList: MutableList<Uri> = mutableListOf()
 
     private val REQUEST_CALL = 1
@@ -59,13 +65,12 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         clickEmail()
         clickCall()
         createStringForAddress()
-        geocodeSearch()
-
+        btnCallVisibility()
+        configureViewModel()
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.description)
-
-
+        //for mapbox
         descriptionBinding.mapView.onCreate(savedInstanceState)
         descriptionBinding.mapView.getMapAsync(this)
     }
@@ -97,6 +102,10 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                Carousel.carouselFromUrl(carouselView, userObject.photo)
            }
         }
+    }
+    //configure viewModel
+    private fun configureViewModel() {
+       mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
     }
 
     //for click email button
@@ -149,41 +158,43 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                 val dial = "tel:$number"
                 startActivity(Intent(Intent.ACTION_CALL, Uri.parse(dial)))
             }
-        } else {
-            Toast.makeText(this, "Enter Phone Number", Toast.LENGTH_SHORT).show()
         }
     }
-
-
+    //for visibility call btn
+    private fun btnCallVisibility() {
+        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+        val number = userObject?.phone
+        if (number.isNullOrEmpty()) {
+            descriptionBinding.callSend.visibility = View.INVISIBLE
+        } else {
+            descriptionBinding.callSend.visibility = View.VISIBLE
+        }
+    }
+    //for map marker
     override fun onMapReady(mapboxMap: MapboxMap) {
 
-        mapboxMap.setStyle(
-            Style.MAPBOX_STREETS
-
-        )
-        {style->
-
-            geocodeSearch()
-
+        mapBoxViewModel.geocodingPoint(completeAddress).observe(this, Observer {
             val position = CameraPosition.Builder()
-                .target(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
+                .target(LatLng(it.latitude(), it.longitude()))
                 .zoom(15.0)
                 .tilt(20.0)
                 .build()
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000)
+
+        mapboxMap.setStyle(Style.MAPBOX_STREETS) {style->
             //for marker
             val symbolManager = SymbolManager(descriptionBinding.mapView, mapboxMap, style)
             symbolManager.iconAllowOverlap = true
             style.addImage("myMarker", BitmapFactory.decodeResource(resources,R.drawable.mapbox_marker_icon_default))
             symbolManager.create(
                 SymbolOptions()
-                    .withLatLng(LatLng(firstResultPoint.latitude(), firstResultPoint.longitude()))
+                    .withLatLng(LatLng(it.latitude(), it.longitude()))
                     .withIconImage("myMarker")
             )
         }
-
+        })
     }
-
+    //create string for geocoding
     private fun createStringForAddress() {
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
@@ -195,45 +206,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             Log.d("createString", "createString$completeAddress")
         }
     }
-
-    private fun geocodeSearch() {
-
-        val mapBoxGeocoding = MapboxGeocoding.builder()
-            .accessToken(getString(R.string.access_token))
-            .query(completeAddress)
-            .build()
-
-        mapBoxGeocoding.enqueueCall(object : Callback<GeocodingResponse> {
-            override fun onResponse(
-                call: Call<GeocodingResponse>,
-                response: Response<GeocodingResponse>
-            ) {
-
-                val results = response.body()!!.features()
-
-                if (results.size > 0) {
-
-                    // Log the first results Point.
-                    firstResultPoint = results[0].center()!!
-                    Log.d("onResponse", "onResponse: $firstResultPoint")
-
-
-                } else {
-
-                    Snackbar.make(descriptionBinding.root, "No result found",Snackbar.LENGTH_SHORT).show()
-                    Log.d("OnNoResponse", "onResponse: No result found")
-
-                }
-            }
-
-            override fun onFailure(call: Call<GeocodingResponse>, throwable: Throwable) {
-                throwable.printStackTrace()
-            }
-        })
-
-    }
-
-
 
     override fun onStart() {
         super.onStart()

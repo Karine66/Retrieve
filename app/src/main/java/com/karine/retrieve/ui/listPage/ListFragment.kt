@@ -30,7 +30,6 @@ class ListFragment : Fragment(), CellClickListener {
     private val binding get() = listBinding!!
 
     private lateinit var listAdapter: ListAdapter
-    private lateinit var userObjectViewModel: UserObjectViewModel
     private lateinit var type: String
     private var objectFind: Boolean = true
 
@@ -63,16 +62,15 @@ class ListFragment : Fragment(), CellClickListener {
         listBinding = FragmentListBinding.inflate(inflater, container, false)
 
         this.setUpRecyclerView()
-        this.configureViewModel()
         this.dropDownAdapter()
         this.listSearch()
-//        this.clickCancelSearch()
+        this.clickCancelSearch()
         //for SearchView
         setHasOptionsMenu(true);
         return binding.root
     }
 
-
+    //for recyclerview
     private fun setUpRecyclerView() {
 
         val query: Query = if (objectFind) {
@@ -104,12 +102,6 @@ class ListFragment : Fragment(), CellClickListener {
         super.onDestroyView()
         listBinding = null
     }
-
-    private fun configureViewModel() {
-        userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
-
-    }
-
     //for click on item recycler view
     override fun onCellClickListener(userObject: UserObject) {
 
@@ -152,12 +144,19 @@ class ListFragment : Fragment(), CellClickListener {
             }
         }
     }
-
+    //for cancel search
     private fun clickCancelSearch() {
         binding.buttonCancel.setOnClickListener(View.OnClickListener {
-            factoryAdapter(R.array.Type).clear()
-            binding.etType.setAdapter(factoryAdapter(R.array.Type))
-            factoryAdapter(R.array.Type).notifyDataSetChanged()
+           binding.etType.setText("")
+            val query: Query = if (objectFind) {
+                objectRef.orderBy("created", Query.Direction.DESCENDING)
+            } else {
+                objectRefLost.orderBy("created", Query.Direction.DESCENDING)
+            }
+            val options = FirestoreRecyclerOptions.Builder<UserObject>()
+                .setQuery(query, UserObject::class.java)
+                .build()
+            listAdapter.updateOptions(options)
 
 
         })
