@@ -46,18 +46,18 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var completeAddress : String
     private lateinit var mapBoxViewModel: MapBoxViewModel
     private lateinit var userObjectViewModel: UserObjectViewModel
+    private lateinit var userObject: UserObject
     private var photoList: MutableList<Uri> = mutableListOf()
     private val userUid = FirebaseAuth.getInstance().uid
-
     private val REQUEST_CALL = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         descriptionBinding = ActivityDescriptionBinding.inflate(layoutInflater)
         val view = descriptionBinding.root
-
         setContentView(view)
 
+        retrieveData()
         configureToolbar()
         configureUpButton()
         updateUi()
@@ -72,36 +72,40 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         //for mapbox
         descriptionBinding.mapView.onCreate(savedInstanceState)
         descriptionBinding.mapView.getMapAsync(this)
+
     }
+    //retrieve data from click recyclerView
+    private fun retrieveData() {
+        userObject = intent.getParcelableExtra("userObject")
+    }
+
     //for menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_description, menu)
         val deleteItem = menu!!.findItem(R.id.menu_delete)
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-        val user = userObject?.uid
-        deleteItem.isVisible = user.equals(userUid)
+        val user = userObject.uid
+        deleteItem.isVisible = user == userUid
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+
         return when (item.itemId) {
 
             R.id.menu_delete -> {
 
-                if (userObject != null) {
-
                     userObjectViewModel.deleteUserObjectFind(userObject)
                     userObjectViewModel.deleteUserObjectLost(userObject)
-                }
+
                 true
             }
             R.id.menu_partager -> {
-                val userObject: UserObject? = intent.getParcelableExtra("userObject")
-                val subject = userObject?.type
-                val description = userObject?.description
-                val city = userObject?.city
-                val message = "$description $city\n\n Retrieve App"
+
+                val subject = userObject.type
+                val description = userObject.description
+                val city = userObject.city
+                val mail = userObject.email
+                val message = "$description $city\n$mail\n\n Retrieve App"
                 val mailIntent = Intent(Intent.ACTION_SEND)
                 mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
                 mailIntent.putExtra(Intent.EXTRA_TEXT,message)
@@ -116,10 +120,10 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     //for update UI with data
     private fun updateUi() {
 
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-        Log.d("userObjectDescription", "userObjectDescription$userObject")
+//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+//        Log.d("userObjectDescription", "userObjectDescription$userObject")
 
-        if (userObject != null) {
+//       if (userObject != null) {
             descriptionBinding.etType.setText(userObject.type)
             descriptionBinding.etType.isEnabled = false
             descriptionBinding.etDate.setText(userObject.date)
@@ -141,7 +145,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                Carousel.carouselFromUrl(carouselView, userObject.photo)
            }
         }
-    }
+//    }
     //configure viewModel
     private fun configureViewModel() {
        mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
@@ -157,9 +161,9 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
 
     private fun sendMail() {
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
-        val mail = userObject?.email
+        val mail = userObject.email
         val mails: Array<String> = mail!!.split(",").toTypedArray()
         Log.d("mail", "mail$mail")
         val subject = userObject.type
@@ -181,8 +185,8 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
 
     private fun makeCall() {
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-        val number = userObject?.phone
+//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+        val number = userObject.phone
         if (number != null) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -202,8 +206,8 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     }
     //for visibility call btn
     private fun btnCallVisibility() {
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-        val number = userObject?.phone
+//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+        val number = userObject.phone
         if (number.isNullOrEmpty()) {
             descriptionBinding.callSend.visibility = View.INVISIBLE
         } else {
@@ -219,7 +223,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                 .zoom(15.0)
                 .tilt(20.0)
                 .build()
-            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000)
+            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 3000)
 
             mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
                 //for marker
@@ -241,16 +245,16 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     }
     //create string for geocoding
     private fun createStringForAddress() {
-        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
-        if (userObject != null) {
+//        if (userObject != null) {
             val address: String? =userObject.address
             val postalCode: String = userObject.postalCode.toString()
             val city: String = userObject.city.toString()
             completeAddress = "$address $postalCode $city"
             Log.d("createString", "createString$completeAddress")
         }
-    }
+//    }
 
     override fun onStart() {
         super.onStart()
