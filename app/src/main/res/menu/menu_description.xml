@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@drawable/baseline_delete_white_48dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/supprimer">
+    </item>
+    <item
+        android:id="@+id/menu_partager"
+        android:icon="@drawable/baseline_share_white_48dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/partager">
+    </item>
+</menu>

@@ -147,10 +147,9 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             datePicker.show(supportFragmentManager, "date picker")
         })
     }
-
+    //configure viewModel
     private fun configureViewModel() {
         userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
-
     }
 
     //for click validate button
@@ -295,6 +294,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 }
             }
     }
+
     private fun initTexWatcher() {
         pseudo = findLostBinding.inputName.editText!!.text.toString().trim()
         email = findLostBinding.inputMail.editText!!.text.toString().trim()

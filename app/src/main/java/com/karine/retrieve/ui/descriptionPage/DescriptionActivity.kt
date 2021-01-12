@@ -8,15 +8,16 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityDescriptionBinding
@@ -25,8 +26,6 @@ import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.Carousel
 import com.karine.retrieve.ui.MapBoxViewModel
 import com.karine.retrieve.ui.UserObjectViewModel
-import com.mapbox.api.geocoding.v5.MapboxGeocoding
-import com.mapbox.api.geocoding.v5.models.GeocodingResponse
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -36,9 +35,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
@@ -48,7 +45,9 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var firstResultPoint: Point
     private lateinit var completeAddress : String
     private lateinit var mapBoxViewModel: MapBoxViewModel
+    private lateinit var userObjectViewModel: UserObjectViewModel
     private var photoList: MutableList<Uri> = mutableListOf()
+    private val userUid = FirebaseAuth.getInstance().uid
 
     private val REQUEST_CALL = 1
 
@@ -74,7 +73,47 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         descriptionBinding.mapView.onCreate(savedInstanceState)
         descriptionBinding.mapView.getMapAsync(this)
     }
+    //for menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_description, menu)
+        val deleteItem = menu!!.findItem(R.id.menu_delete)
+        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+        val user = userObject?.uid
+        deleteItem.isVisible = user.equals(userUid)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val userObject: UserObject? = intent.getParcelableExtra("userObject")
+        return when (item.itemId) {
+
+            R.id.menu_delete -> {
+
+                if (userObject != null) {
+
+                    userObjectViewModel.deleteUserObjectFind(userObject)
+                    userObjectViewModel.deleteUserObjectLost(userObject)
+                }
+                true
+            }
+            R.id.menu_partager -> {
+                val userObject: UserObject? = intent.getParcelableExtra("userObject")
+                val subject = userObject?.type
+                val description = userObject?.description
+                val city = userObject?.city
+                val message = "$description $city\n\n Retrieve App"
+                val mailIntent = Intent(Intent.ACTION_SEND)
+                mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+                mailIntent.putExtra(Intent.EXTRA_TEXT,message)
+                mailIntent.type = "message/rfc822"
+                startActivity(Intent.createChooser(mailIntent, "Choose an email client"))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    //for update UI with data
     private fun updateUi() {
 
         val userObject: UserObject? = intent.getParcelableExtra("userObject")
@@ -106,6 +145,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     //configure viewModel
     private fun configureViewModel() {
        mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
+       userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
     }
 
     //for click email button
@@ -181,17 +221,22 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                 .build()
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000)
 
-        mapboxMap.setStyle(Style.MAPBOX_STREETS) {style->
-            //for marker
-            val symbolManager = SymbolManager(descriptionBinding.mapView, mapboxMap, style)
-            symbolManager.iconAllowOverlap = true
-            style.addImage("myMarker", BitmapFactory.decodeResource(resources,R.drawable.mapbox_marker_icon_default))
-            symbolManager.create(
-                SymbolOptions()
-                    .withLatLng(LatLng(it.latitude(), it.longitude()))
-                    .withIconImage("myMarker")
-            )
-        }
+            mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
+                //for marker
+                val symbolManager = SymbolManager(descriptionBinding.mapView, mapboxMap, style)
+                symbolManager.iconAllowOverlap = true
+                style.addImage(
+                    "myMarker", BitmapFactory.decodeResource(
+                        resources,
+                        R.drawable.mapbox_marker_icon_default
+                    )
+                )
+                symbolManager.create(
+                    SymbolOptions()
+                        .withLatLng(LatLng(it.latitude(), it.longitude()))
+                        .withIconImage("myMarker")
+                )
+            }
         })
     }
     //create string for geocoding

@@ -4,11 +4,9 @@ package com.karine.retrieve.ui.listPage
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,7 +16,6 @@ import com.google.firebase.firestore.Query
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.FragmentListBinding
 import com.karine.retrieve.models.UserObject
-import com.karine.retrieve.ui.UserObjectViewModel
 import com.karine.retrieve.ui.descriptionPage.DescriptionActivity
 import com.karine.retrieve.utils.CellClickListener
 
@@ -130,13 +127,13 @@ class ListFragment : Fragment(), CellClickListener {
             override fun onItemClick(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
 
                 val value = binding.etType.text.toString()
-                var firebaseSearchQuery: Query = if (objectFind) {
+                val firebaseSearchQuery: Query = if (objectFind) {
                     objectRef.whereEqualTo("type", value)
                 } else {
                     objectRefLost.whereEqualTo("type", value)
                 }
                 //set Options
-                var options = FirestoreRecyclerOptions.Builder<UserObject>()
+                val options = FirestoreRecyclerOptions.Builder<UserObject>()
                     .setQuery(firebaseSearchQuery, UserObject::class.java)
                     .build()
 
@@ -157,8 +154,6 @@ class ListFragment : Fragment(), CellClickListener {
                 .setQuery(query, UserObject::class.java)
                 .build()
             listAdapter.updateOptions(options)
-
-
         })
     }
 }

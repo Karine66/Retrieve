@@ -41,13 +41,13 @@ class UserObjectFirebaseRepository {
     }
     //delete user object find  from firebase
     fun deleteUserObjectFind(userObject: UserObject) : Task<Void> {
-        var documentReference = firestoreDB.collection("usersObjectFind/${user!!.email.toString()}")
+        var documentReference = firestoreDB.collection("usersObjectFind")
            .document(userObject.uid)
         return documentReference.delete()
     }
     //delete user object Lost from firebase
     fun deleteUserObjectLost(userObject: UserObject) : Task<Void> {
-        var documentReference = firestoreDB.collection("usersObjectLost/${user!!.email.toString()}")
+        var documentReference = firestoreDB.collection("usersObjectLost")
             .document(userObject.uid)
         return documentReference.delete()
     }

@@ -28,6 +28,8 @@
     <string name="gallery">Choisir dans Gallery</string>
     <string name="annuler">Annuler</string>
     <string name="ajouter">Ajouter photos</string>
+    <string name="supprimer">Supprimer</string>
+    <string name="partager">Partager</string>
 
     <!--    <string name="MapboxAccessToken">MAPBOX_DOWNLOADS_TOKEN</string>-->
     <string-array name="Type">
