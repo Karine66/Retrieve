@@ -27,5 +27,18 @@
     <string name="ajouter">Ajouter photos</string>
     <string name="supprimer">Supprimer</string>
     <string name="partager">Partager</string>
+    <string name="objets_trouv_s">Objets trouvés</string>
+    <string name="objets_perdus">Objets perdus</string>
+    <string name="logout">Logout</string>
+    <string name="deconnexion">Deconnexion reussie</string>
+    <!-- Used in NavigationDrawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="suppression_compte">Suppression compte</string>
+    <string name="deco">Deconnexion</string>
+    <string name="suppCompte">Voulez vous supprimer votre compte ?</string>
+    <string name="non">Non</string>
+    <string name="oui">Oui</string>
+
 
 </resources>

@@ -156,10 +156,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun clickValidate() {
 
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
-
-//            if(!fieldsRequired()) {
-//                return@OnClickListener
-//            }
             saveUserObject()
             Snackbar.make(findLostBinding.root,getString(R.string.ajoutreussi),Snackbar.LENGTH_SHORT)
                 .addCallback(object : Snackbar.Callback() {

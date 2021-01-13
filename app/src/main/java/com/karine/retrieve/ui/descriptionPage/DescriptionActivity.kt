@@ -89,7 +89,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         return when (item.itemId) {
 
             R.id.menu_delete -> {

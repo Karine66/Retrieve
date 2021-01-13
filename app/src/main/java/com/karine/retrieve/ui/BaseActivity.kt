@@ -4,10 +4,13 @@ package com.karine.retrieve.ui
 import android.Manifest
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.karine.retrieve.R
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -64,6 +67,17 @@ open class BaseActivity : AppCompatActivity() {
             )
         }
     }
+    //for firebase
+    open fun getCurrentUser(): FirebaseUser? {
+        return FirebaseAuth.getInstance().currentUser
+    }
+    open fun isCurrentUserLogged(): Boolean? {
+        return getCurrentUser() != null
+    }
 
-
+    open fun onFailureListener(): OnFailureListener? {
+        return OnFailureListener { e: Exception? ->
+            Toast.makeText(applicationContext,getString(R.string.erreurInconnue),Toast.LENGTH_LONG).show()
+        }
+    }
 }

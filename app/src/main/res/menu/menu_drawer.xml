@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+
+            android:id="@+id/menu_drawer_find"
+            android:icon="@drawable/outline_keyboard_arrow_right_black_48dp"
+            android:title="@string/objets_trouv_s" />
+        <item
+            android:id="@+id/menu_drawer_lost"
+            android:icon="@drawable/outline_keyboard_arrow_right_black_48dp"
+            android:title="@string/objets_perdus" />
+        <item
+            android:id="@+id/menu_drawer_delete_account"
+            android:icon="@drawable/baseline_delete_forever_black_48dp"
+            android:title="@string/suppression_compte" />
+        <item
+            android:id="@+id/menu_drawer_Logout"
+            android:icon="@drawable/baseline_power_settings_new_black_48dp"
+            android:title="@string/deco" />
+
+    </group>
+
+</menu>

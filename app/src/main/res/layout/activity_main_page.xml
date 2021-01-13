@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.drawerlayout.widget.DrawerLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
     tools:context=".ui.mainPage.MainPageActivity">
 
-   
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
@@ -17,7 +17,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -49,10 +52,21 @@
             android:layout_gravity="bottom|end"
             android:contentDescription="fabButton"
             app:sdMainFabClosedSrc="@drawable/outline_add_white_24dp">
-
         </com.leinardi.android.speeddial.SpeedDialView>
-
 </FrameLayout>
+
 </RelativeLayout>
-    
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_page_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#DCEDC8"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/activity_main_nav_header"
+        app:menu="@menu/menu_drawer" />
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
