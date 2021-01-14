@@ -75,15 +75,19 @@ class UserObjectViewModel : ViewModel() {
     }
 
     //delete an user object find from firebase
-    fun deleteUserObjectFind(userObject: UserObject) {
-        firebaseRepository.deleteUserObjectFind(userObject).addOnFailureListener{
+    fun deleteObjectFind(userObject: UserObject) {
+        firebaseRepository.deleteUserObjectFind(userObject).addOnSuccessListener {
+            Log.d("deleteObjectFind", "DocumentSnapshot successfully delete!")
+        }.addOnFailureListener{
             Log.e(TAG, "Failed to delete User Object Find")
         }
     }
     //delete an user object lost from firebase
-    fun deleteUserObjectLost(userObject: UserObject) {
-        firebaseRepository.deleteUserObjectLost(userObject).addOnFailureListener{
-            Log.e(TAG, "Failed to delete User Object Find")
+    fun deleteObjectLost(userObject: UserObject) {
+        firebaseRepository.deleteUserObjectLost(userObject).addOnSuccessListener {
+            Log.d("deleteObjectLost", "DocumentSnapshot successfully delete !")
+        }.addOnFailureListener{
+            Log.e(TAG, "Failed to delete User Object Lost")
         }
     }
 }

@@ -38,13 +38,11 @@ import kotlin.properties.Delegates
 
 open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
-
     private var photoList: MutableList<Uri> = mutableListOf()
     private var pathListPhoto : MutableList<String> = mutableListOf()
     private var photo = pathListPhoto
     private var lostClick by Delegates.notNull<Int>()
     private var findClick by Delegates.notNull<Int>()
-
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
     private lateinit var userObjectViewModel: UserObjectViewModel

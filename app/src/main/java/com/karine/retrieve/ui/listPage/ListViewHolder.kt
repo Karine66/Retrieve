@@ -11,7 +11,7 @@ import com.karine.retrieve.models.UserObject
 
 class ListViewHolder(private val fragmentListItemBinding: FragmentListItemBinding) : RecyclerView.ViewHolder(fragmentListItemBinding.root) {
 
-  fun updateWithObject( userObject: UserObject, glide : RequestManager) {
+  fun updateWithObject(userObject: UserObject, glide: RequestManager) {
 
       fragmentListItemBinding.typeObject.text = userObject.type
       fragmentListItemBinding.City.text = userObject.city

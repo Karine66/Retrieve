@@ -57,6 +57,8 @@
     <string name="suppCompte">Voulez vous supprimer votre compte ?</string>
     <string name="non">Non</string>
     <string name="oui">Oui</string>
+    <string name="suppannonce">Voulez vous supprimer l\'annonce ?</string>
+    <string name="annoncesupp">Annonce supprimée</string>
 
 
 </resources>

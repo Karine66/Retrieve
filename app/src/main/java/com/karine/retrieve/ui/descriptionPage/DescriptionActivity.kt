@@ -17,6 +17,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
@@ -35,6 +37,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
+import kotlin.properties.Delegates
 
 
 class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
@@ -47,6 +50,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var mapBoxViewModel: MapBoxViewModel
     private lateinit var userObjectViewModel: UserObjectViewModel
     private lateinit var userObject: UserObject
+    private var objectFind by Delegates.notNull<Boolean>()
     private var photoList: MutableList<Uri> = mutableListOf()
     private val userUid = FirebaseAuth.getInstance().uid
     private val REQUEST_CALL = 1
@@ -77,6 +81,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     //retrieve data from click recyclerView
     private fun retrieveData() {
         userObject = intent.getParcelableExtra("userObject")
+        objectFind = intent.getBooleanExtra("objectFind", true)
     }
 
     //for menu
@@ -92,10 +97,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         return when (item.itemId) {
 
             R.id.menu_delete -> {
-
-                    userObjectViewModel.deleteUserObjectFind(userObject)
-                    userObjectViewModel.deleteUserObjectLost(userObject)
-
+                   onClickDeleteObject()
                 true
             }
             R.id.menu_partager -> {
@@ -115,6 +117,24 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    private fun onClickDeleteObject() {
+        MaterialAlertDialogBuilder(this)
+            .setMessage(resources.getString(R.string.suppannonce))
+                .setNegativeButton(resources.getString(R.string.non)) { dialog, wich ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
+
+                    if(objectFind) {
+                        userObjectViewModel.deleteObjectFind(userObject)
+                    }else {
+                        userObjectViewModel.deleteObjectLost(userObject)
+                    }
+                    Snackbar.make(descriptionBinding.root, getString(R.string.annoncesupp), Snackbar.LENGTH_SHORT).show()
+                }
+                .show()
+    }
+
 
     //for update UI with data
     private fun updateUi() {
@@ -253,7 +273,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             completeAddress = "$address $postalCode $city"
             Log.d("createString", "createString$completeAddress")
         }
-//    }
+
 
     override fun onStart() {
         super.onStart()
@@ -287,9 +307,9 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-        descriptionBinding.mapView.onDestroy();
-
+        descriptionBinding.mapView.onDestroy()
     }
+
 }
 
 

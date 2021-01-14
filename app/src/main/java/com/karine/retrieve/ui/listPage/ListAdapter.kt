@@ -11,7 +11,7 @@ import com.karine.retrieve.utils.CellClickListener
 
 
 class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val glide: RequestManager,
-                  private val cellClickListener: CellClickListener
+                  private val cellClickListener: CellClickListener,
 ) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
     options
 ) {
@@ -24,12 +24,17 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val gli
     override fun onBindViewHolder(
         listViewHolder: ListViewHolder,
         position: Int,
-        userObject: UserObject
+        userObject: UserObject,
+
     ) {
             listViewHolder.updateWithObject(userObject, glide)
         //for click on item recycler view
-        listViewHolder.itemView.setOnClickListener{cellClickListener.onCellClickListener(userObject)
+        listViewHolder.itemView.setOnClickListener{
+
+            cellClickListener.onCellClickListener(userObject)
     }
     }
+
+
 
 }

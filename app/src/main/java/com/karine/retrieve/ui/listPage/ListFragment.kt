@@ -104,6 +104,7 @@ class ListFragment : Fragment(), CellClickListener {
 
         val intent = Intent(context, DescriptionActivity::class.java)
         intent.putExtra("userObject", userObject)
+        intent.putExtra("objectFind", objectFind)
         startActivity(intent)
     }
 

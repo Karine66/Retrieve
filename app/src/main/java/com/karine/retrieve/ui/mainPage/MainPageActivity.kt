@@ -1,7 +1,6 @@
 package com.karine.retrieve.ui.mainPage
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
@@ -16,7 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,9 +34,9 @@ import com.mapbox.mapboxsdk.Mapbox
 class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
-    private lateinit var tabs:TabLayout
-    private lateinit var pager : ViewPager2
-   private lateinit var toolbar : Toolbar
+    private lateinit var tabs: TabLayout
+    private lateinit var pager: ViewPager2
+    private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
@@ -53,8 +51,8 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         Mapbox.getInstance(this, getString(R.string.access_token))
         setContentView(view)
 
-         configureToolbar()
-       configureDrawerLayout()
+        configureToolbar()
+        configureDrawerLayout()
         configureNavigationView()
         configureViewPagerAndTabs()
         methodRequiresFourPermission()
@@ -64,7 +62,7 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         updateUINavHeader()
 
 //        for display fab button
-        if(tabs.selectedTabPosition == 0 ) {
+        if (tabs.selectedTabPosition == 0) {
             mainPageBinding.fabBtn.show()
         }
     }
@@ -77,6 +75,7 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             super.onBackPressed()
         }
     }
+
     //handle click on navigation view
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
@@ -126,24 +125,26 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         this.navigationView = findViewById<View>(R.id.main_page_nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
     }
+
     //for create personalize btn Speed Dial
     private fun btnSpeedDial() {
 
-            mainPageBinding.fabBtn.addActionItem(
-                SpeedDialActionItem.Builder(R.id.fab_find, R.drawable.outline_add_white_24dp)
-                    .setLabel(R.string.trouve)
-                    .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
-                    .create()
-            )
-            mainPageBinding.fabBtn.addActionItem(
-                SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
-                    .setLabel(R.string.perdu)
-                    .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
-                    .create()
-            )
+        mainPageBinding.fabBtn.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_find, R.drawable.outline_add_white_24dp)
+                .setLabel(R.string.trouve)
+                .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
+                .create()
+        )
+        mainPageBinding.fabBtn.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_lost, R.drawable.outline_add_white_24dp)
+                .setLabel(R.string.perdu)
+                .setLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryVariant))
+                .create()
+        )
     }
+
     //For click on fab button speed dial
-    private fun clickAddBtn () {
+    private fun clickAddBtn() {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_find -> {
@@ -202,6 +203,7 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             }
         }.attach()
     }
+
     //for signout firebase
     private fun signOutUserFromFirebase() {
         AuthUI.getInstance()
@@ -211,17 +213,18 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
 
     //for delete account to firebase
     private fun onClickDelete() {
-      MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this)
             .setMessage(resources.getString(R.string.suppCompte))
             .setNegativeButton(resources.getString(R.string.non)) { dialog, wich ->
                 dialog.dismiss()
             }
-            .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich->
+            .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
                 deleteUserFromFirebase()
                 Snackbar.make(mainPageBinding.root, "Compte supprimé", Snackbar.LENGTH_SHORT).show()
             }
             .show()
     }
+
     //for delete user
     private fun deleteUserFromFirebase() {
         if (getCurrentUser() != null) {
@@ -230,6 +233,7 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
                 .addOnSuccessListener(this, updateUIAfterRESTRequestsCompleted(DELETE_USER_TASK))
         }
     }
+
     private fun updateUIAfterRESTRequestsCompleted(origin: Int): OnSuccessListener<Void?> {
         return OnSuccessListener {
             when (origin) {
@@ -240,9 +244,10 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             }
         }
     }
+
     private fun updateUINavHeader() {
         if (getCurrentUser() != null) {
-            val navigationView : NavigationView = mainPageBinding.mainPageNavView
+            val navigationView: NavigationView = mainPageBinding.mainPageNavView
             val headerView: View = navigationView.getHeaderView(0) //For return layout
             val mPhotoHeader: ImageView = headerView.findViewById(R.id.photo_header)
             val mNameHeader = headerView.findViewById<TextView>(R.id.name_header)
