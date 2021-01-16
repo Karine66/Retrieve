@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp
 
 
 class UserObject(
+    var docId : String,
     val uid: String,
     var created: Timestamp?,
     var pseudo: String?,
@@ -22,6 +23,7 @@ class UserObject(
 
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
         parcel.readString(),
         parcel.readString(),
@@ -36,10 +38,11 @@ class UserObject(
    )
 
 
-    constructor() : this("",null,"","","","","","",null,"","", mutableListOf())
+    constructor() : this("","",null,"","","","","","",null,"","", mutableListOf())
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(docId)
         parcel.writeString(uid)
         parcel.writeParcelable(created, flags)
         parcel.writeString(pseudo)

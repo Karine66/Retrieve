@@ -130,7 +130,13 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                     }else {
                         userObjectViewModel.deleteObjectLost(userObject)
                     }
-                    Snackbar.make(descriptionBinding.root, getString(R.string.annoncesupp), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(descriptionBinding.root, getString(R.string.annoncesupp), Snackbar.LENGTH_SHORT)
+                        .addCallback(object:Snackbar.Callback(){
+                            override fun onDismissed(snackbar: Snackbar, event: Int) {
+                                super.onDismissed(snackbar, event)
+                                finish()
+                            }
+                        }).show()
                 }
                 .show()
     }
@@ -139,10 +145,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     //for update UI with data
     private fun updateUi() {
 
-//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-//        Log.d("userObjectDescription", "userObjectDescription$userObject")
-
-//       if (userObject != null) {
             descriptionBinding.etType.setText(userObject.type)
             descriptionBinding.etType.isEnabled = false
             descriptionBinding.etDate.setText(userObject.date)
@@ -164,7 +166,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                Carousel.carouselFromUrl(carouselView, userObject.photo)
            }
         }
-//    }
+
     //configure viewModel
     private fun configureViewModel() {
        mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
@@ -180,7 +182,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
 
 
     private fun sendMail() {
-//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
 
         val mail = userObject.email
         val mails: Array<String> = mail!!.split(",").toTypedArray()
@@ -202,9 +203,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         })
     }
 
-
     private fun makeCall() {
-//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
         val number = userObject.phone
         if (number != null) {
             if (ContextCompat.checkSelfPermission(
@@ -225,7 +224,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     }
     //for visibility call btn
     private fun btnCallVisibility() {
-//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
         val number = userObject.phone
         if (number.isNullOrEmpty()) {
             descriptionBinding.callSend.visibility = View.INVISIBLE
@@ -264,9 +262,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     }
     //create string for geocoding
     private fun createStringForAddress() {
-//        val userObject: UserObject? = intent.getParcelableExtra("userObject")
-
-//        if (userObject != null) {
             val address: String? =userObject.address
             val postalCode: String = userObject.postalCode.toString()
             val city: String = userObject.city.toString()
@@ -309,7 +304,6 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         super.onDestroy()
         descriptionBinding.mapView.onDestroy()
     }
-
 }
 
 

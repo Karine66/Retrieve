@@ -1,14 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Retrieve</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="trouves">Objets trouvés</string>
+    <string name="app_name" translatable="false">Retrieve</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="trouve">Trouvé</string>
     <string name="perdu">Perdu</string>
     <string name="requis">Requis</string>
     <string name="pseudo">Pseudo</string>
     <string name="couleur">Couleur</string>
     <string name="facultatif">Facultatif</string>
-    <string name="dateObjet">Date</string>
+  <string name="dateObjet">Date</string>
     <string name="numero_et_rue">Numero et rue</string>
     <string name="code_postal">Code Postal</string>
     <string name="email">Email</string>
@@ -35,7 +35,6 @@
     <string name="logout">Logout</string>
     <string name="deconnexion">Deconnexion reussie</string>
 
-    <!--    <string name="MapboxAccessToken">MAPBOX_DOWNLOADS_TOKEN</string>-->
     <string-array name="Type">
         <item>Clé(s)</item>
         <item>Sac</item>
@@ -50,8 +49,8 @@
         <item>Autre</item>
     </string-array>
     <!-- Used in NavigationDrawer -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="suppression_compte">Suppression compte</string>
     <string name="deco">Deconnexion</string>
     <string name="suppCompte">Voulez vous supprimer votre compte ?</string>
@@ -59,6 +58,12 @@
     <string name="oui">Oui</string>
     <string name="suppannonce">Voulez vous supprimer l\'annonce ?</string>
     <string name="annoncesupp">Annonce supprimée</string>
+    <string name="autherror">Erreur d\'authentification</string>
+    <string name="errnointernet">Erreur pas de connexion</string>
+    <string name="errInconnue">Erreur inconnue</string>
+    <string name="trouves">Objets trouvés</string>
+    <string name="perdus">Objets perdus</string>
+    <string name="suppCpte">Compte supprimé</string>
 
 
 </resources>

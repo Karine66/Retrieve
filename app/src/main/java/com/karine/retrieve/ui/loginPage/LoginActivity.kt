@@ -8,6 +8,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
+import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityLoginBinding
 import com.karine.retrieve.ui.mainPage.MainPageActivity
 
@@ -89,18 +90,18 @@ open class LoginActivity : AppCompatActivity() {
             if (resultCode == RESULT_OK) { // SUCCESS
                 val loginIntent = Intent(this, MainPageActivity::class.java)
                 startActivity(loginIntent)
-                Snackbar.make(loginBinding.root, "Authentification reussie", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(loginBinding.root, getString(R.string.authreussie), Snackbar.LENGTH_SHORT).show()
             } else { // ERRORS
                 if (response == null) {
                     Snackbar.make(
                         loginBinding.root,
-                        "Erreur d'authentification",
+                        getString(R.string.autherror),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 } else if (response.error?.errorCode == ErrorCodes.NO_NETWORK) {
-                    Snackbar.make(loginBinding.root, "Error no internet", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(loginBinding.root, getString(R.string.errnointernet), Snackbar.LENGTH_SHORT).show()
                 } else if (response.error?.errorCode == ErrorCodes.UNKNOWN_ERROR) {
-                    Snackbar.make(loginBinding.root, "Unknown error", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(loginBinding.root, getString(R.string.errInconnue), Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

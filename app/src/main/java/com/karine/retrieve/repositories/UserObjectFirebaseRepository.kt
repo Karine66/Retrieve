@@ -15,43 +15,39 @@ class UserObjectFirebaseRepository {
     var collectionRefFind = firestoreDB.collection("usersObjectFind")
     var collectionRefLost = firestoreDB.collection("usersObjectLost")
     //save user object find to firebase
-   fun saveUserObjectFind(userObject: UserObject) : Task<DocumentReference> {
-       var documentReference = firestoreDB.collection("usersObjectFind").add(userObject)
-//           .collection("saved_UserObject").document(userObject.uid)
-        return documentReference
+   fun saveUserObjectFind(userObject: UserObject) : Task<Void> {
+       val documentId : String = collectionRefFind.document().id
+        userObject.docId = documentId
+        return collectionRefFind.document(documentId).set(userObject)
    }
 
     //save user object lost to firebase
-    fun saveUserObjectLost(userObject: UserObject) : Task<DocumentReference> {
-        var documentReference = firestoreDB.collection("usersObjectLost").add(userObject)
-//           .collection("saved_UserObject").document(userObject.uid)
-        return documentReference
+    fun saveUserObjectLost(userObject: UserObject) : Task<Void> {
+        val documentId : String = collectionRefLost.document().id
+        userObject.docId = documentId
+        return collectionRefLost.document(documentId).set(userObject)
     }
     //get saved user object find from firebase
     fun getSavedUserObjectFind() : CollectionReference {
-//        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
-        var collectionReference = firestoreDB.collection("usersObjectFind")
+        val collectionReference = firestoreDB.collection("usersObjectFind")
         return collectionReference
     }
 
     //get saved user object lost from firebase
     fun getSavedUserObjectLost() : CollectionReference {
-//        var collectionReference = firestoreDB.collection("users/${user!!.email.toString()}/saved_UserObject")
-        var collectionReference = firestoreDB.collection("usersObjectLost")
+        val collectionReference = firestoreDB.collection("usersObjectLost")
         return collectionReference
     }
     //delete user object find  from firebase
     fun deleteUserObjectFind(userObject: UserObject) : Task<Void> {
-       var documentId : String = collectionRefFind.document().id
-        collectionRefFind.document(documentId).set(userObject)
-        var documentReference = firestoreDB.collection("usersObjectFind")
-           .document(documentId)
+        val documentReference = firestoreDB.collection("usersObjectFind")
+           .document(userObject.docId)
         return documentReference.delete()
     }
     //delete user object Lost from firebase
     fun deleteUserObjectLost(userObject: UserObject) : Task<Void> {
-        var documentReference = firestoreDB.collection("usersObjectLost")
-            .document(userObject.uid)
+        val documentReference = firestoreDB.collection("usersObjectLost")
+            .document(userObject.docId)
         return documentReference.delete()
     }
 

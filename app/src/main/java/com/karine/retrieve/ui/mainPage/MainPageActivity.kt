@@ -198,8 +198,8 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             tabs, pager
         ) { tab: TabLayout.Tab, position: Int ->
             when (position) {
-                0 -> tab.text = "Objets trouvés"
-                1 -> tab.text = "Objets perdus"
+                0 -> tab.text = getString(R.string.trouves)
+                1 -> tab.text = getString(R.string.perdus)
             }
         }.attach()
     }
@@ -220,7 +220,7 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             }
             .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
                 deleteUserFromFirebase()
-                Snackbar.make(mainPageBinding.root, "Compte supprimé", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(mainPageBinding.root, getString(R.string.suppCpte), Snackbar.LENGTH_SHORT).show()
             }
             .show()
     }

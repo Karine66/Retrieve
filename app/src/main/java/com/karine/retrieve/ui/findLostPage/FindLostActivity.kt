@@ -58,6 +58,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var postalCode : String
     private lateinit var city : String
     private lateinit var description : String
+    private lateinit var docId : String
 
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
@@ -185,9 +186,10 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     //for save form in firebase
     private fun saveUserObject() {
+        docId = ""
 
         userObject = UserObject(
-
+            docId,
             user.toString(),
             createdDate,
             findLostBinding.etName.text.toString(),

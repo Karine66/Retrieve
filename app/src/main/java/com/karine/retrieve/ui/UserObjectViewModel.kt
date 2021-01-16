@@ -45,7 +45,7 @@ class UserObjectViewModel : ViewModel() {
                     return@EventListener
                 }
 
-                var savedUserObjectFindList: MutableList<UserObject> = mutableListOf()
+                val savedUserObjectFindList: MutableList<UserObject> = mutableListOf()
                 for (doc in value!!) {
                     var userObject = doc.toObject(UserObject::class.java)
                     savedUserObjectFindList.add(userObject)
@@ -64,7 +64,7 @@ class UserObjectViewModel : ViewModel() {
                     return@EventListener
                 }
 
-                var savedUserObjectLostList: MutableList<UserObject> = mutableListOf()
+                val savedUserObjectLostList: MutableList<UserObject> = mutableListOf()
                 for (doc in value!!) {
                     var userObject = doc.toObject(UserObject::class.java)
                     savedUserObjectLostList.add(userObject)
