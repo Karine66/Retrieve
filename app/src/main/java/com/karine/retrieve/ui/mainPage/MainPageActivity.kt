@@ -3,6 +3,7 @@ package com.karine.retrieve.ui.mainPage
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -22,16 +24,21 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
+import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
+import com.karine.retrieve.ui.MapBoxViewModel
+import com.karine.retrieve.ui.UserObjectViewModel
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 import com.mapbox.mapboxsdk.Mapbox
 
 
-class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
     private lateinit var tabs: TabLayout
@@ -39,10 +46,12 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-
-
+    private lateinit var userObjectViewModel: UserObjectViewModel
+    private var userObject = UserObject()
     private val SIGN_OUT_TASK = 100
     private val DELETE_USER_TASK = 200
+    private val anouncementList : MutableList<String> = mutableListOf()
+    private val userUid = FirebaseAuth.getInstance().uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +69,22 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         btnSpeedDial()
         showHideFabTabs()
         updateUINavHeader()
+//        configureViewModel()
+       retrieveAnnouncementForUser()
+
 
 //        for display fab button
         if (tabs.selectedTabPosition == 0) {
             mainPageBinding.fabBtn.show()
         }
+
+    }
+
+    //configure viewModel
+    private fun configureViewModel() {
+        userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
+//        userObjectViewModel.getSavedUserObjectFind().observe(this, this::retrieveAnnouncementForUser)
+
     }
 
     override fun onBackPressed() {
@@ -88,7 +108,6 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             }
             R.id.menu_drawer_delete_account -> {
                 onClickDelete()
-
             }
             R.id.menu_drawer_Logout -> {
                 signOutUserFromFirebase()
@@ -225,6 +244,18 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             .show()
     }
 
+    //for retrieve all announcement for user
+    private fun retrieveAnnouncementForUser() {
+
+        val user = userObject.uid
+       val userAnnouncement = user == userUid
+        if(userAnnouncement) {
+            anouncementList.addAll(mutableListOf(userAnnouncement.toString()))
+            Log.d("userAnnouncement", "userAnnouncement$anouncementList")
+        }
+
+    }
+
     //for delete user
     private fun deleteUserFromFirebase() {
         if (getCurrentUser() != null) {
@@ -277,4 +308,6 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         }
     }
 }
+
+
 
