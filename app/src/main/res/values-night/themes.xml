@@ -2,9 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Retrieve" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">#1E88E5</item>
+        <item name="colorPrimaryDark">#64B5F6</item>
+        <item name="colorPrimaryVariant">#0D47A1</item>
         <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnSurface">#02E8CD</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

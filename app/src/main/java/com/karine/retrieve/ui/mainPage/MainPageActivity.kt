@@ -37,7 +37,7 @@ import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 import com.mapbox.mapboxsdk.Mapbox
 
 
-class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     private lateinit var mainPageBinding: ActivityMainPageBinding
@@ -47,11 +47,8 @@ class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelect
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var userObjectViewModel: UserObjectViewModel
-    private var userObject = UserObject()
     private val SIGN_OUT_TASK = 100
     private val DELETE_USER_TASK = 200
-    private val anouncementList : MutableList<String> = mutableListOf()
-    private val userUid = FirebaseAuth.getInstance().uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +62,11 @@ class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelect
         configureNavigationView()
         configureViewPagerAndTabs()
         methodRequiresFourPermission()
+        configureViewModel()
         clickAddBtn()
         btnSpeedDial()
         showHideFabTabs()
         updateUINavHeader()
-//        configureViewModel()
-       retrieveAnnouncementForUser()
 
 
 //        for display fab button
@@ -83,8 +79,6 @@ class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelect
     //configure viewModel
     private fun configureViewModel() {
         userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
-//        userObjectViewModel.getSavedUserObjectFind().observe(this, this::retrieveAnnouncementForUser)
-
     }
 
     override fun onBackPressed() {
@@ -238,30 +232,21 @@ class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelect
                 dialog.dismiss()
             }
             .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
+                userObjectViewModel.deleteAllUserObjectFindFromCurrentUser()
+                userObjectViewModel.deleteAllUserObjectLostFromCurrentUser()
                 deleteUserFromFirebase()
                 Snackbar.make(mainPageBinding.root, getString(R.string.suppCpte), Snackbar.LENGTH_SHORT).show()
+
             }
             .show()
     }
-
-    //for retrieve all announcement for user
-    private fun retrieveAnnouncementForUser() {
-
-        val user = userObject.uid
-       val userAnnouncement = user == userUid
-        if(userAnnouncement) {
-            anouncementList.addAll(mutableListOf(userAnnouncement.toString()))
-            Log.d("userAnnouncement", "userAnnouncement$anouncementList")
-        }
-
-    }
-
     //for delete user
     private fun deleteUserFromFirebase() {
         if (getCurrentUser() != null) {
             AuthUI.getInstance()
                 .delete(this)
                 .addOnSuccessListener(this, updateUIAfterRESTRequestsCompleted(DELETE_USER_TASK))
+
         }
     }
 
@@ -269,7 +254,7 @@ class MainPageActivity() : BaseActivity(), NavigationView.OnNavigationItemSelect
         return OnSuccessListener {
             when (origin) {
                 SIGN_OUT_TASK -> finish()
-                DELETE_USER_TASK -> finish()
+                DELETE_USER_TASK ->finish()
                 else -> {
                 }
             }

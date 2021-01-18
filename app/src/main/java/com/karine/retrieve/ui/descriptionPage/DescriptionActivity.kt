@@ -70,6 +70,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         createStringForAddress()
         btnCallVisibility()
         configureViewModel()
+
         //For toolbar
         ab = supportActionBar!!
         ab.title = getString(R.string.description)
@@ -165,6 +166,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                carouselView = descriptionBinding.carousel
                Carousel.carouselFromUrl(carouselView, userObject.photo)
            }
+
         }
 
     //configure viewModel
