@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Type">
+        <item>Clé(s)</item>
+        <item>Sac</item>
+        <item>Bijou</item>
+        <item>Montre</item>
+        <item>Portefeuille</item>
+        <item>Lunettes</item>
+        <item>Vêtement</item>
+        <item>Peluche/Doudou</item>
+        <item>Téléphone</item>
+        <item>Accessoire téléphone</item>
+        <item>Autre</item>
+    </string-array>
+</resources>

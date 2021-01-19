@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Type">
+        <item>Key(s)</item>
+        <item>HandBag</item>
+        <item>Jewel</item>
+        <item>Watch</item>
+        <item>Wallet</item>
+        <item>Glasses</item>
+        <item>Clothes</item>
+        <item>Plush/Teddy</item>
+        <item>Phone</item>
+        <item>Phone accessory</item>
+        <item>Other</item>
+    </string-array>
+</resources>

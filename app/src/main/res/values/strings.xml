@@ -34,21 +34,6 @@
     <string name="objets_perdus">Objets perdus</string>
     <string name="logout">Logout</string>
     <string name="deconnexion">Deconnexion reussie</string>
-
-    <string-array name="Type">
-        <item>Clé(s)</item>
-        <item>Sac</item>
-        <item>Bijou</item>
-        <item>Montre</item>
-        <item>Portefeuille</item>
-        <item>Lunettes</item>
-        <item>Vêtement</item>
-        <item>Peluche/Doudou</item>
-        <item>Téléphone</item>
-        <item>Accessoire téléphone</item>
-        <item>Autre</item>
-    </string-array>
-    <!-- Used in NavigationDrawer -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="suppression_compte">Suppression compte</string>
@@ -64,6 +49,8 @@
     <string name="trouves">Objets trouvés</string>
     <string name="perdus">Objets perdus</string>
     <string name="suppCpte">Compte supprimé</string>
+    <string name="createdUO">userObject created</string>
+  <string name="cancel">Cancel</string>
 
 
 </resources>

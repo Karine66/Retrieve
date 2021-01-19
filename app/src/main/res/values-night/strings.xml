@@ -30,7 +30,6 @@
     <string name="objets_perdus">Objets perdus</string>
     <string name="logout">Logout</string>
     <string name="deconnexion">Deconnexion reussie</string>
-    <!-- Used in NavigationDrawer -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="suppression_compte">Suppression compte</string>
@@ -45,6 +44,8 @@
     <string name="errInconnue">Erreur inconnue</string>
     <string name="trouves">Objets trouvés</string>
     <string name="suppCpte">Compte supprimé</string>
+    <string name="createdUO">userObject created</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

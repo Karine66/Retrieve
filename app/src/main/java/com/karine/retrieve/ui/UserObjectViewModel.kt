@@ -20,7 +20,7 @@ class UserObjectViewModel : ViewModel() {
     var savedUserObjectLost: MutableLiveData<List<UserObject>> = MutableLiveData()
     var firestoreDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    //save user object find to firebase
+//    save user object find to firebase
     fun saveUserObjectFindToFirebase(userObject: UserObject) {
         firebaseRepository.saveUserObjectFind(userObject).addOnSuccessListener {
             Log.d("addObjectFind", "DocumentSnapshot successfully written!")

@@ -3,6 +3,7 @@ package com.karine.retrieve.repositories
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.karine.retrieve.models.UserObject
@@ -10,11 +11,13 @@ import com.karine.retrieve.models.UserObject
 class UserObjectFirebaseRepository {
 
     val TAG = "FIREBASE_REPOSITORY"
+
     var firestoreDB = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
     var collectionRefFind = firestoreDB.collection("usersObjectFind")
     var collectionRefLost = firestoreDB.collection("usersObjectLost")
-    //save user object find to firebase
+
+//    save user object find to firebase
    fun saveUserObjectFind(userObject: UserObject) : Task<Void> {
        val documentId : String = collectionRefFind.document().id
         userObject.docId = documentId
@@ -27,6 +30,9 @@ class UserObjectFirebaseRepository {
         userObject.docId = documentId
         return collectionRefLost.document(documentId).set(userObject)
     }
+
+
+
     //get saved user object find from firebase
     fun getSavedUserObjectFind() : CollectionReference {
         val collectionReference = firestoreDB.collection("usersObjectFind")
