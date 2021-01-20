@@ -2,8 +2,7 @@ package com.karine.retrieve
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.karine.retrieve.LiveDataTestUtil.testUserObject
-import com.karine.retrieve.ui.mainPage.UserObjectImplViewModel
-import com.karine.retrieve.utils.TaskExt
+import com.karine.retrieve.ui.SaveUserObjectViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
@@ -16,8 +15,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class UserObjectImplViewModelTest {
-    private lateinit var viewModel: UserObjectImplViewModel
+class SaveUserObjectViewModelTest {
+    private lateinit var viewModelSave: SaveUserObjectViewModel
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread" )
 
@@ -30,7 +29,7 @@ class UserObjectImplViewModelTest {
    fun setupViewModel() {
        Dispatchers.setMain(mainThreadSurrogate)
        //use the fake user repo for the test
-       viewModel = UserObjectImplViewModel(UserObjectRepositoryImplTest())
+       viewModelSave = SaveUserObjectViewModel(SaveUserObjectRepositoryImplTest())
    }
     @After
     fun tearDown() {
@@ -39,21 +38,21 @@ class UserObjectImplViewModelTest {
     }
     @Test
     fun checkUserObjectSaveFind() = runBlocking {
-        viewModel.saveUserObjectFindToFirestore(testUserObject.docId, testUserObject.uid,
+        viewModelSave.saveUserObjectFindToFirestore(testUserObject.docId, testUserObject.uid,
             testUserObject.created, testUserObject.pseudo, testUserObject.email, testUserObject.phone,
         testUserObject.date, testUserObject.type, testUserObject.address, testUserObject.postalCode,
         testUserObject.city, testUserObject.description, testUserObject.photo)
-        val snackbarMessage = LiveDataTestUtil.getValue(viewModel.snackbarMessage)
+        val snackbarMessage = LiveDataTestUtil.getValue(viewModelSave.snackbarMessage)
         assertEquals (snackbarMessage, R.string.createdUO)
 
     }
     @Test
     fun checkUserObjectSaveLost() = runBlocking {
-        viewModel.saveUserObjectLostToFirestore(testUserObject.docId, testUserObject.uid,
+        viewModelSave.saveUserObjectLostToFirestore(testUserObject.docId, testUserObject.uid,
             testUserObject.created, testUserObject.pseudo, testUserObject.email, testUserObject.phone,
             testUserObject.date, testUserObject.type, testUserObject.address, testUserObject.postalCode,
             testUserObject.city, testUserObject.description, testUserObject.photo)
-        val snackbarMessage = LiveDataTestUtil.getValue(viewModel.snackbarMessage)
+        val snackbarMessage = LiveDataTestUtil.getValue(viewModelSave.snackbarMessage)
         assertEquals (snackbarMessage, R.string.createdUO)
 
     }

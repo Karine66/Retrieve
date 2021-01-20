@@ -1,10 +1,10 @@
 package com.karine.retrieve
 
 import com.karine.retrieve.models.UserObject
-import com.karine.retrieve.repositories.UserObjectRepository
+import com.karine.retrieve.repositories.SaveUserObjectRepository
 import com.karine.retrieve.utils.Result
 
-open class UserObjectRepositoryImplTest : UserObjectRepository {
+open class SaveUserObjectRepositoryImplTest : SaveUserObjectRepository {
     override suspend fun saveUserObjectFindInFirestore(userObject: UserObject): Result<Void?>
     = Result.Success(null)
 

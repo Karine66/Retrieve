@@ -7,7 +7,7 @@ import com.karine.retrieve.utils.TaskExt
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class UserObjectRepositoryImpl : UserObjectRepository, TaskExt() {
+class SaveUserObjectRepositoryimpl : SaveUserObjectRepository, TaskExt() {
 
     var firestoreDB = FirebaseFirestore.getInstance()
     var collectionRefFind = firestoreDB.collection("usersObjectFind")

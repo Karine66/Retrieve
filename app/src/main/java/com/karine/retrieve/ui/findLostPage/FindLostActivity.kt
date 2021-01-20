@@ -30,6 +30,7 @@ import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.Carousel
+import com.karine.retrieve.ui.SaveUserObjectViewModel
 import com.karine.retrieve.ui.UserObjectViewModel
 import java.text.DateFormat
 import java.util.*
@@ -45,7 +46,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private var findClick by Delegates.notNull<Int>()
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
-    private lateinit var userObjectViewModel: UserObjectViewModel
+   private lateinit var userObjectViewModel: UserObjectViewModel
+   private lateinit var saveUserObjectViewModel: SaveUserObjectViewModel
     private lateinit var ab: ActionBar
     private lateinit var builder: MaterialAlertDialogBuilder
     private lateinit var pathImageSavedInFirebase: Uri
@@ -59,6 +61,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var city : String
     private lateinit var description : String
     private lateinit var docId : String
+
 
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
@@ -79,7 +82,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         configureUpButton()
         dropDownAdapter()
         clickDate()
-        configureViewModel()
+       configureViewModel()
         clickValidate()
         clickPhoto()
         initTexWatcher()
@@ -149,6 +152,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     //configure viewModel
     private fun configureViewModel() {
         userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
+//       saveUserObjectViewModel = ViewModelProvider(this).get( SaveUserObjectViewModel::class.java)
     }
 
     //for click validate button
@@ -156,7 +160,11 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
         findLostBinding.validateFabBtn.setOnClickListener(View.OnClickListener {
             saveUserObject()
-            Snackbar.make(findLostBinding.root,getString(R.string.ajoutreussi),Snackbar.LENGTH_SHORT)
+            Snackbar.make(
+                findLostBinding.root,
+                getString(R.string.ajoutreussi),
+                Snackbar.LENGTH_SHORT
+            )
                 .addCallback(object : Snackbar.Callback() {
                     override fun onDismissed(snackbar: Snackbar, event: Int) {
                         super.onDismissed(snackbar, event)
@@ -204,16 +212,22 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             photo
         )
         if (findClick==0) {
-            this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
+          this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
+//            this.saveUserObjectViewModel.saveUserObjectFindToFirestore(userObject)
+
         }else if(lostClick==1) {
             this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
+//            this.userObjectImplViewModel.saveUserObjectLostToFirestore(userObject)
             Log.d("userObject", "UserObject$userObject")
         }
     }
     //for alert dialog photo
     private fun selectImage() {
-        val options = arrayOf<CharSequence>(getString(R.string.prendrePhoto), getString(R.string.gallery), getString(
-                    R.string.annuler))
+        val options = arrayOf<CharSequence>(
+            getString(R.string.prendrePhoto), getString(R.string.gallery), getString(
+                R.string.annuler
+            )
+        )
         builder = MaterialAlertDialogBuilder(this)
         builder.setTitle(getString(R.string.ajouter))
         builder.setItems(options) { dialog, item ->
