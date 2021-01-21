@@ -24,10 +24,7 @@ import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityDescriptionBinding
 import com.karine.retrieve.models.UserObject
-import com.karine.retrieve.ui.BaseActivity
-import com.karine.retrieve.ui.Carousel
-import com.karine.retrieve.ui.MapBoxViewModel
-import com.karine.retrieve.ui.UserObjectViewModel
+import com.karine.retrieve.ui.*
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -37,6 +34,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
+import org.koin.android.viewmodel.ext.android.viewModel
 import kotlin.properties.Delegates
 
 
@@ -54,6 +52,8 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private var photoList: MutableList<Uri> = mutableListOf()
     private val userUid = FirebaseAuth.getInstance().uid
     private val REQUEST_CALL = 1
+
+    private val deleteUserObjectViewModel: DeleteUserObjectViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,9 +127,11 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                 .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
 
                     if(objectFind) {
-                        userObjectViewModel.deleteObjectFind(userObject)
+//                        userObjectViewModel.deleteObjectFind(userObject)
+                        deleteUserObjectViewModel.deleteUserObjectFindToFirestore(userObject)
                     }else {
-                        userObjectViewModel.deleteObjectLost(userObject)
+                        deleteUserObjectViewModel.deleteUserObjectLostToFirestore(userObject)
+//                        userObjectViewModel.deleteObjectLost(userObject)
                     }
                     Snackbar.make(descriptionBinding.root, getString(R.string.annoncesupp), Snackbar.LENGTH_SHORT)
                         .addCallback(object:Snackbar.Callback(){
@@ -172,7 +174,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     //configure viewModel
     private fun configureViewModel() {
        mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
-       userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
+//       userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
     }
 
     //for click email button

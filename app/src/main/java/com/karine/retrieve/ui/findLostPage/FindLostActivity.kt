@@ -49,7 +49,6 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
    private lateinit var userObjectViewModel: UserObjectViewModel
-//   private lateinit var saveUserObjectViewModel: SaveUserObjectViewModel
     private lateinit var ab: ActionBar
     private lateinit var builder: MaterialAlertDialogBuilder
     private lateinit var pathImageSavedInFirebase: Uri
@@ -65,6 +64,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var docId : String
 
     private val saveUserObjectViewModel:SaveUserObjectViewModel by viewModel()
+
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
@@ -84,7 +84,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         configureUpButton()
         dropDownAdapter()
         clickDate()
-       configureViewModel()
+//       configureViewModel()
         clickValidate()
         clickPhoto()
         initTexWatcher()
@@ -152,10 +152,10 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         })
     }
     //configure viewModel
-    private fun configureViewModel() {
-        userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
-//       saveUserObjectViewModel = ViewModelProvider(this).get( SaveUserObjectViewModel::class.java)
-    }
+//    private fun configureViewModel() {
+//        userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
+////       saveUserObjectViewModel = ViewModelProvider(this).get( SaveUserObjectViewModel::class.java)
+//    }
 
     //for click validate button
     private fun clickValidate() {

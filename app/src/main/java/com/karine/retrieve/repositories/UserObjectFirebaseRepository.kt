@@ -44,17 +44,17 @@ class UserObjectFirebaseRepository {
         val collectionReference = firestoreDB.collection("usersObjectLost")
         return collectionReference
     }
-    //delete user object find  from firebase
-    fun deleteUserObjectFind(userObject: UserObject) : Task<Void> {
-        val documentReference = firestoreDB.collection("usersObjectFind")
-           .document(userObject.docId)
-        return documentReference.delete()
-    }
-    //delete user object Lost from firebase
-    fun deleteUserObjectLost(userObject: UserObject) : Task<Void> {
-        val documentReference = firestoreDB.collection("usersObjectLost")
-            .document(userObject.docId)
-        return documentReference.delete()
-    }
+//    //delete user object find  from firebase
+//    fun deleteUserObjectFind(userObject: UserObject) : Task<Void> {
+//        val documentReference = firestoreDB.collection("usersObjectFind")
+//           .document(userObject.docId)
+//        return documentReference.delete()
+//    }
+//    //delete user object Lost from firebase
+//    fun deleteUserObjectLost(userObject: UserObject) : Task<Void> {
+//        val documentReference = firestoreDB.collection("usersObjectLost")
+//            .document(userObject.docId)
+//        return documentReference.delete()
+//    }
 
 }

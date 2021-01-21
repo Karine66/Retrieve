@@ -1,0 +1,50 @@
+package com.karine.retrieve.ui
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.karine.retrieve.R
+import com.karine.retrieve.models.UserObject
+import com.karine.retrieve.repositories.DeleteUserObjectRepository
+import com.karine.retrieve.utils.Result
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+
+class DeleteUserObjectViewModel(private val deleteUserObjectRepository: DeleteUserObjectRepository
+) : ViewModel(), CoroutineScope {
+    //set coroutine context
+    private val compositeJob = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + compositeJob
+
+    //coroutine job
+    private var deleteUserObjectJob :Job? = null
+    //live data
+    private val _snackbarText = MutableLiveData<Int>()
+    val snackbarMessage : LiveData<Int> = _snackbarText
+
+    fun deleteUserObjectFindToFirestore( userObject: UserObject){
+        if(deleteUserObjectJob?.isActive == true) deleteUserObjectJob?.cancel()
+        deleteUserObjectJob = launch {
+            when (deleteUserObjectRepository.deleteUserObjectFindInFirestore(userObject)) {
+                is Result.Success->_snackbarText.value = R.string.createdUO
+                is Result.Error->_snackbarText.value = R.string.errInconnue
+                is Result.Canceled->_snackbarText.value = R.string.cancel
+            }
+        }
+    }
+    fun deleteUserObjectLostToFirestore(userObject: UserObject){
+        if(deleteUserObjectJob?.isActive == true) deleteUserObjectJob?.cancel()
+        deleteUserObjectJob = launch {
+            when (deleteUserObjectRepository.deleteUserObjectLostInFirestore(userObject)) {
+                is Result.Success->_snackbarText.value = R.string.createdUO
+                is Result.Error->_snackbarText.value = R.string.errInconnue
+                is Result.Canceled->_snackbarText.value = R.string.cancel
+            }
+        }
+    }
+
+}
