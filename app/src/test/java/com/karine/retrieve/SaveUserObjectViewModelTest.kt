@@ -38,20 +38,14 @@ class SaveUserObjectViewModelTest {
     }
     @Test
     fun checkUserObjectSaveFind() = runBlocking {
-        viewModelSave.saveUserObjectFindToFirestore(testUserObject.docId, testUserObject.uid,
-            testUserObject.created, testUserObject.pseudo, testUserObject.email, testUserObject.phone,
-        testUserObject.date, testUserObject.type, testUserObject.address, testUserObject.postalCode,
-        testUserObject.city, testUserObject.description, testUserObject.photo)
+        viewModelSave.saveUserObjectFindToFirestore(testUserObject)
         val snackbarMessage = LiveDataTestUtil.getValue(viewModelSave.snackbarMessage)
         assertEquals (snackbarMessage, R.string.createdUO)
 
     }
     @Test
     fun checkUserObjectSaveLost() = runBlocking {
-        viewModelSave.saveUserObjectLostToFirestore(testUserObject.docId, testUserObject.uid,
-            testUserObject.created, testUserObject.pseudo, testUserObject.email, testUserObject.phone,
-            testUserObject.date, testUserObject.type, testUserObject.address, testUserObject.postalCode,
-            testUserObject.city, testUserObject.description, testUserObject.photo)
+        viewModelSave.saveUserObjectLostToFirestore(testUserObject)
         val snackbarMessage = LiveDataTestUtil.getValue(viewModelSave.snackbarMessage)
         assertEquals (snackbarMessage, R.string.createdUO)
 
