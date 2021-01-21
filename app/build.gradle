@@ -41,6 +41,9 @@ android {
         jvmTarget = '1.8'
     }
 }
+repositories {
+    jcenter()
+}
 
 dependencies {
 
@@ -85,7 +88,6 @@ dependencies {
     implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:5.6.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v9:0.4.0'
-
     //For retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
@@ -93,7 +95,8 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
-
+    //Koin
+    implementation "org.koin:koin-android-viewmodel:2.0.1"
 
 
     testImplementation "android.arch.core:core-testing:1.1.1"

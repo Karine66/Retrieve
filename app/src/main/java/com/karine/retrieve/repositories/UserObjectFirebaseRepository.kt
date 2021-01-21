@@ -17,19 +17,19 @@ class UserObjectFirebaseRepository {
     var collectionRefFind = firestoreDB.collection("usersObjectFind")
     var collectionRefLost = firestoreDB.collection("usersObjectLost")
 
-//    save user object find to firebase
-   fun saveUserObjectFind(userObject: UserObject) : Task<Void> {
-       val documentId : String = collectionRefFind.document().id
-        userObject.docId = documentId
-        return collectionRefFind.document(documentId).set(userObject)
-   }
-
-    //save user object lost to firebase
-    fun saveUserObjectLost(userObject: UserObject) : Task<Void> {
-        val documentId : String = collectionRefLost.document().id
-        userObject.docId = documentId
-        return collectionRefLost.document(documentId).set(userObject)
-    }
+////    save user object find to firebase
+//   fun saveUserObjectFind(userObject: UserObject) : Task<Void> {
+//       val documentId : String = collectionRefFind.document().id
+//        userObject.docId = documentId
+//        return collectionRefFind.document(documentId).set(userObject)
+//   }
+//
+//    //save user object lost to firebase
+//    fun saveUserObjectLost(userObject: UserObject) : Task<Void> {
+//        val documentId : String = collectionRefLost.document().id
+//        userObject.docId = documentId
+//        return collectionRefLost.document(documentId).set(userObject)
+//    }
 
 
 

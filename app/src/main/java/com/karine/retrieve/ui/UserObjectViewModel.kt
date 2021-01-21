@@ -21,22 +21,22 @@ class UserObjectViewModel : ViewModel() {
     var firestoreDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 //    save user object find to firebase
-    fun saveUserObjectFindToFirebase(userObject: UserObject) {
-        firebaseRepository.saveUserObjectFind(userObject).addOnSuccessListener {
-            Log.d("addObjectFind", "DocumentSnapshot successfully written!")
-        }.addOnFailureListener {
-            Log.e(TAG, "Failed to save UserObjectFind")
-        }
-    }
-
-    //save user object lost to firebase
-    fun saveUserObjectLostToFirebase(userObject: UserObject) {
-        firebaseRepository.saveUserObjectLost(userObject).addOnSuccessListener {
-            Log.d("addObjectLost", "DocumentSnapshot successfully written!")
-        }.addOnFailureListener {
-            Log.e(TAG, "Failed to save UserObjectLost")
-        }
-    }
+//    fun saveUserObjectFindToFirebase(userObject: UserObject) {
+//        firebaseRepository.saveUserObjectFind(userObject).addOnSuccessListener {
+//            Log.d("addObjectFind", "DocumentSnapshot successfully written!")
+//        }.addOnFailureListener {
+//            Log.e(TAG, "Failed to save UserObjectFind")
+//        }
+//    }
+//
+//    //save user object lost to firebase
+//    fun saveUserObjectLostToFirebase(userObject: UserObject) {
+//        firebaseRepository.saveUserObjectLost(userObject).addOnSuccessListener {
+//            Log.d("addObjectLost", "DocumentSnapshot successfully written!")
+//        }.addOnFailureListener {
+//            Log.e(TAG, "Failed to save UserObjectLost")
+//        }
+//    }
 
     //get realtime updates for firebase regarding saved user object find
     fun getSavedUserObjectFind(): LiveData<List<UserObject>> {

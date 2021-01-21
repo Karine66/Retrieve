@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.jama.carouselview.CarouselView
+import com.karine.retrieve.App
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityFindLostBinding
 import com.karine.retrieve.models.UserObject
@@ -32,6 +33,7 @@ import com.karine.retrieve.ui.BaseActivity
 import com.karine.retrieve.ui.Carousel
 import com.karine.retrieve.ui.SaveUserObjectViewModel
 import com.karine.retrieve.ui.UserObjectViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.DateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -47,7 +49,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var userObject: UserObject
     private lateinit var findLostBinding: ActivityFindLostBinding
    private lateinit var userObjectViewModel: UserObjectViewModel
-   private lateinit var saveUserObjectViewModel: SaveUserObjectViewModel
+//   private lateinit var saveUserObjectViewModel: SaveUserObjectViewModel
     private lateinit var ab: ActionBar
     private lateinit var builder: MaterialAlertDialogBuilder
     private lateinit var pathImageSavedInFirebase: Uri
@@ -62,7 +64,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private lateinit var description : String
     private lateinit var docId : String
 
-
+    private val saveUserObjectViewModel:SaveUserObjectViewModel by viewModel()
     var firestoreDB = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().uid
     private val createdDate = Timestamp.now()
@@ -212,12 +214,12 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             photo
         )
         if (findClick==0) {
-          this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
-//            this.saveUserObjectViewModel.saveUserObjectFindToFirestore(userObject)
+//          this.userObjectViewModel.saveUserObjectFindToFirebase(userObject)
+            this.saveUserObjectViewModel.saveUserObjectFindToFirestore(userObject)
 
         }else if(lostClick==1) {
-            this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
-//            this.userObjectImplViewModel.saveUserObjectLostToFirestore(userObject)
+//            this.userObjectViewModel.saveUserObjectLostToFirebase(userObject)
+           this.saveUserObjectViewModel.saveUserObjectLostToFirestore(userObject)
             Log.d("userObject", "UserObject$userObject")
         }
     }

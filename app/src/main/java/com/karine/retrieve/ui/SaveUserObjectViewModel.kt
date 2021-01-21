@@ -56,15 +56,10 @@ class SaveUserObjectViewModel (
             }
         }
     }
-    fun saveUserObjectLostToFirestore(docId : String, uid : String, created: com.google.firebase.Timestamp?, pseudo : String?,
-                                      email:String?, phone:String?, date:String?, type:String?, address:String?, postalCode:Int?,
-                                      city:String?, description:String?, photo:MutableList<String>) {
-        val objectUser = UserObject(docId = docId, uid = uid, created = com.google.firebase.Timestamp.now(),pseudo = pseudo, email = email,
-            phone = phone, date = date, type = type, address = address, postalCode = postalCode, city=city,
-            description = description, photo = photo)
+    fun saveUserObjectLostToFirestore(userObject: UserObject){
         if(saveUserObjectJob?.isActive == true) saveUserObjectJob?.cancel()
         saveUserObjectJob = launch {
-            when (saveUserObjectRepository.saveUserObjectLostInFirestore(objectUser)) {
+            when (saveUserObjectRepository.saveUserObjectLostInFirestore(userObject)) {
                 is Result.Success->_snackbarText.value = R.string.createdUO
                 is Result.Error->_snackbarText.value = R.string.errInconnue
                 is Result.Canceled->_snackbarText.value = R.string.cancel
