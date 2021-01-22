@@ -9,7 +9,7 @@ import com.karine.retrieve.R
 class Carousel : BaseActivity() {
 
     companion object {
-           fun carousel(carouselView: CarouselView, photoList: MutableList<Uri>) {
+        fun carousel(carouselView: CarouselView, photoList: MutableList<Uri>) {
             carouselView.apply {
                 size = photoList.size
                 resource = R.layout.centered_carousel
@@ -20,6 +20,7 @@ class Carousel : BaseActivity() {
                 show()
             }
         }
+
         fun carouselFromUrl(carouselView: CarouselView, photoList: MutableList<String>) {
             carouselView.apply {
                 size = photoList.size
@@ -32,5 +33,4 @@ class Carousel : BaseActivity() {
             }
         }
     }
-
 }

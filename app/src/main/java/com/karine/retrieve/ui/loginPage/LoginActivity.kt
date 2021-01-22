@@ -25,7 +25,6 @@ open class LoginActivity : AppCompatActivity() {
         //for ViewBinding
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         val view = loginBinding.root
-
         setContentView(view)
 
         clickMailBtn()
@@ -33,21 +32,27 @@ open class LoginActivity : AppCompatActivity() {
 
     }
 
-    // for click on email button
+    /**
+     * For click login with email
+     */
     private fun clickMailBtn() {
         loginBinding.signInBtn.setOnClickListener {
             startSignInActivity()
         }
     }
 
-    //for click on google button
+    /**
+     * For click login with Google
+     */
     private fun clickGoogleBtn() {
         loginBinding.googleBtn.setOnClickListener {
             startSignInGoogleActivity()
         }
     }
 
-    // Launch sign in by mail
+    /**
+     * Launch sign in by mail
+     */
     private fun startSignInActivity() {
 
         startActivityForResult(
@@ -62,6 +67,9 @@ open class LoginActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Launch sign in by Google
+     */
     private fun startSignInGoogleActivity() {
 
         startActivityForResult(
@@ -81,16 +89,20 @@ open class LoginActivity : AppCompatActivity() {
         handleResponseAfterSignIn(requestCode, resultCode, data!!)
     }
 
-
-
-        //Method that handles response after SignIn Activity close
+    /**
+     * Method that handles responses after SignIn Activity close
+     */
     private fun handleResponseAfterSignIn(requestCode: Int, resultCode: Int, data: Intent) {
         val response = IdpResponse.fromResultIntent(data)
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
                 val loginIntent = Intent(this, MainPageActivity::class.java)
                 startActivity(loginIntent)
-                Snackbar.make(loginBinding.root, getString(R.string.authreussie), Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    loginBinding.root,
+                    getString(R.string.authreussie),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             } else { // ERRORS
                 if (response == null) {
                     Snackbar.make(
@@ -99,9 +111,17 @@ open class LoginActivity : AppCompatActivity() {
                         Snackbar.LENGTH_SHORT
                     ).show()
                 } else if (response.error?.errorCode == ErrorCodes.NO_NETWORK) {
-                    Snackbar.make(loginBinding.root, getString(R.string.errnointernet), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        loginBinding.root,
+                        getString(R.string.errnointernet),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 } else if (response.error?.errorCode == ErrorCodes.UNKNOWN_ERROR) {
-                    Snackbar.make(loginBinding.root, getString(R.string.errInconnue), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        loginBinding.root,
+                        getString(R.string.errInconnue),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

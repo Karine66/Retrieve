@@ -6,6 +6,6 @@ import com.karine.retrieve.utils.Result
 
 interface SaveUserObjectRepository {
 
-    suspend fun saveUserObjectFindInFirestore(userObject: UserObject) : Result<Void?>
-    suspend fun saveUserObjectLostInFirestore(userObject: UserObject) : Result<Void?>
+    suspend fun saveUserObjectFindInFirestore(userObject: UserObject): Result<Void?>
+    suspend fun saveUserObjectLostInFirestore(userObject: UserObject): Result<Void?>
 }

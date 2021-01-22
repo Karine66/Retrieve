@@ -13,15 +13,20 @@ class SaveUserObjectRepositoryimpl : SaveUserObjectRepository, TaskExt() {
     var collectionRefFind = firestoreDB.collection("usersObjectFind")
     var collectionRefLost = firestoreDB.collection("usersObjectLost")
 
-
+    /**
+     * For create object find in firebase
+     */
     override suspend fun saveUserObjectFindInFirestore(userObject: UserObject): Result<Void?> {
-        val documentId : String = collectionRefFind.document().id
+        val documentId: String = collectionRefFind.document().id
         userObject.docId = documentId
-     return collectionRefFind.document(documentId).set(userObject).await()
+        return collectionRefFind.document(documentId).set(userObject).await()
     }
 
+    /**
+     * For create object lost in firebase
+     */
     override suspend fun saveUserObjectLostInFirestore(userObject: UserObject): Result<Void?> {
-        val documentId : String = collectionRefLost.document().id
+        val documentId: String = collectionRefLost.document().id
         userObject.docId = documentId
         return collectionRefLost.document(documentId).set(userObject).await()
     }

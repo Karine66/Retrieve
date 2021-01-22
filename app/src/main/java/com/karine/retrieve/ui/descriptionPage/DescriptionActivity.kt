@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,8 +23,10 @@ import com.jama.carouselview.CarouselView
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityDescriptionBinding
 import com.karine.retrieve.models.UserObject
-import com.karine.retrieve.ui.*
-import com.mapbox.geojson.Point
+import com.karine.retrieve.ui.BaseActivity
+import com.karine.retrieve.ui.Carousel
+import com.karine.retrieve.ui.DeleteUserObjectViewModel
+import com.karine.retrieve.ui.MapBoxViewModel
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -43,10 +44,8 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var descriptionBinding: ActivityDescriptionBinding
     private lateinit var ab: ActionBar
     private lateinit var carouselView: CarouselView
-    private lateinit var firstResultPoint: Point
-    private lateinit var completeAddress : String
+    private lateinit var completeAddress: String
     private lateinit var mapBoxViewModel: MapBoxViewModel
-    private lateinit var userObjectViewModel: UserObjectViewModel
     private lateinit var userObject: UserObject
     private var objectFind by Delegates.notNull<Boolean>()
     private var photoList: MutableList<Uri> = mutableListOf()
@@ -79,13 +78,18 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         descriptionBinding.mapView.getMapAsync(this)
 
     }
-    //retrieve data from click recyclerView
+
+    /**
+     * Retrieve date from click on item recycler view
+     */
     private fun retrieveData() {
         userObject = intent.getParcelableExtra("userObject")
         objectFind = intent.getBooleanExtra("objectFind", true)
     }
 
-    //for menu
+    /**
+     * For menu
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_description, menu)
         val deleteItem = menu!!.findItem(R.id.menu_delete)
@@ -94,11 +98,14 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         return true
     }
 
+    /**
+     * For item in menu
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
 
             R.id.menu_delete -> {
-                   onClickDeleteObject()
+                onClickDeleteObject()
                 true
             }
             R.id.menu_partager -> {
@@ -110,7 +117,7 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
                 val message = "$description $city\n$mail\n\n Retrieve App"
                 val mailIntent = Intent(Intent.ACTION_SEND)
                 mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                mailIntent.putExtra(Intent.EXTRA_TEXT,message)
+                mailIntent.putExtra(Intent.EXTRA_TEXT, message)
                 mailIntent.type = "message/rfc822"
                 startActivity(Intent.createChooser(mailIntent, "Choose an email client"))
                 true
@@ -118,73 +125,84 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    /**
+     * For click item delete object
+     */
     private fun onClickDeleteObject() {
         MaterialAlertDialogBuilder(this)
             .setMessage(resources.getString(R.string.suppannonce))
-                .setNegativeButton(resources.getString(R.string.non)) { dialog, wich ->
-                    dialog.dismiss()
+            .setNegativeButton(resources.getString(R.string.non)) { dialog, wich ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
+                if (objectFind) {
+                    deleteUserObjectViewModel.deleteUserObjectFindToFirestore(userObject)
+                } else {
+                    deleteUserObjectViewModel.deleteUserObjectLostToFirestore(userObject)
                 }
-                .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
-
-                    if(objectFind) {
-//                        userObjectViewModel.deleteObjectFind(userObject)
-                        deleteUserObjectViewModel.deleteUserObjectFindToFirestore(userObject)
-                    }else {
-                        deleteUserObjectViewModel.deleteUserObjectLostToFirestore(userObject)
-//                        userObjectViewModel.deleteObjectLost(userObject)
-                    }
-                    Snackbar.make(descriptionBinding.root, getString(R.string.annoncesupp), Snackbar.LENGTH_SHORT)
-                        .addCallback(object:Snackbar.Callback(){
-                            override fun onDismissed(snackbar: Snackbar, event: Int) {
-                                super.onDismissed(snackbar, event)
-                                finish()
-                            }
-                        }).show()
-                }
-                .show()
+                Snackbar.make(
+                    descriptionBinding.root,
+                    getString(R.string.annoncesupp),
+                    Snackbar.LENGTH_SHORT
+                )
+                    .addCallback(object : Snackbar.Callback() {
+                        override fun onDismissed(snackbar: Snackbar, event: Int) {
+                            super.onDismissed(snackbar, event)
+                            finish()
+                        }
+                    }).show()
+            }
+            .show()
     }
 
-
-    //for update UI with data
+    /**
+     * For update UI with data
+     */
     private fun updateUi() {
 
-            descriptionBinding.etType.setText(userObject.type)
-            descriptionBinding.etType.isEnabled = false
-            descriptionBinding.etDate.setText(userObject.date)
-            descriptionBinding.etDate.isEnabled = false
-            descriptionBinding.etDescription.setText(userObject.description)
-            descriptionBinding.etDescription.isEnabled = false
-            descriptionBinding.etAddress.setText(userObject.address)
-            descriptionBinding.etAddress.isEnabled = false
-            descriptionBinding.etPostalCode.setText((userObject.postalCode!!).toString())
-            descriptionBinding.etPostalCode.isEnabled = false
-            descriptionBinding.etCity.setText(userObject.city)
-            descriptionBinding.etCity.isEnabled = false
-            descriptionBinding.contactPseudo.text = userObject.pseudo
-            descriptionBinding.contactPseudo.isEnabled = false
+        descriptionBinding.etType.setText(userObject.type)
+        descriptionBinding.etType.isEnabled = false
+        descriptionBinding.etDate.setText(userObject.date)
+        descriptionBinding.etDate.isEnabled = false
+        descriptionBinding.etDescription.setText(userObject.description)
+        descriptionBinding.etDescription.isEnabled = false
+        descriptionBinding.etAddress.setText(userObject.address)
+        descriptionBinding.etAddress.isEnabled = false
+        descriptionBinding.etPostalCode.setText((userObject.postalCode!!).toString())
+        descriptionBinding.etPostalCode.isEnabled = false
+        descriptionBinding.etCity.setText(userObject.city)
+        descriptionBinding.etCity.isEnabled = false
+        descriptionBinding.contactPseudo.text = userObject.pseudo
+        descriptionBinding.contactPseudo.isEnabled = false
 
-            photoList.clear()
-           if(userObject.photo.isNotEmpty()) {
-               carouselView = descriptionBinding.carousel
-               Carousel.carouselFromUrl(carouselView, userObject.photo)
-           }
-
+        photoList.clear()
+        if (userObject.photo.isNotEmpty()) {
+            carouselView = descriptionBinding.carousel
+            Carousel.carouselFromUrl(carouselView, userObject.photo)
         }
-
-    //configure viewModel
-    private fun configureViewModel() {
-       mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
-//       userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
     }
 
-    //for click email button
+    //configure viewModel
+    /**
+     * Configure viewModel
+     */
+    private fun configureViewModel() {
+        mapBoxViewModel = ViewModelProvider(this).get(MapBoxViewModel::class.java)
+    }
+
+    /**
+     * For click on email button
+     */
     private fun clickEmail() {
         descriptionBinding.emailSend.setOnClickListener(View.OnClickListener {
             sendMail()
         })
     }
 
-
+    /**
+     * For send mail
+     */
     private fun sendMail() {
 
         val mail = userObject.email
@@ -197,16 +215,20 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
         mailIntent.type = "message/rfc822"
         startActivity(Intent.createChooser(mailIntent, "Choose an email client"))
-
     }
 
-    //for call directly
+    /**
+     * For click on call button
+     */
     private fun clickCall() {
         descriptionBinding.callSend.setOnClickListener(View.OnClickListener {
             makeCall()
         })
     }
 
+    /**
+     * For call directly
+     */
     private fun makeCall() {
         val number = userObject.phone
         if (number != null) {
@@ -226,7 +248,10 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             }
         }
     }
-    //for visibility call btn
+
+    /**
+     * For visibility call button
+     */
     private fun btnCallVisibility() {
         val number = userObject.phone
         if (number.isNullOrEmpty()) {
@@ -235,7 +260,10 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             descriptionBinding.callSend.visibility = View.VISIBLE
         }
     }
-    //for map marker
+
+    /**
+     * For localize adress object and add a marker
+     */
     override fun onMapReady(mapboxMap: MapboxMap) {
 
         mapBoxViewModel.geocodingPoint(completeAddress).observe(this, Observer {
@@ -264,14 +292,17 @@ class DescriptionActivity : BaseActivity(), OnMapReadyCallback {
             }
         })
     }
-    //create string for geocoding
+
+    /**
+     * Create string for Geocoding
+     */
     private fun createStringForAddress() {
-            val address: String? =userObject.address
-            val postalCode: String = userObject.postalCode.toString()
-            val city: String = userObject.city.toString()
-            completeAddress = "$address $postalCode $city"
-            Log.d("createString", "createString$completeAddress")
-        }
+        val address: String? = userObject.address
+        val postalCode: String = userObject.postalCode.toString()
+        val city: String = userObject.city.toString()
+        completeAddress = "$address $postalCode $city"
+        Log.d("createString", "createString$completeAddress")
+    }
 
 
     override fun onStart() {

@@ -10,11 +10,16 @@ class PageAdapter(fa: FragmentActivity) : FragmentStateAdapter(
     fa
 
 ){
-
+    /**
+     * for number tabs
+     */
     override fun getItemCount(): Int {
         return 2
     }
 
+    /**
+     * For fragments attached to tabs
+     */
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {

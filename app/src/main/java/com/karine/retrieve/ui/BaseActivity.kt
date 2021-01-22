@@ -29,19 +29,25 @@ open class BaseActivity : AppCompatActivity() {
         )
     }
 
-    //for toolbar
+    /**
+     * For toolbar
+     */
     protected fun configureToolbar() {
         val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
     }
 
-    //for up arrow
+    /**
+     * For up arrow
+     */
     protected open fun configureUpButton() {
         ab = supportActionBar!!
         ab.setDisplayHomeAsUpEnabled(true)
     }
 
-    //for permissions
+    /**
+     * For permissions
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,
@@ -67,17 +73,25 @@ open class BaseActivity : AppCompatActivity() {
             )
         }
     }
-    //for firebase
+
+    /**
+     * For firebase
+     */
     open fun getCurrentUser(): FirebaseUser? {
         return FirebaseAuth.getInstance().currentUser
     }
+
     open fun isCurrentUserLogged(): Boolean? {
         return getCurrentUser() != null
     }
 
     open fun onFailureListener(): OnFailureListener? {
         return OnFailureListener { e: Exception? ->
-            Toast.makeText(applicationContext,getString(R.string.erreurInconnue),Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                applicationContext,
+                getString(R.string.erreurInconnue),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

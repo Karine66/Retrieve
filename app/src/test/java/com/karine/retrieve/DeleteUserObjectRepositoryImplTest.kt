@@ -1,5 +1,6 @@
 package com.karine.retrieve
 
+import com.google.firebase.firestore.CollectionReference
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.repositories.DeleteUserObjectRepository
 import com.karine.retrieve.utils.Result
@@ -10,5 +11,22 @@ class DeleteUserObjectRepositoryImplTest : DeleteUserObjectRepository {
 
     override suspend fun deleteUserObjectLostInFirestore(userObject: UserObject): Result<Void?>
        = Result.Success(null)
+
+    override suspend fun getSavedUserObjectFind(): CollectionReference {
+
+    }
+
+
+    override suspend fun getSavedUserObjectLost(): CollectionReference {
+
+    }
+
+    override suspend fun deleteAllUserObjectFindFromCurrentUser() {
+
+    }
+
+    override suspend fun deleteAllUserObjectLostFromCurrentUser() {
+
+    }
 
 }

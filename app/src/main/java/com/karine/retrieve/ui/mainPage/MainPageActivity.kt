@@ -3,7 +3,6 @@ package com.karine.retrieve.ui.mainPage
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -13,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -24,31 +22,27 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
 import com.karine.retrieve.R
 import com.karine.retrieve.databinding.ActivityMainPageBinding
-import com.karine.retrieve.models.UserObject
-import com.karine.retrieve.ui.BaseActivity
-import com.karine.retrieve.ui.MapBoxViewModel
-import com.karine.retrieve.ui.UserObjectViewModel
+import com.karine.retrieve.ui.*
 import com.karine.retrieve.ui.findLostPage.FindLostActivity
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView.OnActionSelectedListener
 import com.mapbox.mapboxsdk.Mapbox
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-
     private lateinit var mainPageBinding: ActivityMainPageBinding
     private lateinit var tabs: TabLayout
     private lateinit var pager: ViewPager2
-    private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private lateinit var userObjectViewModel: UserObjectViewModel
     private val SIGN_OUT_TASK = 100
     private val DELETE_USER_TASK = 200
+
+    private val deleteUserObjectViewModel: DeleteUserObjectViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,25 +56,20 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         configureNavigationView()
         configureViewPagerAndTabs()
         methodRequiresFourPermission()
-        configureViewModel()
         clickAddBtn()
         btnSpeedDial()
         showHideFabTabs()
         updateUINavHeader()
 
-
 //        for display fab button
         if (tabs.selectedTabPosition == 0) {
             mainPageBinding.fabBtn.show()
         }
-
     }
 
-    //configure viewModel
-    private fun configureViewModel() {
-        userObjectViewModel = ViewModelProvider(this).get(UserObjectViewModel::class.java)
-    }
-
+    /**
+     * For navigation drawer
+     */
     override fun onBackPressed() {
 
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -90,7 +79,9 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         }
     }
 
-    //handle click on navigation view
+    /**
+     * For handle click on navigation view
+     */
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -118,7 +109,9 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         return true
     }
 
-    //Configure Drawer Layout
+    /**
+     * Configure Drawer Layout
+     */
     private fun configureDrawerLayout() {
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         drawerLayout = (findViewById<View>(R.id.drawer_layout) as DrawerLayout)
@@ -133,13 +126,17 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         toggle.syncState()
     }
 
-    //Configure NavigationView
+    /**
+     * Configure NavigationView
+     */
     private fun configureNavigationView() {
         this.navigationView = findViewById<View>(R.id.main_page_nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
     }
 
-    //for create personalize btn Speed Dial
+    /**
+     * for create personalize button Speed Dial
+     */
     private fun btnSpeedDial() {
 
         mainPageBinding.fabBtn.addActionItem(
@@ -156,7 +153,9 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         )
     }
 
-    //For click on fab button speed dial
+    /**
+     * For click on fab button speed dial
+     */
     private fun clickAddBtn() {
         mainPageBinding.fabBtn.setOnActionSelectedListener(OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
@@ -167,7 +166,6 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
                     startActivity(findIntent)
                     mainPageBinding.fabBtn.close()
                     return@OnActionSelectedListener true
-
                 }
                 R.id.fab_lost -> {
                     mainPageBinding.viewPager.currentItem = 1
@@ -180,14 +178,14 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
             }
             false
         })
-
     }
 
-    //for hide or show fab button between tabs
+    /**
+     * For hide or show fab button between tabs
+     */
     private fun showHideFabTabs() {
         mainPageBinding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
-
             override fun onPageScrollStateChanged(state: Int) {
                 when (state) {
                     ViewPager2.SCROLL_STATE_IDLE -> mainPageBinding.fabBtn.show()
@@ -197,6 +195,9 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         })
     }
 
+    /**
+     * For configure ViewPager and Tabs
+     */
     private fun configureViewPagerAndTabs() {
         //Get ViewPager from layout
         pager = mainPageBinding.viewPager
@@ -206,7 +207,6 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         pager.adapter = PageAdapter(this);
 //        // Design purpose. Tabs have the same width
         tabs.tabMode = TabLayout.MODE_FIXED
-
         TabLayoutMediator(
             tabs, pager
         ) { tab: TabLayout.Tab, position: Int ->
@@ -217,7 +217,9 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         }.attach()
     }
 
-    //for signout firebase
+    /**
+     * For signOut firebase
+     */
     private fun signOutUserFromFirebase() {
         AuthUI.getInstance()
             .signOut(this)
@@ -225,6 +227,9 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
     }
 
     //for delete account to firebase
+    /**
+     * For delete account to firebase with object current user
+     */
     private fun onClickDelete() {
         MaterialAlertDialogBuilder(this)
             .setMessage(resources.getString(R.string.suppCompte))
@@ -232,21 +237,26 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
                 dialog.dismiss()
             }
             .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
-                userObjectViewModel.deleteAllUserObjectFindFromCurrentUser()
-                userObjectViewModel.deleteAllUserObjectLostFromCurrentUser()
+                deleteUserObjectViewModel.deleteAllObjectFindFromUser()
+                deleteUserObjectViewModel.deleteAllObjectLostFromUser()
                 deleteUserFromFirebase()
-                Snackbar.make(mainPageBinding.root, getString(R.string.suppCpte), Snackbar.LENGTH_SHORT).show()
-
+                Snackbar.make(
+                    mainPageBinding.root,
+                    getString(R.string.suppCpte),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
             .show()
     }
-    //for delete user
+
+    /**
+     * For delete user
+     */
     private fun deleteUserFromFirebase() {
         if (getCurrentUser() != null) {
             AuthUI.getInstance()
                 .delete(this)
                 .addOnSuccessListener(this, updateUIAfterRESTRequestsCompleted(DELETE_USER_TASK))
-
         }
     }
 
@@ -254,13 +264,16 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
         return OnSuccessListener {
             when (origin) {
                 SIGN_OUT_TASK -> finish()
-                DELETE_USER_TASK ->finish()
+                DELETE_USER_TASK -> finish()
                 else -> {
                 }
             }
         }
     }
 
+    /**
+     * For update UI navHeader
+     */
     private fun updateUINavHeader() {
         if (getCurrentUser() != null) {
             val navigationView: NavigationView = mainPageBinding.mainPageNavView

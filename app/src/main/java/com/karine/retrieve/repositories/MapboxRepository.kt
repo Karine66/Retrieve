@@ -2,7 +2,6 @@ package com.karine.retrieve.repositories
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.karine.retrieve.R
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
 import com.mapbox.api.geocoding.v5.models.GeocodingResponse
 import com.mapbox.geojson.Point
@@ -14,9 +13,9 @@ import retrofit2.Response
 class MapboxRepository {
 
 
-    fun getGeocodingMapbox(completeAddress:String): MutableLiveData<Point> {
+    fun getGeocodingMapbox(completeAddress: String): MutableLiveData<Point> {
 
-   var firstResultPoint : MutableLiveData<Point> = MutableLiveData()
+        var firstResultPoint: MutableLiveData<Point> = MutableLiveData()
 
         val mapBoxGeocoding = MapboxGeocoding.builder()
             .accessToken(Mapbox.getAccessToken().toString())

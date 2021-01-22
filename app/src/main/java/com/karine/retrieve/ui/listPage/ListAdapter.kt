@@ -10,14 +10,16 @@ import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.utils.CellClickListener
 
 
-class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val glide: RequestManager,
-                  private val cellClickListener: CellClickListener,
+class ListAdapter(
+    options: FirestoreRecyclerOptions<UserObject>, private val glide: RequestManager,
+    private val cellClickListener: CellClickListener,
 ) : FirestoreRecyclerAdapter<UserObject, ListViewHolder>(
     options
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val fragmentListItemBinding = FragmentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val fragmentListItemBinding =
+            FragmentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(fragmentListItemBinding)
     }
 
@@ -26,15 +28,12 @@ class ListAdapter(options: FirestoreRecyclerOptions<UserObject>, private val gli
         position: Int,
         userObject: UserObject,
 
-    ) {
-            listViewHolder.updateWithObject(userObject, glide)
+        ) {
+        listViewHolder.updateWithObject(userObject, glide)
         //for click on item recycler view
-        listViewHolder.itemView.setOnClickListener{
+        listViewHolder.itemView.setOnClickListener {
 
             cellClickListener.onCellClickListener(userObject)
+        }
     }
-    }
-
-
-
 }

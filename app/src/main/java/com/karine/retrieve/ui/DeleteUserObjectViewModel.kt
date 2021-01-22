@@ -13,7 +13,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class DeleteUserObjectViewModel(private val deleteUserObjectRepository: DeleteUserObjectRepository
+class DeleteUserObjectViewModel(
+    private val deleteUserObjectRepository: DeleteUserObjectRepository
 ) : ViewModel(), CoroutineScope {
     //set coroutine context
     private val compositeJob = Job()
@@ -21,30 +22,64 @@ class DeleteUserObjectViewModel(private val deleteUserObjectRepository: DeleteUs
         get() = Dispatchers.Main + compositeJob
 
     //coroutine job
-    private var deleteUserObjectJob :Job? = null
+    private var deleteUserObjectJob: Job? = null
+    private var deleteAllObjectUserJob: Job? = null
+
     //live data
     private val _snackbarText = MutableLiveData<Int>()
-    val snackbarMessage : LiveData<Int> = _snackbarText
+    val snackbarMessage: LiveData<Int> = _snackbarText
 
-    fun deleteUserObjectFindToFirestore( userObject: UserObject){
-        if(deleteUserObjectJob?.isActive == true) deleteUserObjectJob?.cancel()
+    /**
+     * For delete object find
+     */
+    fun deleteUserObjectFindToFirestore(userObject: UserObject) {
+        if (deleteUserObjectJob?.isActive == true) deleteUserObjectJob?.cancel()
         deleteUserObjectJob = launch {
             when (deleteUserObjectRepository.deleteUserObjectFindInFirestore(userObject)) {
-                is Result.Success->_snackbarText.value = R.string.createdUO
-                is Result.Error->_snackbarText.value = R.string.errInconnue
-                is Result.Canceled->_snackbarText.value = R.string.cancel
-            }
-        }
-    }
-    fun deleteUserObjectLostToFirestore(userObject: UserObject){
-        if(deleteUserObjectJob?.isActive == true) deleteUserObjectJob?.cancel()
-        deleteUserObjectJob = launch {
-            when (deleteUserObjectRepository.deleteUserObjectLostInFirestore(userObject)) {
-                is Result.Success->_snackbarText.value = R.string.createdUO
-                is Result.Error->_snackbarText.value = R.string.errInconnue
-                is Result.Canceled->_snackbarText.value = R.string.cancel
+                is Result.Success -> _snackbarText.value = R.string.createdUO
+                is Result.Error -> _snackbarText.value = R.string.errInconnue
+                is Result.Canceled -> _snackbarText.value = R.string.cancel
             }
         }
     }
 
+    /**
+     * For delete object lost
+     */
+    fun deleteUserObjectLostToFirestore(userObject: UserObject) {
+        if (deleteUserObjectJob?.isActive == true) deleteUserObjectJob?.cancel()
+        deleteUserObjectJob = launch {
+            when (deleteUserObjectRepository.deleteUserObjectLostInFirestore(userObject)) {
+                is Result.Success -> _snackbarText.value = R.string.createdUO
+                is Result.Error -> _snackbarText.value = R.string.errInconnue
+                is Result.Canceled -> _snackbarText.value = R.string.cancel
+            }
+        }
+    }
+
+    /**
+     * For delete all object find when user delete account
+     */
+    fun deleteAllObjectFindFromUser() {
+        if (deleteAllObjectUserJob?.isActive == true) deleteAllObjectUserJob?.cancel()
+        deleteAllObjectUserJob = launch {
+            when (deleteUserObjectRepository.deleteAllUserObjectFindFromCurrentUser()) {
+//                is Result.Success->_snackbarText.value = R.string.createdUO
+//                is Result.Error->_snackbarText.value = R.string.errInconnue
+//                is Result.Canceled->_snackbarText.value = R.string.cancel
+            }
+        }
+    }
+
+    /**
+     * For delete all object lost when user delete account
+     */
+    fun deleteAllObjectLostFromUser() {
+        if (deleteAllObjectUserJob?.isActive == true) deleteAllObjectUserJob?.cancel()
+        deleteAllObjectUserJob = launch {
+            when (deleteUserObjectRepository.deleteAllUserObjectLostFromCurrentUser()) {
+
+            }
+        }
+    }
 }

@@ -3,7 +3,9 @@ package com.karine.retrieve.ui.listPage
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
@@ -67,7 +69,9 @@ class ListFragment : Fragment(), CellClickListener {
         return binding.root
     }
 
-    //for recyclerview
+    /**
+     * For set up RecyclerView
+     */
     private fun setUpRecyclerView() {
 
         val query: Query = if (objectFind) {
@@ -99,16 +103,20 @@ class ListFragment : Fragment(), CellClickListener {
         super.onDestroyView()
         listBinding = null
     }
-    //for click on item recycler view
-    override fun onCellClickListener(userObject: UserObject) {
 
+    /**
+     * For click on item recyclerView
+     */
+    override fun onCellClickListener(userObject: UserObject) {
         val intent = Intent(context, DescriptionActivity::class.java)
         intent.putExtra("userObject", userObject)
         intent.putExtra("objectFind", objectFind)
         startActivity(intent)
     }
 
-    //for dropdown
+    /**
+     * For dropdown
+     */
     private fun factoryAdapter(resId: Int): ArrayAdapter<String?> {
         return ArrayAdapter(
             context!!,
@@ -117,15 +125,24 @@ class ListFragment : Fragment(), CellClickListener {
         )
     }
 
-    //for dropdown
+    /**
+     * For dropdown
+     */
     private fun dropDownAdapter() {
         binding.etType.setAdapter(factoryAdapter(R.array.Type))
     }
 
-    //for search with dropdown
+    /**
+     * For search with dropdown
+     */
     private fun listSearch() {
         binding.etType.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+            override fun onItemClick(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
 
                 val value = binding.etType.text.toString()
                 val firebaseSearchQuery: Query = if (objectFind) {
@@ -142,10 +159,13 @@ class ListFragment : Fragment(), CellClickListener {
             }
         }
     }
-    //for cancel search
+
+    /**
+     * For cancel search
+     */
     private fun clickCancelSearch() {
         binding.buttonCancel.setOnClickListener(View.OnClickListener {
-           binding.etType.setText("")
+            binding.etType.setText("")
             val query: Query = if (objectFind) {
                 objectRef.orderBy("created", Query.Direction.DESCENDING)
             } else {

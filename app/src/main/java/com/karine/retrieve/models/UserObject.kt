@@ -37,9 +37,7 @@ class UserObject(
         parcel.createStringArrayList() as MutableList<String>
    )
 
-
     constructor() : this("","",null,"","","","","","",null,"","", mutableListOf())
-
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(docId)
