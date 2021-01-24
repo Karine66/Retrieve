@@ -24,6 +24,7 @@ class DeleteUserObjectViewModel(
     //coroutine job
     private var deleteUserObjectJob: Job? = null
     private var deleteAllObjectUserJob: Job? = null
+    private var deleteAllObjectFindJob: Job?=null
 
     //live data
     private val _snackbarText = MutableLiveData<Int>()
@@ -61,8 +62,8 @@ class DeleteUserObjectViewModel(
      * For delete all object find when user delete account
      */
     fun deleteAllObjectFindFromUser() {
-        if (deleteAllObjectUserJob?.isActive == true) deleteAllObjectUserJob?.cancel()
-        deleteAllObjectUserJob = launch {
+        if (deleteAllObjectFindJob?.isActive == true) deleteAllObjectFindJob?.cancel()
+        deleteAllObjectFindJob = launch {
             when (deleteUserObjectRepository.deleteAllUserObjectFindFromCurrentUser()) {
 //                is Result.Success->_snackbarText.value = R.string.createdUO
 //                is Result.Error->_snackbarText.value = R.string.errInconnue

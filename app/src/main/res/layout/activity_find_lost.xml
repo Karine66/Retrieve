@@ -45,10 +45,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_mail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="20dp"
         android:nextFocusDown="@id/input_phone"
         android:layout_toEndOf="@+id/input_name"
         app:boxStrokeColor="@color/colorSecondary"
@@ -59,7 +60,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_mail"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
@@ -93,9 +94,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_date"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/input_mail"
+        android:layout_marginEnd="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:nextFocusDown="@id/input_type"
@@ -107,7 +109,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/date"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:focusableInTouchMode="false"
             android:hint="@string/dateObjet"
@@ -211,10 +213,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_city"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_below="@+id/input_address"
         android:layout_toEndOf="@+id/input_postalCode"
         app:boxStrokeColor="@color/colorSecondary"
@@ -226,7 +229,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_city"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/ville"
             android:inputType="textCapCharacters"
