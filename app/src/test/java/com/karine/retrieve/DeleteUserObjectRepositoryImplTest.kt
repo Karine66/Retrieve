@@ -12,21 +12,4 @@ class DeleteUserObjectRepositoryImplTest : DeleteUserObjectRepository {
     override suspend fun deleteUserObjectLostInFirestore(userObject: UserObject): Result<Void?>
        = Result.Success(null)
 
-    override suspend fun getSavedUserObjectFind(): CollectionReference {
-
-    }
-
-
-    override suspend fun getSavedUserObjectLost(): CollectionReference {
-
-    }
-
-    override suspend fun deleteAllUserObjectFindFromCurrentUser() {
-
-    }
-
-    override suspend fun deleteAllUserObjectLostFromCurrentUser() {
-
-    }
-
 }

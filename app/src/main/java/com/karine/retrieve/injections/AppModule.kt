@@ -16,7 +16,7 @@ val appModule = module {
     // single instance of HelloRepository
     single<SaveUserObjectRepository> { SaveUserObjectRepositoryimpl() }
     single<DeleteUserObjectRepository> { DeleteUserObjetRepositoryImpl() }
-    
+
     // MyViewModel ViewModel
     viewModel { SaveUserObjectViewModel(get()) }
     viewModel { DeleteUserObjectViewModel(get())}

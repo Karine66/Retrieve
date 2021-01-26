@@ -9,10 +9,4 @@ interface DeleteUserObjectRepository {
 
     suspend fun deleteUserObjectFindInFirestore(userObject: UserObject) : Result<Void?>
     suspend fun deleteUserObjectLostInFirestore(userObject: UserObject) : Result<Void?>
-
-    suspend fun getSavedUserObjectFind() : CollectionReference
-    suspend fun getSavedUserObjectLost():CollectionReference
-
-    suspend fun deleteAllUserObjectFindFromCurrentUser()
-    suspend fun deleteAllUserObjectLostFromCurrentUser()
 }

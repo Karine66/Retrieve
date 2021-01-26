@@ -51,6 +51,8 @@
     <string name="suppCpte">Compte supprimé</string>
     <string name="createdUO">userObject created</string>
   <string name="cancel">Cancel</string>
+    <string name="connexion_par_email">Connexion par Email</string>
+  <string name="connexion_par_google">Connexion par Google</string>
 
 
 </resources>

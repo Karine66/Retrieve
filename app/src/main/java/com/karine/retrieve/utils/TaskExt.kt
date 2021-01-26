@@ -31,7 +31,7 @@ open class TaskExt {
                 val e = exception
                 if (e == null) {
                     @Suppress("UNCHECKED_CAST")
-                    if (isCanceled) cont.cancel() else cont.resume(Result.Success(result as T))
+                    if (isCanceled) cont.cancel() else cont.resume(Result.Success(result as T), null)
 
                 } else {
                     cont.resumeWithException(e)
@@ -41,8 +41,5 @@ open class TaskExt {
     }
 }
 
-private fun <T> Continuation<T>.resume(success: T) {
-
-}
 
 

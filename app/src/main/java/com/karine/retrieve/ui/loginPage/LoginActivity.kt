@@ -17,7 +17,7 @@ open class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginBinding: ActivityLoginBinding
 
-    // 1 - Identifier for Sign-In Activity
+    //Identifier for Sign-In Activity
     private val RC_SIGN_IN = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {

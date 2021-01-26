@@ -42,7 +42,7 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
     private val SIGN_OUT_TASK = 100
     private val DELETE_USER_TASK = 200
 
-    private val deleteUserObjectViewModel: DeleteUserObjectViewModel by viewModel()
+    private val deleteAllObjectCurrentUserViewModel : DeleteAllObjectCurrentUserViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -237,8 +237,8 @@ class MainPageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
                 dialog.dismiss()
             }
             .setPositiveButton(resources.getString(R.string.oui)) { dialog, wich ->
-                deleteUserObjectViewModel.deleteAllObjectFindFromUser()
-                deleteUserObjectViewModel.deleteAllObjectLostFromUser()
+               deleteAllObjectCurrentUserViewModel.deleteAllObjectFindFromUser()
+               deleteAllObjectCurrentUserViewModel.deleteAllObjectLostFromUser()
                 deleteUserFromFirebase()
                 Snackbar.make(
                     mainPageBinding.root,

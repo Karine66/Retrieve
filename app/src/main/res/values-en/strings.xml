@@ -46,4 +46,6 @@
     <string name="description">Description</string>
     <string name="logout">Logout</string>
     <string name="suppCpte">Deleted account</string>
+    <string name="connexion_par_email">Continue with Email</string>
+    <string name="connexion_par_google">Continue with Google</string>
 </resources>
