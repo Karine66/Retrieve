@@ -1,6 +1,5 @@
 package com.karine.retrieve
 
-import com.google.firebase.firestore.CollectionReference
 import com.karine.retrieve.models.UserObject
 import com.karine.retrieve.repositories.DeleteUserObjectRepository
 import com.karine.retrieve.utils.Result

@@ -35,13 +35,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_cancel"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="6dp"
+       app:cornerRadius="12dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/input_type"
         android:drawableTop="@drawable/baseline_clear_black_48dp"
-        android:paddingBottom="15dp" />
+    />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_list_RV"
