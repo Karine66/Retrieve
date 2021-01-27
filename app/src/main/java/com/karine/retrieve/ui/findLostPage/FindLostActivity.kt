@@ -101,7 +101,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         findLostBinding.etDescription.addTextChangedListener(textWatcher)
 
         findLostBinding.inputName.requestFocus()
-        findLostBinding.validateFabBtn.isEnabled= false
+        findLostBinding.validateFabBtn.isEnabled = false
     }
 
     /**
