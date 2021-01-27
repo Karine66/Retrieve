@@ -100,6 +100,8 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         findLostBinding.etCity.addTextChangedListener(textWatcher)
         findLostBinding.etDescription.addTextChangedListener(textWatcher)
 
+        findLostBinding.inputName.requestFocus()
+        findLostBinding.validateFabBtn.isEnabled= false
     }
 
     /**
@@ -194,7 +196,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private fun limitedPhotos(): Boolean {
 
         if (photoList.size < 3) {
-            selectImage()
+           selectImage()
             return true
         }
         Snackbar.make(findLostBinding.root, getString(R.string.photosmax), Snackbar.LENGTH_SHORT)
@@ -341,7 +343,9 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
      * For fields required in form
      */
     private var textWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             initTexWatcher()
             findLostBinding.validateFabBtn.isEnabled =
@@ -371,7 +375,7 @@ open class FindLostActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             if (description.isEmpty()) {
                 findLostBinding.etDescription.error = getString(R.string.requis)
             }
-        }
+       }
     }
 }
 
