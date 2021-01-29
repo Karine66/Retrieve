@@ -10,5 +10,4 @@ class DeleteUserObjectRepositoryImplTest : DeleteUserObjectRepository {
 
     override suspend fun deleteUserObjectLostInFirestore(userObject: UserObject): Result<Void?>
        = Result.Success(null)
-
 }
