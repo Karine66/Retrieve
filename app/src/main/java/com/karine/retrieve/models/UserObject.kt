@@ -63,7 +63,6 @@ class UserObject(
         override fun createFromParcel(parcel: Parcel): UserObject {
             return UserObject(parcel)
         }
-
         override fun newArray(size: Int): Array<UserObject?> {
             return arrayOfNulls(size)
         }
